@@ -1,0 +1,144 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   '-g',
+1 verbose cli   'easel' ]
+2 info using npm@2.14.2
+3 info using node@v4.0.0
+4 verbose install initial load of /usr/local/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/local/lib/package.json
+6 silly cache add args [ 'easel', null ]
+7 verbose cache add spec easel
+8 silly cache add parsed spec Result {
+8 silly cache add   raw: 'easel',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'easel',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: '*',
+8 silly cache add   type: 'range' }
+9 silly addNamed easel@*
+10 verbose addNamed "*" is a valid semver range for easel
+11 silly addNameRange { name: 'easel', range: '*', hasData: false }
+12 silly mapToRegistry name easel
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/easel
+16 verbose addNameRange registry:https://registry.npmjs.org/easel not in flight; fetching
+17 verbose request uri https://registry.npmjs.org/easel
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 2:31:23 PM
+20 verbose request id 7143f1691a457989
+21 http request GET https://registry.npmjs.org/easel
+22 http 200 https://registry.npmjs.org/easel
+23 silly get cb [ 200,
+23 silly get   { server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+23 silly get     etag: '"2KUXWZAR5XVP9FTQ24EE3JHYJ"',
+23 silly get     'content-type': 'application/json',
+23 silly get     'cache-control': 'max-age=60',
+23 silly get     'content-length': '4537',
+23 silly get     'accept-ranges': 'bytes',
+23 silly get     date: 'Wed, 18 Nov 2015 13:31:25 GMT',
+23 silly get     via: '1.1 varnish',
+23 silly get     age: '0',
+23 silly get     connection: 'keep-alive',
+23 silly get     'x-served-by': 'cache-fra1238-FRA',
+23 silly get     'x-cache': 'MISS',
+23 silly get     'x-cache-hits': '0',
+23 silly get     'x-timer': 'S1447853484.729563,VS0,VE688',
+23 silly get     vary: 'Accept' } ]
+24 verbose get saving easel to /Users/lucascibona/.npm/registry.npmjs.org/easel/.cache.json
+25 silly addNameRange number 2 { name: 'easel', range: '*', hasData: true }
+26 silly addNameRange versions [ 'easel', [ '0.2.1', '0.2.2', '0.2.3', '0.2.4', '0.2.6' ] ]
+27 silly addNamed easel@0.2.6
+28 verbose addNamed "0.2.6" is a plain semver version for easel
+29 silly mapToRegistry name easel
+30 silly mapToRegistry using default registry
+31 silly mapToRegistry registry https://registry.npmjs.org/
+32 silly mapToRegistry uri https://registry.npmjs.org/easel
+33 verbose addRemoteTarball https://registry.npmjs.org/easel/-/easel-0.2.6.tgz not in flight; adding
+34 verbose addRemoteTarball [ 'https://registry.npmjs.org/easel/-/easel-0.2.6.tgz',
+34 verbose addRemoteTarball   'ffa754ef9eeef7e15d700506a462963819f38e1e' ]
+35 info retry fetch attempt 1 at 2:31:24 PM
+36 info attempt registry request try #1 at 2:31:24 PM
+37 http fetch GET https://registry.npmjs.org/easel/-/easel-0.2.6.tgz
+38 http fetch 200 https://registry.npmjs.org/easel/-/easel-0.2.6.tgz
+39 silly fetchAndShaCheck shasum ffa754ef9eeef7e15d700506a462963819f38e1e
+40 verbose addTmpTarball /var/folders/k6/y11byd256zdg7n1hp0_qs1v00000gn/T/npm-551-300b2727/registry.npmjs.org/easel/-/easel-0.2.6.tgz not in flight; adding
+41 verbose addTmpTarball already have metadata; skipping unpack for easel@0.2.6
+42 silly cache afterAdd easel@0.2.6
+43 verbose afterAdd /Users/lucascibona/.npm/easel/0.2.6/package/package.json not in flight; writing
+44 verbose afterAdd /Users/lucascibona/.npm/easel/0.2.6/package/package.json written
+45 silly install resolved [ { name: 'easel',
+45 silly install resolved     version: '0.2.6',
+45 silly install resolved     bin: { easel: './iris.js' },
+45 silly install resolved     dependencies:
+45 silly install resolved      { serialport: '^1.7.4',
+45 silly install resolved        'socket.io': '^1.3.6',
+45 silly install resolved        underscore: '^1.8.3' },
+45 silly install resolved     gitHead: '01762288b2bf655e380529b6b58256bfc95be2c3',
+45 silly install resolved     description: 'Iris ========== _The messenger between Man and the ~~Gods~~ Machines_',
+45 silly install resolved     _id: 'easel@0.2.6',
+45 silly install resolved     scripts: {},
+45 silly install resolved     _shasum: 'ffa754ef9eeef7e15d700506a462963819f38e1e',
+45 silly install resolved     _from: 'easel@*',
+45 silly install resolved     _npmVersion: '2.5.1',
+45 silly install resolved     _nodeVersion: '0.12.0',
+45 silly install resolved     _npmUser: { name: 'paulkaplan', email: 'paul@inventables.com' },
+45 silly install resolved     dist:
+45 silly install resolved      { shasum: 'ffa754ef9eeef7e15d700506a462963819f38e1e',
+45 silly install resolved        tarball: 'http://registry.npmjs.org/easel/-/easel-0.2.6.tgz' },
+45 silly install resolved     maintainers: [ [Object] ],
+45 silly install resolved     directories: {},
+45 silly install resolved     _resolved: 'https://registry.npmjs.org/easel/-/easel-0.2.6.tgz' } ]
+46 info install easel@0.2.6 into /usr/local/lib
+47 info installOne easel@0.2.6
+48 verbose installOne of easel to /usr/local/lib not in flight; installing
+49 verbose lock using /Users/lucascibona/.npm/_locks/easel-3b93b30ddf683498.lock for /usr/local/lib/node_modules/easel
+50 silly install write writing easel 0.2.6 to /usr/local/lib/node_modules/easel
+51 verbose unbuild lib/node_modules/easel
+52 silly gentlyRm /usr/local/lib/node_modules/easel is being purged from base /usr/local
+53 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/easel
+54 verbose tar unpack /Users/lucascibona/.npm/easel/0.2.6/package.tgz
+55 verbose tar unpacking to /usr/local/lib/node_modules/easel
+56 silly gentlyRm /usr/local/lib/node_modules/easel is being purged
+57 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/easel
+58 silly gunzTarPerm modes [ '755', '644' ]
+59 error tar.unpack untar error /Users/lucascibona/.npm/easel/0.2.6/package.tgz
+60 verbose unlock done using /Users/lucascibona/.npm/_locks/easel-3b93b30ddf683498.lock for /usr/local/lib/node_modules/easel
+61 verbose fstream_path /usr/local/lib/node_modules/easel
+62 verbose fstream_type Directory
+63 verbose fstream_class DirWriter
+64 verbose stack Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/easel'
+64 verbose stack     at Error (native)
+65 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25
+65 verbose fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53
+65 verbose fstream_stack FSReqWrap.oncomplete (fs.js:82:15)
+66 verbose cwd /Users/lucascibona/GitHub/EZ-Stat
+67 error Darwin 14.5.0
+68 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "-g" "easel"
+69 error node v4.0.0
+70 error npm  v2.14.2
+71 error path /usr/local/lib/node_modules/easel
+72 error code EACCES
+73 error errno -13
+74 error syscall mkdir
+75 error Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/easel'
+75 error     at Error (native)
+75 error  { [Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules/easel']
+75 error   errno: -13,
+75 error   code: 'EACCES',
+75 error   syscall: 'mkdir',
+75 error   path: '/usr/local/lib/node_modules/easel',
+75 error   fstream_type: 'Directory',
+75 error   fstream_path: '/usr/local/lib/node_modules/easel',
+75 error   fstream_class: 'DirWriter',
+75 error   fstream_stack:
+75 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:35:25',
+75 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53',
+75 error      'FSReqWrap.oncomplete (fs.js:82:15)' ] }
+76 error Please try running this command again as root/Administrator.
+77 verbose exit [ -13, true ]
+78 verbose unbuild lib/node_modules/easel
+79 silly gentlyRm /usr/local/lib/node_modules/easel is being purged from base /usr/local
+80 verbose gentlyRm don't care about contents; nuking /usr/local/lib/node_modules/easel
