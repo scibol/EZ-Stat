@@ -5,20 +5,29 @@
 		<script src="easeljs-NEXT.combined.js"></script>
 		<script type="text/javascript">
 			function init(){
+				startX = 200;
+				startY = 200;
+				fieldX = 300;
+				fieldY = 300;
 				console.log("is called");
-				var canvas = document.getElementById("testCanvas");
-				console.log(canvas);
-				var stage = new createjs.Stage(canvas);
-
-				var shape = new createjs.Shape();
-				shape.graphics.drawRect(0, 0, 120, 120);
-				stage.addChild(shape);
-				stage.update();        
+				canvas = document.getElementById("testCanvas");
+				 var stage = new createjs.Stage("testCanvas");
+				 function drawRectangle(){
+				 var rect = new createjs.Shape();
+				 rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").drawRect(startX,startY,fieldX,fieldY);
+				 rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").drawRect(startX + fieldX,startY,fieldX,fieldY);
+				 rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").drawRect(startX,startY + fieldY/3,fieldX/2,fieldY/3);
+				 // rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").arcTo(200,200,100,100,50);
+				 rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").arc(fieldX,350,100,Math.PI*3/2,Math.PI/2);
+				 stage.addChild(rect);
+				 }
+				 drawRectangle()
+				 stage.update();    
 	    	}
 		</script>
 	</head>
 	<body onload="init();">
-		<canvas id="testCanvas" height="500px" width="500px">
+		<canvas id="testCanvas" height="500" width="1000">
 		</canvas>
 	</body>
 </html>
