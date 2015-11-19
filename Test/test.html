@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+	<head>
+		<script src="easeljs-0.8.1.min.js"></script>
+		<script src="easeljs-NEXT.combined.js"></script>
+		<script type="text/javascript">
+			function init(){
+				console.log("is called");
+				var canvas = document.getElementById("testCanvas");
+				console.log(canvas);
+				var stage = new createjs.Stage(canvas);
+
+				var shape = new createjs.Shape();
+				shape.graphics.drawRect(0, 0, 120, 120);
+				stage.addChild(shape);
+				stage.update();        
+	    	}
+		</script>
+	</head>
+	<body onload="init();">
+		<canvas id="testCanvas" height="500px" width="500px">
+		</canvas>
+	</body>
+</html>
