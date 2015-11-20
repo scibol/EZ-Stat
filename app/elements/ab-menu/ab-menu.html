@@ -1,0 +1,39 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/iron-menu-behavior/iron-menu-behavior.html">
+<!-- /build -->
+
+<dom-module id="ab-menu">
+  <template>
+
+  <!-- build:remove -->
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+
+  <div id="content">
+    <content></content>
+  </div>
+
+  <!-- /build -->
+  </template>
+  
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'ab-menu',
+        //<!-- build:remove -->
+        behaviors: [Polymer.IronMenuBehavior]
+        //<!-- /build -->
+      });
+
+    })();
+  </script>
+
+</dom-module>

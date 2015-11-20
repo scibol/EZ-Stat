@@ -1,0 +1,64 @@
+<script src="../components/page/page.js"></script>
+<script>
+  window.addEventListener('WebComponentsReady', function() {
+
+    // We use Page.js for routing. This is a Micro
+    // client-side router inspired by the Express router
+    // More info: https://visionmedia.github.io/page.js/
+
+    // abApp should be your instantiated <ab-app> element
+
+    // Middleware
+    function scrollToTop(ctx, next) {
+      abApp.scrollPageToTop();
+      next();
+    }
+
+    // Routes
+    page('/', scrollToTop, function() {
+      abApp.route = 'library';
+    });
+
+    page('/albums', scrollToTop, function() {
+      abApp.route = 'albums';
+    });
+
+    page('/albums/:album', scrollToTop, function(data) {
+      abApp.route = 'albums';
+      abApp.params = data.params;
+    });
+
+    page('/artists', scrollToTop, function() {
+      abApp.route = 'artists';
+    });
+
+
+    /* Implement the routing for the playlists here */
+    //<!-- build:remove -->
+    page('/playlists/:playlistid', scrollToTop, abApp.validatePlaylistId.bind(abApp),  function(data) {
+      if( data.playlistExists) {
+        abApp.route = 'playlists';
+        abApp.params = data.params;
+        return;
+      }
+
+      abApp.$.toast.text = 'Can\'t find playlist with id: ' + data.params.playlistid  + '. Redirected you to Home Page';
+      abApp.$.toast.show();
+      page.redirect('/');
+    });
+    //<!-- /build -->
+
+
+    page('*', function() {
+      abApp.$.toast.text = 'Can\'t find: ' + window.location.href  + '. Redirected you to Home Page';
+      abApp.$.toast.show();
+      page.redirect('/');
+    });
+
+    // add #! before urls
+    page({
+      hashbang: true
+    });
+
+  });
+</script>

@@ -1,0 +1,28 @@
+<!-- shared styles for all elements and index.html -->
+<dom-module id="shared-styles">
+  <template>
+    <style>
+
+      /* Put the rest of your shared styles here */
+      /* <!-- build:remove --> */
+
+      body{
+        font-size: var(--ab-primary-font-size);
+        background-color: var(--ab-primary-background-color, #ffffff);
+      }
+
+      a{
+        color: var(--ab-anchor-color, inherit);
+        text-decoration:none;
+      }
+
+      a:hover, a:active{
+        @apply(--ab-anchor-hover-mixin);
+      }
+
+
+      /* <!-- /build --> */
+
+    </style>
+  </template>
+</dom-module>

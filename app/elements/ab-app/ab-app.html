@@ -1,0 +1,372 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../components/iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../../components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<link rel="import" href="../../components/iron-icons/iron-icons.html">
+<link rel="import" href="../../components/iron-pages/iron-pages.html">
+<link rel="import" href="../../components/paper-toast/paper-toast.html">
+
+
+<link rel="import" href="../routing.html">
+
+<link rel="import" href="../ab-menu-item/ab-menu-item.html">
+<link rel="import" href="../ab-menu/ab-menu.html">
+<link rel="import" href="../ab-player/ab-player.html">
+<link rel="import" href="../ab-playlist-header-info/ab-playlist-header-info.html">
+<link rel="import" href="../ab-thumblist/ab-thumblist.html">
+<link rel="import" href="../ab-tracklist/ab-tracklist.html">
+<link rel="import" href="../ez-canvas/ez-canvas.html">
+
+<!-- /build -->
+
+<!-- the following script can help you formatting the dates -->
+<script type="text/javascript" src="../../js/utils.js"></script>
+
+<!-- stuff for easel, drawing canvas -->
+<script src="easeljs-0.8.1.min.js"></script>
+<script src="easeljs-NEXT.combined.js"></script>
+<script type="text/javascript" src="../../js/utils.js"></script>
+
+<dom-module id="ab-app">
+  <template>
+
+    <!-- build:remove -->
+
+    <style>
+      :host {
+        @apply(--layout-vertical);
+      }
+
+      #wrapper, #main-content {
+        overflow-y: auto;
+      }
+
+      #main-nav {
+        width: 300px;
+        background: var(--ab-secondary-background-color, #a44b4d);
+        font-size: 16px;
+        transition: width 150ms ease-out;
+        overflow-y: auto;
+        color: #f7f7f7;
+      }
+
+      #main-menu-toggle-label {
+        cursor: pointer;
+        color: rgba(0,0,0,0.4);
+        font-size: 32px;
+        display: inline-block;
+        border: 1px solid rgba(0,0,0,0.4);
+        line-height: 0;
+        text-align: center;
+        border-radius: 4px;
+        margin: 0;
+        padding: 2px 7px 1px;
+      }
+     
+      #main-menu-toggle {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      #main-nav h2 {
+        margin: 0;
+        padding: 1em;
+        color: rgba(0,0,0,0.4);
+        font-size: 2em;
+      }
+
+      #main-menu{
+        margin-bottom: 60px;
+      }
+
+      .nav-menu{
+        line-height: 60px;
+      }
+
+      @media(min-width: 841px){
+        #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
+          display: none;
+        }
+
+        #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
+          display: none;
+        }
+      }
+
+      #create-pl-btn {
+        color: rgba(0,0,0,0.4);
+        background: rgba(0,0,0,0.1);
+        display: inline-block;
+        width: auto;
+        padding: 2px 5px 4px;
+        margin: 0 0 20px 10px;
+        font-size: 1.2em;
+        line-height: 1;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+
+      #create-pl-btn:hover, #create-pl-btn:active {
+        background: rgba(0,0,0,0.2);
+        color: #f7f7f7;
+        text-decoration: none;
+      }
+
+      ab-menu-item{
+        outline: none;
+      }
+
+      ab-tracklist{
+        font-weight: 500;
+      }
+
+      #mainSearch{
+        box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
+        --paper-input-container-label:{
+          color:darkgrey;
+          font-size: 1.4em;
+          font-weight: inherit;
+        };
+        --paper-input-container-underline:{
+          display:none;
+        };
+        --paper-input-container-underline-focus:{
+          display:none;
+        };
+        --paper-input-container-input:{
+          padding: 0 0 5px 0;
+          font-size: 1.4em;
+          color: inherit;
+        };
+      }
+
+      #mainSearch iron-icon{
+        padding: 0 20px 5px;
+      }
+
+    </style>
+    
+    <div class="horizontal layout flex" id="wrapper">
+
+      <nav id="main-nav" class="main-nav-float">
+<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
+        <input type="checkbox" id="main-menu-toggle">
+        <h2 class="fat logo">AtelierBeats.</h2> -->
+        <div class="main-nav-content">
+
+<!--           <paper-input id="mainSearch" label="Search" no-label-float>
+            <iron-icon icon="search" prefix></iron-icon>
+            <paper-icon-button suffix onclick="clearInput()"
+                icon="clear" alt="clear" title="clear" tabindex="0">
+            </paper-icon-button>
+          </paper-input> -->
+
+          <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
+            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
+            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+          </ab-menu>
+
+         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
+         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
+<!--          <ab-menu class="nav-menu" id="playlists">
+            <template is="dom-repeat" items="{{playlists}}" as="playlist">
+              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
+            </template>
+          </ab-menu> -->
+      </div>
+      </nav>
+      
+    
+    
+      <!-- Main Content -->
+      <ez-canvas></ez-canvas>
+      <div class="content flex" id="main-content">
+              <!-- <ez-canvas></ez-canvas> -->
+
+
+
+<!--         <iron-ajax
+            auto
+            url="http://localhost:3000/tracks"
+            handle-as="json"
+            last-response="{{tracks}}"
+            debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+            auto
+            url="http://localhost:3000/artists"
+            handle-as="json"
+            last-response="{{artists}}"
+            debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+            auto
+            url="http://localhost:3000/albums"
+            handle-as="json"
+            last-response="{{albums}}"
+            debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+            id="playlistAjax"
+            auto
+            url="http://localhost:3000/users/{{userid}}/playlists"
+            handle-as="json"
+            on-response="_onPlaylistAjax"
+            last-response="{{playlists}}"
+            debounce-duration="300"></iron-ajax>
+
+        
+        <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+          <ab-tracklist data-route="library" tracks="{{tracks}}">
+          </ab-tracklist>
+
+          <ab-thumblist data-route="artists" data="{{artists}}"></ab-thumblist>
+
+          <ab-thumblist data-route="albums" data="{{albums}}"></ab-thumblist>
+
+          <section data-route="playlists" >
+            <ab-playlist-header playlist="{{selectedPlaylist}}"></ab-playlist-header>
+            <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
+          </section>
+
+        </iron-pages> -->
+      </div>
+      <nav id="main-nav" class="main-nav-float">
+<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
+        <input type="checkbox" id="main-menu-toggle">
+        <h2 class="fat logo">AtelierBeats.</h2> -->
+        <div class="main-nav-content">
+
+<!--           <paper-input id="mainSearch" label="Search" no-label-float>
+            <iron-icon icon="search" prefix></iron-icon>
+            <paper-icon-button suffix onclick="clearInput()"
+                icon="clear" alt="clear" title="clear" tabindex="0">
+            </paper-icon-button>
+          </paper-input> -->
+
+          <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
+            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
+            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+          </ab-menu>
+
+         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
+         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
+<!--          <ab-menu class="nav-menu" id="playlists">
+            <template is="dom-repeat" items="{{playlists}}" as="playlist">
+              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
+            </template>
+          </ab-menu> -->
+      </div>
+      </nav>
+    </div>
+
+    <!-- <ab-player track="{{tracks.0}}"></ab-player> -->
+
+    <paper-toast id="toast">
+      <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
+    </paper-toast>
+  <!-- /build -->
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      Polymer({
+        is: 'ab-app',
+
+        // <!-- build:remove -->
+        properties: {
+          route: {
+            type: String,
+            notify: true,
+          },
+          params: {
+            type: Object,
+            notify: true
+          },
+          userid:{
+            type: String,
+            value: '563fd9661d1e084ac3e1b6b2'
+          },
+          tracks:{
+            type:Array
+          },
+          albums:{
+            type:Array
+          },
+          artists:{
+            type:Array
+          },
+          playlists:{
+            type: Array
+          },
+          selectedPlaylist:{
+            type:Object
+          }
+        },
+
+        created: function(){
+          this._hasReceivedAJAXPlaylistsResponse = false;
+        },
+
+        ready: function() {
+          window.abApp = this;
+          // window.onload = init;
+        },
+
+        // Scroll page to top
+        scrollPageToTop: function() {
+
+        },
+
+        _onPlaylistAjax: function(event){
+          this._hasReceivedAJAXPlaylistsResponse = true;
+        },
+
+        // page middleware for playlit
+        validatePlaylistId: function(ctx, next, timesTried){
+          timesTried = timesTried || 0;
+
+          // try 10 times and then surrender 
+          if(timesTried >9){
+            return next();
+          }
+
+          // make sure we have playlists
+          if(!this._hasReceivedAJAXPlaylistsResponse){
+            return this.async(function(){
+              this.validatePlaylistId(ctx, next, ++timesTried)
+            }, 500)
+          }
+
+          ctx.playlistExists = false;
+          for(var i = 0, l= this.playlists.length; i<l; i++){
+            if(this.playlists[i]._id == ctx.params.playlistid){
+              ctx.playlistExists = true;
+              this.selectedPlaylist = this.playlists[i];
+              break;
+            }
+          }
+          next();
+        },
+
+        _calcPlaylistHref(pid){
+          return "/playlists/" + pid;
+        }
+        // <!-- /build -->
+      });
+
+    })();
+
+  </script>
+
+</dom-module>
