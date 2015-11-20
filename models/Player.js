@@ -37,4 +37,6 @@ var PlayerSchema = new mongoose.Schema(
 
 //register model
 mongoose.model('Player', PlayerSchema);
+module.exports = PlayerSchema;
+
 

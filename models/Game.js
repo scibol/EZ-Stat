@@ -20,7 +20,7 @@ var PlayerSchema = require('./Player');
 var GameSchema = new mongoose.Schema(
 
 {
-	teams: {type: [PlayerSchema], required: true},
+	players: {type: [PlayerSchema], required: true},
 	date: { type: Date, default: Date.now},
 	result : { type: String, required: true}
 }
