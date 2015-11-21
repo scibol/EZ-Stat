@@ -19,7 +19,6 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 
 //list albums
 router.get('/', function(req, res, next) {
-
   Album.find({}, fieldsFilter).lean().populate('artist').exec(function(err, albums){
     if (err) return next (err);
     albums.forEach(function(album){

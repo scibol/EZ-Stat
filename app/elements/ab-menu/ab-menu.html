@@ -5,8 +5,6 @@
 <!-- /build -->
 
 <dom-module id="ab-menu">
-  <template>
-
   <!-- build:remove -->
     <style>
       :host {
@@ -21,7 +19,20 @@
 
 
   <div id="content">
-    <content></content>
+      <template is="dom-repeat" items="[[players]]" as="player">
+        {{players}}
+            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
+<!--             <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item> -->
   </div>
 
   <!-- /build -->
@@ -34,7 +45,7 @@
       Polymer({
         is: 'ab-menu',
         //<!-- build:remove -->
-        behaviors: [Polymer.IronMenuBehavior]
+        // behaviors: [Polymer.IronMenuBehavior]
         //<!-- /build -->
       });
 

@@ -1,2 +1,0 @@
-# EZ-Stat
-EZ-Stat

@@ -178,22 +178,11 @@
             last-response="{{players}}"
             debounce-duration="300"></iron-ajax>
 
-          <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
-            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
-
+          <!-- <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" players="{{}}"> -->
+                    <ab-tracklist data-route="library" players="{{players}}">
+          </ab-tracklist>
 <!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
-          </ab-menu>
+          <!-- </ab-menu> -->
 
          <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
          <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
@@ -214,7 +203,7 @@
 
 
 
-        <iron-ajax
+<!--         <iron-ajax
             auto
             url="http://localhost:3000/tracks"
             handle-as="json"
@@ -246,8 +235,8 @@
 
         
         <iron-pages attr-for-selected="data-route" selected="{{route}}">
-<!-- 
-          <ab-tracklist data-route="library" tracks="{{tracks}}">
+
+          <ab-tracklist data-route="library" tracks="{{players}}">
           </ab-tracklist>
 
           <ab-thumblist data-route="artists" data="{{artists}}"></ab-thumblist>
@@ -257,8 +246,8 @@
           <section data-route="playlists" >
             <ab-playlist-header playlist="{{selectedPlaylist}}"></ab-playlist-header>
             <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
-          </section> -->
-
+          </section>
+ -->
         </iron-pages>
       </div>
       <nav id="main-nav" class="main-nav-float">
@@ -273,7 +262,7 @@
                 icon="clear" alt="clear" title="clear" tabindex="0">
             </paper-icon-button>
           </paper-input> -->
-          <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
+<!--           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
             <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
             <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
             <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
@@ -287,8 +276,10 @@
             <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
             <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
 
-<!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
-          </ab-menu>
+            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
+          </ab-menu> -->
+          <ab-tracklist data-route="library" players="{{players}}">
+          </ab-tracklist>
 
          <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
          <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
