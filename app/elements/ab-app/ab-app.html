@@ -171,20 +171,28 @@
                 icon="clear" alt="clear" title="clear" tabindex="0">
             </paper-icon-button>
           </paper-input> -->
+        <iron-ajax
+            auto
+            url="http://localhost:3000/players"
+            handle-as="json"
+            last-response="{{players}}"
+            debounce-duration="300"></iron-ajax>
 
           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
-            <ab-menu-item data-route="home" href="/" value="13 | P. Aurecchia" icon="av:library-music"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname" icon="av:recent-actors"></ab-menu-item>
-            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
+
+<!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
           </ab-menu>
 
          <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
@@ -238,7 +246,7 @@
 
         
         <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
+<!-- 
           <ab-tracklist data-route="library" tracks="{{tracks}}">
           </ab-tracklist>
 
@@ -249,7 +257,7 @@
           <section data-route="playlists" >
             <ab-playlist-header playlist="{{selectedPlaylist}}"></ab-playlist-header>
             <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
-          </section>
+          </section> -->
 
         </iron-pages>
       </div>
@@ -265,11 +273,21 @@
                 icon="clear" alt="clear" title="clear" tabindex="0">
             </paper-icon-button>
           </paper-input> -->
-
           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
-            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
+
+<!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
           </ab-menu>
 
          <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
