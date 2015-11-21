@@ -11,14 +11,12 @@ var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 
-/** @constructor
-* @augments AbstractSoundCollectionSchemaInstance
-* @param {Object} definition
-*/
 var CoordinateSchema = new mongoose.Schema(
 
 {
-  shot : { type: Array, required: true },
+  pos_x: {type: String, required: true},
+  pos_y: { type: String, required: true},
+  success : { type: String, required: true}
 }
 
 );
@@ -26,4 +24,5 @@ var CoordinateSchema = new mongoose.Schema(
 
 //register model
 mongoose.model('Coordinate', CoordinateSchema);
+module.exports = CoordinateSchema;
 
