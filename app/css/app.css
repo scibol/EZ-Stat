@@ -1,0 +1,17 @@
+/*Lato font*/
+@import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
+
+body {
+  background: #F0F0F0;
+  font-weight: 300;
+  font-family: 'Lato', Calibri, Arial, sans-serif;
+  -webkit-font-smoothing:auto;
+}
+
+ab-app{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+}
