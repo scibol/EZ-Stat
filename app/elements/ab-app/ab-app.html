@@ -46,15 +46,19 @@
       }
 
       #main-nav {
-        width: 300px;
-        background: var(--ab-secondary-background-color, #a44b4d);
-        font-size: 16px;
+        width: 20vw;
+        height: 100vh;
+        background: #2A2C2B;
+        font-size: 1.3vw;
         transition: width 150ms ease-out;
         overflow-y: auto;
         color: #f7f7f7;
+        box-shadow: 0px 0 30px rgba(0,0,0,0.2);
+
       }
 
-      #main-menu-toggle-label {
+
+/*      #main-menu-toggle-label {
         cursor: pointer;
         color: rgba(0,0,0,0.4);
         font-size: 32px;
@@ -65,31 +69,31 @@
         border-radius: 4px;
         margin: 0;
         padding: 2px 7px 1px;
-      }
+      }*/
      
-      #main-menu-toggle {
+/*      #main-menu-toggle {
         position: absolute;
         top: -9999px;
         left: -9999px;
-      }
+      }*/
 
-      #main-nav h2 {
+/*      #main-nav h2 {
         margin: 0;
         padding: 1em;
         color: rgba(0,0,0,0.4);
         font-size: 2em;
-      }
+      }*/
 
-      #main-menu{
+/*      #main-menu{
         margin-bottom: 60px;
-      }
+      }*/
 
       .nav-menu{
-        line-height: 60px;
+        line-height: 8.4vh;
       }
 
       @media(min-width: 841px){
-        #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
+        #main-menu-toggle-label, #main-menu-toggle, .mm-user-item .nav-menu {
           display: none;
         }
 
@@ -98,6 +102,8 @@
         }
       }
 
+
+/*
       #create-pl-btn {
         color: rgba(0,0,0,0.4);
         background: rgba(0,0,0,0.1);
@@ -109,23 +115,23 @@
         line-height: 1;
         white-space: nowrap;
         overflow: hidden;
-      }
+      }*/
 
-      #create-pl-btn:hover, #create-pl-btn:active {
+/*      #create-pl-btn:hover, #create-pl-btn:active {
         background: rgba(0,0,0,0.2);
         color: #f7f7f7;
         text-decoration: none;
-      }
+      }*/
 
-      ab-menu-item{
+/*      ab-menu-item{
         outline: none;
-      }
+      }*/
 
-      ab-tracklist{
+/*      ab-tracklist{
         font-weight: 500;
-      }
+      }*/
 
-      #mainSearch{
+/*      #mainSearch{
         box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
         --paper-input-container-label:{
           color:darkgrey;
@@ -143,11 +149,11 @@
           font-size: 1.4em;
           color: inherit;
         };
-      }
+      }*/
 
-      #mainSearch iron-icon{
+/*      #mainSearch iron-icon{
         padding: 0 20px 5px;
-      }
+      }*/
 
     </style>
     
@@ -157,7 +163,7 @@
 <!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
         <input type="checkbox" id="main-menu-toggle">
         <h2 class="fat logo">AtelierBeats.</h2> -->
-        <div class="main-nav-content">
+        <!-- <div class="main-nav-content"> -->
 
 <!--           <paper-input id="mainSearch" label="Search" no-label-float>
             <iron-icon icon="search" prefix></iron-icon>
@@ -167,6 +173,15 @@
           </paper-input> -->
 
           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
+            <ab-menu-item data-route="home" href="/" value="13 | P. Aurecchia" icon="av:library-music"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname" icon="av:recent-actors"></ab-menu-item>
+            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
+            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
+            <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
+            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
+            <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
             <ab-menu-item data-route="home" href="/" value="Library" icon="av:library-music"></ab-menu-item>
             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
             <ab-menu-item data-route="albums" href="/albums" value="Albums" icon="av:album"></ab-menu-item>
@@ -179,7 +194,7 @@
               <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
             </template>
           </ab-menu> -->
-      </div>
+      <!-- </div> -->
       </nav>
       
     
@@ -191,7 +206,7 @@
 
 
 
-<!--         <iron-ajax
+        <iron-ajax
             auto
             url="http://localhost:3000/tracks"
             handle-as="json"
@@ -236,13 +251,13 @@
             <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
           </section>
 
-        </iron-pages> -->
+        </iron-pages>
       </div>
       <nav id="main-nav" class="main-nav-float">
 <!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
         <input type="checkbox" id="main-menu-toggle">
         <h2 class="fat logo">AtelierBeats.</h2> -->
-        <div class="main-nav-content">
+        <!-- <div class="main-nav-content"> -->
 
 <!--           <paper-input id="mainSearch" label="Search" no-label-float>
             <iron-icon icon="search" prefix></iron-icon>
@@ -264,7 +279,7 @@
               <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
             </template>
           </ab-menu> -->
-      </div>
+      <!-- </div> -->
       </nav>
     </div>
 
