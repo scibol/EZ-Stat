@@ -1,9 +1,4 @@
-<<<<<<< HEAD:Test/README.md
-# EZ-Stat
-EZ-Stat
-this is a test
-=======
-## Getting Started
+
 
 ### Anatomy of the skeleton
 
