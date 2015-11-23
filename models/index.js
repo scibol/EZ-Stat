@@ -18,7 +18,7 @@ require('./User');
 module.exports = {
   'Coordinate' : mongoose.model('Coordinate'),
   'Game' : mongoose.model('Game'),
-  'Player' : mongoose.model('Player')
+  'Player' : mongoose.model('Player'),
   'Album' : mongoose.model('Album'),
   'Artist' : mongoose.model('Artist'),
   'Playlist' : mongoose.model('Playlist'),
