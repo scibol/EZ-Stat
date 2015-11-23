@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0">
+  <title>Atelier Beats</title>
+  <link rel="stylesheet" href="css/standardize.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/glyphicons.css">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+<body class="body library">
+  <div class="container main-wrapper">
+    <nav id="main-nav" class="main-nav-float">
+       <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
+       <input type="checkbox" id="main-menu-toggle">
+       <h2 class="fat logo">AtelierBeats.</h2>
+
+       <div class="main-nav-content">
+        <ul id="main-menu" class="nav-menu">
+          <li class="search-item">
+           <span class="nav-menu-icon search-icon glyphicon glyphicon-search"></span>
+           <input id="main-search" placeholder="Search" type="search" class="nav-menu-search">
+          </li>
+          <li><a href="library.html"><i class="nav-menu-icon glyphicon glyphicon-music"></i>Library</a></li>
+          <li><a href="artists.html"><i class="nav-menu-icon fa fa-users"></i>Artists</a></li>
+          <li><a href="albums.html"><i class="nav-menu-icon icons8-music-record"></i>Albums</a></li>
+          <li class="mm-user-item"><a href="login.html"><i class="nav-menu-icon fa fa-user"></i>triglian</a></li>
+          <li class="mm-user-item"><a href="login.html"><i class="nav-menu-icon fa fa-sign-out"></i>logout</a></li>
+        </ul>
+
+       <a href="#" class="create-playlist" id="create-pl-btn"><i class="fa fa-plus"></i> new playlist</a>
+        <ul class="nav-menu" id="playlists">
+        <!-- Playlists will be rendered here -->
+        </ul>
+      </div> <!-- /.main-nav-content -->
+    </nav>
+    <section class="main-content main-content-float-menu clearfix">
+      <nav id="user-nav" class="clearfix">
+        <ul class="nav-menu horizontal-menu float-right clearfix">
+          <li><a href="#">triglian</a></li>
+          <li><a href="#">logout</a></li>
+        </ul>
+      </nav>
+      <section class="player">
+        <div class="pl-info-wrapper">
+          <div class="pl-artwork">
+            <div class="media-object">
+              <div class="mo-image" style="background-image: url('./images/albums/thin_lizzy-live_and_dangerous.jpg')"></div>
+            </div>
+          </div>
+          <div class="pl-track-info">
+            <a class="pl-track-title" href="albums/Thin%20Lizzy%20-%20Live%20And%20Dangerous">Don't Believe A Word</a>
+              <div class="pl-track-subtitle text-muted one-line">
+                  <a title="Thin Lizzy" href="artists/Thin%20Lizzy">Thin Lizzy</a>
+            </div>
+          </div>
+        </div>
+        <div class="pl-wrapper">
+         <!--  <audio id="leplayer" onloadedmetadata=>
+            <source src="https://archive.org/download/testmp3testfile/mpthreetest.mp3" type="audio/mpeg">
+            Your browser does not support the audio tag.
+          </audio> -->
+          <div class="pl-controls">
+            <button id="previous" class="btn btn-icon fa fa-step-backward"></button>
+            <button id="play-pause" class="btn btn-icon fa fa-play"></button>
+            <button id="next" class="btn btn-icon fa fa-step-forward"></button>
+          </div>
+          <div class="pl-progress">
+            <div class="time time-elapsed" id="time-elapsed">0:00</div>
+            <div class="pl-timeline-wrapper">
+              <div class="pl-timeline-rail" id="pl-timeline-rail">
+                <div class="pl-timeline-bar" id="pl-timeline-bar"></div>
+              </div>
+            </div>
+            <div class="time time-total" id="time-total">2:19</div>
+          </div>
+          <div class="pl-volume">
+            <i class="btn-icon fa fa-volume-off" id="volume-off"></i>
+            <div class="pl-volume-wrapper">
+              <div class="pl-volume-rail" id="pl-volume-rail">
+                <div class="pl-volume-bar" id="pl-volume-bar"></div>
+              </div>
+            </div>
+             <i class="btn-icon fa fa-volume-up" id="volume-up"></i>
+          </div>
+        </div>
+      </section> <!-- /.player -->
+      <section id="content">
+       <!-- Content will be rendered here -->
+      </section>
+    </section> <!-- /.main-content -->
+  </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/dust-core.min.js"></script>
+  <script src="js/library.js"></script>
+  <script src="js/model.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="views/views.js"></script>
+  <script src="js/ajax.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/socket.js"></script>
+</body>
+</html>
