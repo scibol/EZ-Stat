@@ -1,0 +1,17 @@
+{
+  "name": "wa-exercise-7-2015-2016",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Exercise 7 of Web Atelier@inf.usi.ch. Web Components",
+  "dependencies": {
+    "iron-elements": "PolymerElements/iron-elements#^1.0.0",
+    "neon-elements": "PolymerElements/neon-elements#^1.0.0",
+    "page": "visionmedia/page.js#~1.6.3",
+    "paper-elements": "PolymerElements/paper-elements#^1.0.1",
+    "polymer": "Polymer/polymer#^1.2.0"
+  },
+  "devDependencies": {
+    "test-fixture": "PolymerElements/test-fixture#^1.0.0",
+    "web-component-tester": "*"
+  }
+}

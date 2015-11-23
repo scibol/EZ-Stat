@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0">
+  <title>Signup</title>
+  <link rel="stylesheet" href="css/standardize.css">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body class="body signup">
+  <div class="vertical-align-wrapper">
+    <div class="vertical-align-box">
+      <h1 class="slogan">Now listen.</h1>
+      <div class="form-signup-wrapper">
+        <form action="login.html" method="POST" class="form-signup">
+          <input class="form-control form-stacked" name="firstname" placeholder="Firstname" type="text">
+          <input class="form-control form-stacked" name="lastname" placeholder="Lastname" type="text">
+          <input class="form-control form-stacked" name="username" placeholder="Username" type="text">
+          <input class="form-control form-stacked" name="email" placeholder="email" type="email">
+          <input class="form-control form-stacked" name="password" placeholder="Password" type="password">
+          <input class="form-control form-stacked last" name="repeatPassword" placeholder="Repeat password" type="password">
+          <input class="btn btn-beats btn-block btn-stacked" value="Sign up" type="submit">
+        </form>
+        <p>Already have an account? <a href="login.html" class="beats"><strong>login</strong></a> now!</p>
+      </div> 
+    </div>
+  </div>
+  <h1 class="fat blue-glow bottom-right">Atelier<span class="pulse" style="display:inline-block;">Beats.</span></h1>
+</body>
+</html>
