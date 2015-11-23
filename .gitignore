@@ -1,4 +1,7 @@
 npm-debug.log
 node_modules/*
 .idea/*
+<<<<<<< HEAD
+=======
 app/components/*
+>>>>>>> paolo

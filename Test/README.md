@@ -1,4 +1,4 @@
-## Getting Started
+
 
 ### Anatomy of the skeleton
 
@@ -156,3 +156,4 @@ The `DEBUG` environmental variable is read by the excellent [debug](https://gith
 
 ####Static assets
 The static assets for this exercise are served from within the `app` directory (in the previous exercises the were served from `public`). `GET /` renders `app/index.html`.
+>>>>>>> paolo:README.md
