@@ -16,9 +16,9 @@
 					hit.graphics.beginFill("#000").drawRect(0, 0, field.width,field.height);
 					rect.hitArea = hit;
 
-					rect.on("click", function(){
+					rect.on("click", function(event){
 						console.log("clicked event listener!");
-						alert('clicked');
+						drawCircle(stage, event.stageX, event.stageY, 20);
 					})
 					 // line
 					 
@@ -72,6 +72,14 @@
 
 	    		}
 	    		return field;
+	    	}
+
+	    	function drawCircle(stage, x, y, radius){
+	    		radius = radius || 30;
+	    		var circle = new createjs.Shape();
+	    		circle.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawCircle(x,y,radius);
+	    		stage.addChild(circle);
+	    		stage.update();
 	    	}
 		</script>
 	</head>
