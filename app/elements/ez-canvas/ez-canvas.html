@@ -8,105 +8,79 @@
 <!-- /build -->
 
 <dom-module id="ez-canvas">
-  <template>
+    <template>
 
-  <!-- build:remove -->
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
+        <style>
+            :host {
+                display: block;
+
+            }
+            #myCanvas {
+                width: 60vw;
+            }
 
 
-  <div id="content">
-    <content onload="init();">
-    </content>
-  </div>
+        </style>
+        <canvas id="myCanvas" width="800px" height="430px"></canvas>
 
-  <!-- /build -->
-  </template>
-  
-  <script>
-    (function () {
-      'use strict';
+    </template>
 
-      Polymer({
-        is: 'ez-canvas',
-        //<!-- build:remove -->
-        behaviors: [Polymer.IronMenuBehavior],
-                ready: function() {
-          // window.onload = init;
-          // window.onload = init;
-        },
-        //<!-- /build -->
-      });
-          function init(){
-      console.log("pd")
-        // var canvas = document.getElementById('canvas');
-        var deus = document.getElementById('content')
-        console.log(deus)
-        var canvas = document.createElement('canvas')
-        canvas.setAttribute('style', 'width:100%; height:100%');
-        document.appendChild(canvas)
-        // canvas.style.height = 100%
-        console.log(canvas);
-        var field = measures(canvas.width);
-         var stage = new createjs.Stage("testCanvas");
-         function drawRectangle(){
-         var rect = new createjs.Shape();
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0,0,field.width,field.height);
-         // line
-         rect.graphics.setStrokeStyle(2).mt(field.width/2, 0).lt(field.width/2, field.height);
-         
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width/2, field.height/2, field.radius, 0,Math.PI*2);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-          drawRect(0,field.height/2 - (field.smallAreaHeight/2),field.smallAreaWidth,field.smallAreaHeight);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-          drawRect(field.width - field.smallAreaWidth,field.height/2 - (field.smallAreaHeight/2),field.smallAreaWidth,field.smallAreaHeight);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height/2, field.radius, Math.PI*3/2,Math.PI/2);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height/2, field.radius, -Math.PI*3/2,-Math.PI/2);
+    <script>
+        (function () {
+            'use strict';
 
-         // left side trey
-         rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
-         rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-          arc(field.basketFromBorder, field.height/2, field.treyRadius, Math.PI*3/1.843, Math.PI/2.688);
+            Polymer({
+                is: 'ez-canvas',
 
-         // right side trey
-         rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
-         rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
-         rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-          arc(field.width - field.basketFromBorder, field.height/2, field.treyRadius, Math.PI-Math.PI/2.688 ,Math.PI-Math.PI*3/1.843);
-         // rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").arc(field.width/2, field.height/2, field.radius, Math.PI*3/2,Math.PI/2);
+                attached: function() {
+                    var canvas = this.$.myCanvas;
+                    var field = measures();
+                    var stage = new createjs.Stage(canvas);
+                    var rect = new createjs.Shape();
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
+                    // line
+                    rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
+                    // left side trey
+                    rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
 
-         // rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").drawRect(startX + fieldWidth/2,startY,fieldX,fieldY);
-         // rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").drawRect(startX,startY + fieldY/3,fieldX/2,fieldY/3);
-         // rect.graphics.setStrokeStyle(1).beginStroke("rgba(0,0,0,1)").arc(fieldX,350,100,Math.PI*3/2,Math.PI/2);
-         stage.addChild(rect);
-         }
-         drawRectangle();
-         stage.update();    
-}
-function measures(width) {
-  var ratio = width/94;
-  var field = {
-    width : 94*ratio,
-    height : 50*ratio,
-    radius : 6*ratio,
-    smallAreaWidth : 19*ratio,
-    smallAreaHeight : 16*ratio,
-    treyFromBorder : 3*ratio,
-    treyLength : 14*ratio,
-    treyRadius : 23.9*ratio,
-    basketFromBorder : 4.6*ratio,
+                    // right side trey
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+                    stage.addChild(rect);
+                    stage.update();
+                }
 
-  }
-  return field;
-}
-window.onload= function() {
-  var de = document.getElementById('content')
-}
-    })();
-  </script>
+            });
+        })()
+
+        function measures() {
+            var width = window.innerWidth * 0.6;
+            var ratio = width / 94 * 0.93;
+            var field = {
+                width: 94 * ratio,
+                height: 50 * ratio,
+                radius: 6 * ratio,
+                smallAreaWidth: 19 * ratio,
+                smallAreaHeight: 16 * ratio,
+                treyFromBorder: 3 * ratio,
+                treyLength: 14 * ratio,
+                treyRadius: 23.9 * ratio,
+                basketFromBorder: 4.6 * ratio,
+            }
+            return field;
+        }
+    </script>
 
 </dom-module>
