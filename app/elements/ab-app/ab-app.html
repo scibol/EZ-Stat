@@ -55,6 +55,7 @@
                 --primary-text-color: rgba(255, 255, 255, 0.8);
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
+                background-color: rgba(0,0,0,0.1);
             }
 
             #wrapper, #main-content {
@@ -114,7 +115,8 @@
             }
 
             .header {
-                box-shadow: 0px 0 1px rgba(255, 255, 255, 0.3);
+                /*border-bottom: 1px solid rgba(255, 255, 255, 0.3);*/
+                box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
             }
 
             @media (min-width: 841px) {
@@ -209,34 +211,6 @@
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
 
-        <!--         <div class="horizontal layout flex" id="wrapper">
-              <paper-toolbar>
-        <paper-dropdown-menu label="choose game...">
-          <paper-menu class="dropdown-content">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-            <paper-item><a editable href$="/games/{{playlist._id}}">{{playlist.date}}</a></paper-item>
-            </template>
-
-          </paper-menu>
-            </paper-dropdown-menu>
-                   <paper-button on-click="_onClick">
-                      create game
-                    </paper-button>
-                    <paper-button class="float-right" on-click="">
-                      {{user}}user
-                    </paper-button>
-                    <paper-button class="float-right" on-click="">
-                      signout
-                    </paper-button>
-            </paper-toolbar>
-
-            </div>
-
-            <paper-toast id="toast">
-              <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
-            </paper-toast> -->
-        <!-- /build -->
-
 
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
@@ -276,7 +250,6 @@
                     <ez-canvas>
 
                     </ez-canvas>
-                    </iron-pages>
                 </div>
                 <nav id="main-nav" class="main-nav-float">
 
@@ -294,7 +267,6 @@
         <!-- /build -->
     </template>
 
-    </template>
 
     <script>
         (function () {

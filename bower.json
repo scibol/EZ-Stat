@@ -13,7 +13,8 @@
     "paper-item": "PolymerElements/paper-item#~1.1.1",
     "paper-menu": "PolymerElements/paper-menu#~1.2.0",
     "paper-button": "PolymerElements/paper-button#~1.0.8",
-    "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.1"
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.1",
+    "iron-icon": "PolymerElements/iron-icon#~1.0.7"
   },
   "devDependencies": {
     "test-fixture": "PolymerElements/test-fixture#^1.0.0",
