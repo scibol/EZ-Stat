@@ -22,7 +22,8 @@ var GameSchema = new mongoose.Schema(
 {
 	players: {type: [PlayerSchema], default: []},
 	date: { type: Date, default: Date.now},
-	result : { type: String, required: true}
+	result : { type: Boolean, default : false},
+	state : {type: Number, default: 0},
 }
 
 );
