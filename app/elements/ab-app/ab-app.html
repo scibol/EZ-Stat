@@ -47,6 +47,14 @@
 
       :host {
         @apply(--layout-vertical);
+        --paper-input-container-color: rgba(255,255,255,0.8);
+        --secondary-text-color: rgba(255,255,255,0.8);
+        --default-primary-color: #2A2C2B;
+        --text-primary-color: rgba(255,255,255,0.8);
+        --text-secondary-color: rgba(255,255,255,0.8);
+        --primary-text-color: rgba(255,255,255,0.8);
+        --paper-menu-background-color: rgba(255,255,255,0.95);
+        --primary-background-color: #2A2C2B;
       }
 
       #wrapper, #main-content {
@@ -97,6 +105,10 @@
 
       .nav-menu{
         line-height: 8.4vh;
+      }
+
+      .signout {
+        float: right;
       }
 
       @media(min-width: 841px){
@@ -163,21 +175,7 @@
       }*/
 
     </style>
-        <div class="horizontal layout flex" id="wrapper">
-      <paper-toolbar>
-<paper-dropdown-menu label="choose game...">
-  <paper-menu class="dropdown-content">
-    <template is="dom-repeat" items="{{playlists}}" as="playlist">
-    <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
-    </template>
-
-  </paper-menu>
-    </paper-dropdown-menu>
-           <paper-button on-click="_onClick">
-              create game
-            </paper-button>
-    </paper-toolbar>
-            <iron-ajax
+                <iron-ajax
             auto
             url="http://localhost:3000/games"
             handle-as="json"
@@ -190,183 +188,38 @@
               handle-as="json"
               content-type="application/json"
               method="POST"
-              on-response="hresponse"
               debounce-duration="3000">
             </iron-ajax>
 
-<!--     <div class="horizontal layout flex" id="wrapper">
-      <paper-toolbar>
-<paper-dropdown-menu label="choose game...">
-  <paper-menu class="dropdown-content">
-    <template is="dom-repeat" items="{{playlists}}" as="playlist">
-    <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
-    </template>
-
-  </paper-menu>
-</paper-dropdown-menu>
-         <paper-button on-click="_onClick">
-          create game
-          </paper-button>
-</paper-toolbar> -->
-
-<!-- <paper-dropdown-menu label="choose game...">
-  <paper-menu class="dropdown-content">
-    <template is="dom-repeat" items="{{playlists}}" as="playlist"> -->
-      <!-- <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item> -->
-<!--     <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
-    </template>
-
-  </paper-menu>
-</paper-dropdown-menu> -->
-<!--     <a href="#" class="create-playlist" id="create-pl-btn" on-click="_onClick">
-         <iron-icon icon="av:playlist-add"></iron-icon> new game</a> -->
-<!--          <paper-button on-click="_onClick">
-          create game
-          </paper-button> -->
-<!--       <nav>
-                 <a href="#" class="create-playlist" id="create-pl-btn" on-click="_onClick">
-         <iron-icon icon="av:playlist-add"></iron-icon> new game</a>
-         <ab-menu class="nav-menu" id="playlists">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item>
-            </template>
-          </ab-menu>
-      </div>
-      </nav> -->
-<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
-        <input type="checkbox" id="main-menu-toggle">
-        <h2 class="fat logo">AtelierBeats.</h2> -->
-        <!-- <div class="main-nav-content"> -->
-
-<!--           <paper-input id="mainSearch" label="Search" no-label-float>
-            <iron-icon icon="search" prefix></iron-icon>
-            <paper-icon-button suffix onclick="clearInput()"
-                icon="clear" alt="clear" title="clear" tabindex="0">
-            </paper-icon-button>
-          </paper-input> -->
-        <iron-ajax
+                    <iron-ajax
             auto
             url="http://localhost:3000/players"
             handle-as="json"
             last-response="{{players}}"
             debounce-duration="300"></iron-ajax>
 
-          <!-- <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" players="{{}}"> -->
-<!--                     <ab-tracklist data-route="library" players="{{players}}">
-          </ab-tracklist> -->
-<!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
-          <!-- </ab-menu> -->
+        <div class="horizontal layout flex" id="wrapper">
+      <paper-toolbar>
+<paper-dropdown-menu label="choose game...">
+  <paper-menu class="dropdown-content">
+    <template is="dom-repeat" items="{{playlists}}" as="playlist">
+    <paper-item><a editable href$="/games/{{playlist._id}}">{{playlist.date}}</a></paper-item>
+    </template>
 
-         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
-         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
-<!--          <ab-menu class="nav-menu" id="playlists">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
-            </template>
-          </ab-menu> -->
-      <!-- </div> -->
-      <!-- </nav> -->
-      
-    
-    
-      <!-- Main Content -->
-      <!-- <ez-canvas></ez-canvas> -->
-      <!-- <div class="content flex" id="main-content"> -->
-              <!-- <ez-canvas></ez-canvas> -->
+  </paper-menu>
+    </paper-dropdown-menu>
+           <paper-button on-click="_onClick">
+              create game
+            </paper-button>
+            <paper-button class="float-right" on-click="">
+              {{user}}user
+            </paper-button>
+            <paper-button class="float-right" on-click="">
+              signout
+            </paper-button>
+    </paper-toolbar>
 
-
-
-<!--         <iron-ajax
-            auto
-            url="http://localhost:3000/tracks"
-            handle-as="json"
-            last-response="{{tracks}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            auto
-            url="http://localhost:3000/artists"
-            handle-as="json"
-            last-response="{{artists}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            auto
-            url="http://localhost:3000/albums"
-            handle-as="json"
-            last-response="{{albums}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            id="playlistAjax"
-            auto
-            url="http://localhost:3000/users/{{userid}}/playlists"
-            handle-as="json"
-            on-response="_onPlaylistAjax"
-            last-response="{{playlists}}"
-            debounce-duration="300"></iron-ajax>
-
-        
-        <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
-          <ab-tracklist data-route="library" tracks="{{players}}">
-          </ab-tracklist>
-
-          <ab-thumblist data-route="artists" data="{{artists}}"></ab-thumblist>
-
-          <ab-thumblist data-route="albums" data="{{albums}}"></ab-thumblist>
-
-          <section data-route="playlists" >
-            <ab-playlist-header playlist="{{selectedPlaylist}}"></ab-playlist-header>
-            <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
-          </section>
- -->
-<!--         </iron-pages>
-      </div>
-      <nav id="main-nav" class="main-nav-float"> -->
-
-<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
-        <input type="checkbox" id="main-menu-toggle">
-        <h2 class="fat logo">AtelierBeats.</h2> -->
-        <!-- <div class="main-nav-content"> -->
-
-<!--           <paper-input id="mainSearch" label="Search" no-label-float>
-            <iron-icon icon="search" prefix></iron-icon>
-            <paper-icon-button suffix onclick="clearInput()"
-                icon="clear" alt="clear" title="clear" tabindex="0">
-            </paper-icon-button>
-          </paper-input> -->
-<!--           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
-            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
-
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-          </ab-menu> -->
-<!--           <ab-tracklist data-route="library" players="{{players}}">
-          </ab-tracklist> -->
-
-         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
-         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
-<!--          <ab-menu class="nav-menu" id="playlists">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
-            </template>
-          </ab-menu> -->
-      <!-- </div> -->
-      <!-- </nav> -->
     </div>
-
-    <!-- <ab-player track="{{tracks.0}}"></ab-player> -->
 
     <paper-toast id="toast">
       <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
