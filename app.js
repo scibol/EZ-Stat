@@ -24,6 +24,7 @@ var routers = require('./routes/routers');
 app.use('/', routers.root);
 app.use('/albums', routers.albums);
 app.use('/players', routers.players);
+app.use('/games', routers.games);
 app.use('/artists', routers.artists);
 app.use('/tracks', routers.tracks);
 app.use('/users', routers.users);

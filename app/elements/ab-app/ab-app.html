@@ -36,7 +36,8 @@
 
     <!-- build:remove -->
 
-    <style>
+        <style include="shared-styles">
+
       :host {
         @apply(--layout-vertical);
       }
@@ -156,10 +157,37 @@
       }*/
 
     </style>
-    
+            <iron-ajax
+            auto
+            url="http://localhost:3000/games"
+            handle-as="json"
+            last-response="{{playlists}}"
+            debounce-duration="300"></iron-ajax>
+
+            <iron-ajax
+              id="newGame"
+              url="http://localhost:3000/games"
+              handle-as="json"
+              content-type="application/json"
+              method="POST"
+              on-response="hresponse"
+              debounce-duration="3000">
+            </iron-ajax>
+
     <div class="horizontal layout flex" id="wrapper">
 
+
+
       <nav id="main-nav" class="main-nav-float">
+                 <a href="#" class="create-playlist" id="create-pl-btn" on-click="_onClick">
+         <iron-icon icon="av:playlist-add"></iron-icon> new game</a>
+         <ab-menu class="nav-menu" id="playlists">
+            <template is="dom-repeat" items="{{playlists}}" as="playlist">
+              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item>
+            </template>
+          </ab-menu>
+      </div>
+      </nav>
 <!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
         <input type="checkbox" id="main-menu-toggle">
         <h2 class="fat logo">AtelierBeats.</h2> -->
@@ -179,8 +207,8 @@
             debounce-duration="300"></iron-ajax>
 
           <!-- <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" players="{{}}"> -->
-                    <ab-tracklist data-route="library" players="{{players}}">
-          </ab-tracklist>
+<!--                     <ab-tracklist data-route="library" players="{{players}}">
+          </ab-tracklist> -->
 <!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
           <!-- </ab-menu> -->
 
@@ -197,8 +225,8 @@
     
     
       <!-- Main Content -->
-      <ez-canvas></ez-canvas>
-      <div class="content flex" id="main-content">
+      <!-- <ez-canvas></ez-canvas> -->
+      <!-- <div class="content flex" id="main-content"> -->
               <!-- <ez-canvas></ez-canvas> -->
 
 
@@ -248,9 +276,10 @@
             <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
           </section>
  -->
-        </iron-pages>
+<!--         </iron-pages>
       </div>
-      <nav id="main-nav" class="main-nav-float">
+      <nav id="main-nav" class="main-nav-float"> -->
+
 <!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
         <input type="checkbox" id="main-menu-toggle">
         <h2 class="fat logo">AtelierBeats.</h2> -->
@@ -278,8 +307,8 @@
 
             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
           </ab-menu> -->
-          <ab-tracklist data-route="library" players="{{players}}">
-          </ab-tracklist>
+<!--           <ab-tracklist data-route="library" players="{{players}}">
+          </ab-tracklist> -->
 
          <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
          <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
@@ -289,7 +318,7 @@
             </template>
           </ab-menu> -->
       <!-- </div> -->
-      </nav>
+      <!-- </nav> -->
     </div>
 
     <!-- <ab-player track="{{tracks.0}}"></ab-player> -->
@@ -336,6 +365,17 @@
           selectedPlaylist:{
             type:Object
           }
+        },
+        _onClick: function(event, detail){
+          console.log("asdasd")
+          this.$.newGame.body = JSON.stringify({
+              "date" : Date.now(),
+              "result": "tr",
+              });
+          event.preventDefault()
+          // this.$.ajax.url="http://127.0.0.1:8000/users/";
+          this.$.newGame.generateRequest();
+          // page.show(resource)
         },
 
         created: function(){
