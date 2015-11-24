@@ -37,6 +37,17 @@
                     var field = measures();
                     var stage = new createjs.Stage(canvas);
                     var rect = new createjs.Shape();
+                    var circle = new createjs.Shape();
+                    circle.graphics.beginFill("#ff0000").drawCircle(100,100,10)
+
+                    // hit event
+//                    var g1 = new createjs.Graphics()
+//                    g1.setStrokeStyle(2).beginFill('#ff0000').beginStroke("rgba(0,0,0,1)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
+//                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
+//                    lt(0, field.height - field.treyFromBorder)
+//                    var f1 = new createjs.Shape(g1);
+
+
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
                     // line
                     rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
@@ -58,8 +69,22 @@
                     rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
                     arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+
+
+
+
                     stage.addChild(rect);
+                    stage.addChild(circle)
+                    stage.addChild(f1)
                     stage.update();
+
+                    stage.addEventListener('click', function(event){
+                        if(f1.hitTest(event.stageX, event.stageY)) {
+                            console.log('2 points')
+                        } else {
+                            console.log('3 points')
+                        }
+                    })
                 }
 
             });
