@@ -10,6 +10,13 @@
 <link rel="import" href="../../components/iron-pages/iron-pages.html">
 <link rel="import" href="../../components/paper-toast/paper-toast.html">
 
+<link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../components/paper-item/paper-item.html">
+<link rel="import" href="../../components/paper-menu/paper-menu.html">
+<link rel="import" href="../../components/paper-button/paper-button.html">
+<link rel="import" href="../../components/paper-icon/paper-icon.html">
+<link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
+
 
 <link rel="import" href="../routing.html">
 
@@ -55,7 +62,6 @@
         overflow-y: auto;
         color: #f7f7f7;
         box-shadow: 0px 0 30px rgba(0,0,0,0.2);
-
       }
 
 
@@ -157,6 +163,20 @@
       }*/
 
     </style>
+        <div class="horizontal layout flex" id="wrapper">
+      <paper-toolbar>
+<paper-dropdown-menu label="choose game...">
+  <paper-menu class="dropdown-content">
+    <template is="dom-repeat" items="{{playlists}}" as="playlist">
+    <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
+    </template>
+
+  </paper-menu>
+    </paper-dropdown-menu>
+           <paper-button on-click="_onClick">
+              create game
+            </paper-button>
+    </paper-toolbar>
             <iron-ajax
             auto
             url="http://localhost:3000/games"
@@ -174,20 +194,45 @@
               debounce-duration="3000">
             </iron-ajax>
 
-    <div class="horizontal layout flex" id="wrapper">
+<!--     <div class="horizontal layout flex" id="wrapper">
+      <paper-toolbar>
+<paper-dropdown-menu label="choose game...">
+  <paper-menu class="dropdown-content">
+    <template is="dom-repeat" items="{{playlists}}" as="playlist">
+    <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
+    </template>
 
+  </paper-menu>
+</paper-dropdown-menu>
+         <paper-button on-click="_onClick">
+          create game
+          </paper-button>
+</paper-toolbar> -->
 
+<!-- <paper-dropdown-menu label="choose game...">
+  <paper-menu class="dropdown-content">
+    <template is="dom-repeat" items="{{playlists}}" as="playlist"> -->
+      <!-- <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item> -->
+<!--     <paper-item editable href$="/games/{{playlist._id}}" icon="image:music-note">{{playlist.date}}</paper-item>
+    </template>
 
-      <nav id="main-nav" class="main-nav-float">
+  </paper-menu>
+</paper-dropdown-menu> -->
+<!--     <a href="#" class="create-playlist" id="create-pl-btn" on-click="_onClick">
+         <iron-icon icon="av:playlist-add"></iron-icon> new game</a> -->
+<!--          <paper-button on-click="_onClick">
+          create game
+          </paper-button> -->
+<!--       <nav>
                  <a href="#" class="create-playlist" id="create-pl-btn" on-click="_onClick">
          <iron-icon icon="av:playlist-add"></iron-icon> new game</a>
          <ab-menu class="nav-menu" id="playlists">
             <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item>
+              <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist.date}}" icon="image:music-note"></ab-menu-item>
             </template>
           </ab-menu>
       </div>
-      </nav>
+      </nav> -->
 <!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
         <input type="checkbox" id="main-menu-toggle">
         <h2 class="fat logo">AtelierBeats.</h2> -->
@@ -220,7 +265,7 @@
             </template>
           </ab-menu> -->
       <!-- </div> -->
-      </nav>
+      <!-- </nav> -->
       
     
     
