@@ -114,6 +114,10 @@
                 right: 1em;
             }
 
+            .auto-align {
+                margin: auto;
+            }
+
             .header {
                 /*border-bottom: 1px solid rgba(255, 255, 255, 0.3);*/
                 box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
@@ -217,12 +221,12 @@
                 <paper-dropdown-menu label="choose game...">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{playlists}}" as="playlist">
-                            <paper-item><a editable href$="/games/{{playlist._id}}">{{playlist.date}}</a></paper-item>
+                            <paper-item><a href$="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a></paper-item>
                         </template>
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <paper-button on-click="_onClick">
+                <paper-button on-click="_newGame">
                     create game
                 </paper-button>
                 <div class="float-right">
@@ -247,8 +251,11 @@
 
 
                 <div class="content flex" id="main-content">
+                    <div class="auto-align">
+                    <paper-button on-click="">scored</paper-button>
+                    <paper-button on-click="">missed</paper-button>
+                    </div>
                     <ez-canvas>
-
                     </ez-canvas>
                 </div>
                 <nav id="main-nav" class="main-nav-float">
@@ -306,16 +313,19 @@
                         type: Object
                     }
                 },
-                _onClick: function (event, detail) {
-                    console.log("asdasd")
+                _newGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
                         "date": Date.now(),
-                        "result": "tr",
+                        "result": "true",
                     });
                     event.preventDefault()
-                    // this.$.ajax.url="http://127.0.0.1:8000/users/";
                     this.$.newGame.generateRequest();
-                    // page.show(resource)
+//                     page.show(resource)
+                },
+
+                _gameItem: function (event, detail) {
+                    event.preventDefault();
+                    console.log("test")
                 },
 
                 created: function () {
