@@ -55,11 +55,28 @@
                 --primary-text-color: rgba(255, 255, 255, 0.8);
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
-                background-color: rgba(0,0,0,0.1);
+                background-color: rgba(0, 0, 0, 0.1);
             }
 
             #wrapper, #main-content {
                 overflow-y: auto;
+            }
+
+            #upperBar {
+                width: 100%;
+                height: 10em;
+
+            }
+
+            #btnMiss {
+                float: right;
+                width: 10em;
+                background-color: rgba(0,0,0,0.3);
+            }
+
+            #btnHit {
+                width: 10em;
+                background-color: rgba(0,0,0,0.3);
             }
 
             #main-nav {
@@ -221,7 +238,8 @@
                 <paper-dropdown-menu label="choose game...">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{playlists}}" as="playlist">
-                            <paper-item><a href$="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a></paper-item>
+                            <paper-item><a href$="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>
+                            </paper-item>
                         </template>
 
                     </paper-menu>
@@ -251,10 +269,12 @@
 
 
                 <div class="content flex" id="main-content">
-                    <div class="auto-align">
-                    <paper-button on-click="">scored</paper-button>
-                    <paper-button on-click="">missed</paper-button>
+                    <div id="upperBar"> 
+                        <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
+                        <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
+                         
                     </div>
+                     
                     <ez-canvas>
                     </ez-canvas>
                 </div>
@@ -326,6 +346,14 @@
                 _gameItem: function (event, detail) {
                     event.preventDefault();
                     console.log("test")
+                },
+
+                _setSuccess: function (event, detail) {
+                    console.log("success")
+                },
+
+                _setFail: function (event, detail) {
+                    console.log("fail")
                 },
 
                 created: function () {
