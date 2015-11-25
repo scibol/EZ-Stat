@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'app')));
 var routers = require('./routes/routers');
 app.use('/', routers.root);
 app.use('/players', routers.players);
+app.use('/games', routers.games);
 app.use('/users', routers.users);
 
 module.exports = app;

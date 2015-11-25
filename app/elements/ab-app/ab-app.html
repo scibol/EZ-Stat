@@ -16,6 +16,13 @@
 <link rel="import" href="../../components/paper-menu/paper-menu.html">
 
 
+<link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../components/paper-item/paper-item.html">
+<link rel="import" href="../../components/paper-menu/paper-menu.html">
+<link rel="import" href="../../components/paper-button/paper-button.html">
+<link rel="import" href="../../components/paper-icon/paper-icon.html">
+<link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
+
 
 <link rel="import" href="../routing.html">
 
@@ -44,11 +51,38 @@
 
         <style>
             :host {
-                @apply(--layout-vertical);
+            @apply(- -layout-vertical);
+                --paper-input-container-color: rgba(255, 255, 255, 0.8);
+                --secondary-text-color: rgba(255, 255, 255, 0.8);
+                --default-primary-color: #2A2C2B;
+                --text-primary-color: rgba(255, 255, 255, 0.8);
+                --text-secondary-color: rgba(255, 255, 255, 0.8);
+                --primary-text-color: rgba(255, 255, 255, 0.8);
+                --paper-menu-background-color: rgba(255, 255, 255, 0.95);
+                --primary-background-color: #2A2C2B;
+                background-color: rgba(0, 0, 0, 0.1);
             }
 
             #wrapper, #main-content {
                 overflow-y: auto;
+            }
+
+            #upperBar {
+                width: 100%;
+                height: 5em;
+                margin-top:3em;
+
+            }
+
+            #btnMiss {
+                float: right;
+                width: 10em;
+                background-color: rgba(0,0,0,0.3);
+            }
+
+            #btnHit {
+                width: 10em;
+                background-color: rgba(0,0,0,0.3);
             }
 
             #main-nav {
@@ -305,9 +339,298 @@
             //
             <!-- /build -->
         })
-            ;
+
 
         })();
+
+            .float-right {
+                float: right;
+                position: absolute;
+                margin-top: 1em;
+                right: 1em;
+            }
+
+            .auto-align {
+                margin: auto;
+            }
+
+            .header {
+                /*border-bottom: 1px solid rgba(255, 255, 255, 0.3);*/
+                box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+            }
+
+            @media (min-width: 841px) {
+                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item .nav-menu {
+                    display: none;
+                }
+
+                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
+                    display: none;
+                }
+            }
+
+            /*
+                  #create-pl-btn {
+                    color: rgba(0,0,0,0.4);
+                    background: rgba(0,0,0,0.1);
+                    display: inline-block;
+                    width: auto;
+                    padding: 2px 5px 4px;
+                    margin: 0 0 20px 10px;
+                    font-size: 1.2em;
+                    line-height: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  }*/
+
+            /*      #create-pl-btn:hover, #create-pl-btn:active {
+                    background: rgba(0,0,0,0.2);
+                    color: #f7f7f7;
+                    text-decoration: none;
+                  }*/
+
+            /*      ab-menu-item{
+                    outline: none;
+                  }*/
+
+            /*      ab-tracklist{
+                    font-weight: 500;
+                  }*/
+
+            /*      #mainSearch{
+                    box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
+                    --paper-input-container-label:{
+                      color:darkgrey;
+                      font-size: 1.4em;
+                      font-weight: inherit;
+                    };
+                    --paper-input-container-underline:{
+                      display:none;
+                    };
+                    --paper-input-container-underline-focus:{
+                      display:none;
+                    };
+                    --paper-input-container-input:{
+                      padding: 0 0 5px 0;
+                      font-size: 1.4em;
+                      color: inherit;
+                    };
+                  }*/
+
+            /*      #mainSearch iron-icon{
+                    padding: 0 20px 5px;
+                  }*/
+
+        </style>
+        <iron-ajax
+                auto
+                url="http://localhost:3000/players"
+                handle-as="json"
+                last-response="{{players}}"
+                debounce-duration="300"></iron-ajax>
+        <iron-ajax
+                auto
+                url="http://localhost:3000/games"
+                handle-as="json"
+                last-response="{{playlists}}"
+                debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+                id="newGame"
+                url="http://localhost:3000/games"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                auto
+                url="http://localhost:3000/players"
+                handle-as="json"
+                last-response="{{players}}"
+                debounce-duration="300"></iron-ajax>
+
+
+        <paper-header-panel class="flex">
+            <paper-toolbar class="header">
+                <paper-dropdown-menu label="choose game...">
+                    <paper-menu class="dropdown-content">
+                        <template is="dom-repeat" items="{{playlists}}" as="playlist">
+                            <paper-item><a href$="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>
+                            </paper-item>
+                        </template>
+
+                    </paper-menu>
+                </paper-dropdown-menu>
+                <paper-button on-click="_newGame">
+                    create game
+                </paper-button>
+                <div class="float-right">
+                    <paper-button on-click="">
+                        {{user}}user
+                    </paper-button>
+                    <paper-button on-click="">
+                        signout
+                    </paper-button>
+                </div>
+            </paper-toolbar>
+
+            <div class="horizontal layout flex" id="wrapper">
+
+                <nav id="main-nav" class="main-nav-float">
+                    <ab-tracklist data-route="library" players="{{players}}">
+                    </ab-tracklist>
+                </nav>
+
+
+                <!-- Main Content -->
+
+
+                <div class="content flex" id="main-content">
+                    <div id="upperBar"> 
+                        <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
+                        <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
+                         
+                    </div>
+                     
+                    <ez-canvas>
+                    </ez-canvas>
+                </div>
+                <nav id="main-nav" class="main-nav-float">
+
+                    <ab-tracklist data-route="library" players="{{players}}">
+                    </ab-tracklist>
+
+                </nav>
+            </div>
+
+        </paper-header-panel>
+
+        <paper-toast id="toast">
+            <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
+        </paper-toast>
+        <!-- /build -->
+    </template>
+
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ab-app',
+
+                //
+                <!-- build:remove -->
+                properties: {
+                    route: {
+                        type: String,
+                        notify: true,
+                    },
+                    params: {
+                        type: Object,
+                        notify: true
+                    },
+                    userid: {
+                        type: String,
+                        value: '563fd9661d1e084ac3e1b6b2'
+                    },
+                    tracks: {
+                        type: Array
+                    },
+                    albums: {
+                        type: Array
+                    },
+                    artists: {
+                        type: Array
+                    },
+                    playlists: {
+                        type: Array
+                    },
+                    selectedPlaylist: {
+                        type: Object
+                    }
+                },
+                _newGame: function (event, detail) {
+                    this.$.newGame.body = JSON.stringify({
+                        "date": Date.now(),
+                        "result": "true",
+                    });
+                    event.preventDefault()
+                    this.$.newGame.generateRequest();
+//                     page.show(resource)
+                },
+
+                _gameItem: function (event, detail) {
+                    event.preventDefault();
+                    console.log("test")
+                },
+
+                _setSuccess: function (event, detail) {
+                    console.log("success")
+                },
+
+                _setFail: function (event, detail) {
+                    console.log("fail")
+                },
+
+                created: function () {
+                    this._hasReceivedAJAXPlaylistsResponse = false;
+                },
+
+                ready: function () {
+                    window.abApp = this;
+                    // window.onload = init;
+                },
+
+                // Scroll page to top
+                scrollPageToTop: function () {
+
+                },
+
+                _onPlaylistAjax: function (event) {
+                    this._hasReceivedAJAXPlaylistsResponse = true;
+                },
+
+                // page middleware for playlit
+                validatePlaylistId: function (ctx, next, timesTried) {
+                    timesTried = timesTried || 0;
+
+                    // try 10 times and then surrender
+                    if (timesTried > 9) {
+                        return next();
+                    }
+
+                    // make sure we have playlists
+                    if (!this._hasReceivedAJAXPlaylistsResponse) {
+                        return this.async(function () {
+                            this.validatePlaylistId(ctx, next, ++timesTried)
+                        }, 500)
+                    }
+
+                    ctx.playlistExists = false;
+                    for (var i = 0, l = this.playlists.length; i < l; i++) {
+                        if (this.playlists[i]._id == ctx.params.playlistid) {
+                            ctx.playlistExists = true;
+                            this.selectedPlaylist = this.playlists[i];
+                            break;
+                        }
+                    }
+                    next();
+                },
+
+                _calcPlaylistHref(pid)
+            {
+                return "/playlists/" + pid;
+            }
+            //
+            <!-- /build -->
+        });
+
+        })
+        ();
+>>>>>>> paolo
 
     </script>
 

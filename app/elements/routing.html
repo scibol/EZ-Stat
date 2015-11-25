@@ -46,6 +46,11 @@
       abApp.$.toast.show();
       page.redirect('/');
     });
+
+    page('/games/:gameid', scrollToTop, function(data) {
+      abApp.route = 'games';
+      abApp.params = data.params;
+    });
     //<!-- /build -->
 
 

@@ -10,7 +10,12 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "polymer": "Polymer/polymer#^1.2.0",
     "paper-header-panel": "PolymerElements/paper-header-panel#~1.0.5",
-    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.1.0"
+    "paper-dropdown-menu": "PolymerElements/paper-dropdown-menu#~1.1.0",
+    "paper-item": "PolymerElements/paper-item#~1.1.1",
+    "paper-menu": "PolymerElements/paper-menu#~1.2.0",
+    "paper-button": "PolymerElements/paper-button#~1.0.8",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.1",
+    "iron-icon": "PolymerElements/iron-icon#~1.0.7"
   },
   "devDependencies": {
     "test-fixture": "PolymerElements/test-fixture#^1.0.0",
