@@ -40,12 +40,22 @@
                     var circle = new createjs.Shape();
                     circle.graphics.beginFill("#ff0000").drawCircle(100,100,10)
 
-                    // hit event
-//                    var g1 = new createjs.Graphics()
-//                    g1.setStrokeStyle(2).beginFill('#ff0000').beginStroke("rgba(0,0,0,1)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
-//                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-//                    lt(0, field.height - field.treyFromBorder)
-//                    var f1 = new createjs.Shape(g1);
+                    var rectangleGraphics = new createjs.Graphics()
+                    rectangleGraphics.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.width)
+                    var rectangleShape = new createjs.Shape(rectangleGraphics)
+
+                    var twoPointsLeft = new createjs.Graphics()
+                    twoPointsLeft.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
+                    lt(0, field.height - field.treyFromBorder)
+                    var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
+
+                    var twoPointsRight = new createjs.Graphics()
+                    twoPointsRight.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
+                    lt(field.width, field.height - field.treyFromBorder).
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843)
+                    var twoPointsRightShape = new createjs.Shape(twoPointsRight);
+
 
 
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
@@ -72,21 +82,23 @@
 
 
 
-
+                    stage.addChild(rectangleShape)
+                    stage.addChild(twoPointsLeftShape)
+                    stage.addChild(twoPointsRightShape)
                     stage.addChild(rect);
-                    stage.addChild(circle)
-                    stage.addChild(f1)
                     stage.update();
 
-                    stage.addEventListener('click', function(event){
-                        if(f1.hitTest(event.stageX, event.stageY)) {
-                            console.log('2 points')
-                        } else {
-                            console.log('3 points')
-                        }
-                    })
-                }
+                    rectangleShape.on("click", function(e) {
+                        console.log("3 points")
+                    });
 
+                    twoPointsLeftShape.on("click", function(e) {
+                        console.log("2 points")
+                    });
+                    twoPointsRightShape.on("click", function(e) {
+                        console.log("2 points")
+                    });
+                }
             });
         })()
 
