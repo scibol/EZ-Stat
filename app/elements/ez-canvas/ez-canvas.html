@@ -89,13 +89,16 @@
                     stage.update();
 
                     rectangleShape.on("click", function(e) {
+                        console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("3 points")
                     });
 
                     twoPointsLeftShape.on("click", function(e) {
+                        console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
                     twoPointsRightShape.on("click", function(e) {
+                        console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
                 }

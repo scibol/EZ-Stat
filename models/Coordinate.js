@@ -16,7 +16,8 @@ var CoordinateSchema = new mongoose.Schema(
 {
   pos_x: {type: String, required: true},
   pos_y: { type: String, required: true},
-  success : { type: String, required: true}
+  success : { type: String, required: true},
+  two_points: { type: Boolean, default: false}
 }
 
 );
