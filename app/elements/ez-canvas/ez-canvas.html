@@ -37,12 +37,11 @@
                     var field = measures();
                     var stage = new createjs.Stage(canvas);
                     var rect = new createjs.Shape();
-                    var circle = new createjs.Shape();
-                    circle.graphics.beginFill("#ff0000").drawCircle(100,100,10)
 
                     var rectangleGraphics = new createjs.Graphics()
-                    rectangleGraphics.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.width)
+                    rectangleGraphics.setStrokeStyle(2).beginFill("#ffffff").beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height)
                     var rectangleShape = new createjs.Shape(rectangleGraphics)
+
 
                     var twoPointsLeft = new createjs.Graphics()
                     twoPointsLeft.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
@@ -98,7 +97,7 @@
                         console.log("2 points")
                     });
                     twoPointsRightShape.on("click", function(e) {
-                        console.log(e.stageX / field.width, e.stageY / field.height);
+                        console.log(e.stageX / field.width, e.stageY / field.height)
                         console.log("2 points")
                     });
                 }
@@ -107,6 +106,7 @@
 
         function measures() {
             var width = window.innerWidth * 0.6;
+
             var ratio = width / 94 * 0.93;
             var field = {
                 width: 94 * ratio,
@@ -121,6 +121,7 @@
             }
             return field;
         }
+
     </script>
 
 </dom-module>
