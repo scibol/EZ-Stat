@@ -9,6 +9,7 @@
 <link rel="import" href="../../components/iron-icons/iron-icons.html">
 <link rel="import" href="../../components/iron-pages/iron-pages.html">
 <link rel="import" href="../../components/paper-toast/paper-toast.html">
+<link rel="import" href="../../components/paper-button/paper-button.html">
 
 
 <link rel="import" href="../routing.html">
@@ -41,6 +42,25 @@
         @apply(--layout-vertical);
       }
 
+      #title{
+        font-size: 20px;
+      }
+
+      #upperBar{
+        width: 100%;
+        height: 70px;
+      }
+
+      #btnMiss {
+        float: right;
+      }
+
+      paper-button {
+        width: 150px;
+        height: 70px;
+        background: lightgrey;
+      }
+
       #wrapper, #main-content {
         overflow-y: auto;
       }
@@ -57,37 +77,6 @@
 
       }
 
-
-/*      #main-menu-toggle-label {
-        cursor: pointer;
-        color: rgba(0,0,0,0.4);
-        font-size: 32px;
-        display: inline-block;
-        border: 1px solid rgba(0,0,0,0.4);
-        line-height: 0;
-        text-align: center;
-        border-radius: 4px;
-        margin: 0;
-        padding: 2px 7px 1px;
-      }*/
-     
-/*      #main-menu-toggle {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }*/
-
-/*      #main-nav h2 {
-        margin: 0;
-        padding: 1em;
-        color: rgba(0,0,0,0.4);
-        font-size: 2em;
-      }*/
-
-/*      #main-menu{
-        margin-bottom: 60px;
-      }*/
-
       .nav-menu{
         line-height: 8.4vh;
       }
@@ -102,199 +91,36 @@
         }
       }
 
-
-/*
-      #create-pl-btn {
-        color: rgba(0,0,0,0.4);
-        background: rgba(0,0,0,0.1);
-        display: inline-block;
-        width: auto;
-        padding: 2px 5px 4px;
-        margin: 0 0 20px 10px;
-        font-size: 1.2em;
-        line-height: 1;
-        white-space: nowrap;
-        overflow: hidden;
-      }*/
-
-/*      #create-pl-btn:hover, #create-pl-btn:active {
-        background: rgba(0,0,0,0.2);
-        color: #f7f7f7;
-        text-decoration: none;
-      }*/
-
-/*      ab-menu-item{
-        outline: none;
-      }*/
-
-/*      ab-tracklist{
-        font-weight: 500;
-      }*/
-
-/*      #mainSearch{
-        box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
-        --paper-input-container-label:{
-          color:darkgrey;
-          font-size: 1.4em;
-          font-weight: inherit;
-        };
-        --paper-input-container-underline:{
-          display:none;
-        };
-        --paper-input-container-underline-focus:{
-          display:none;
-        };
-        --paper-input-container-input:{
-          padding: 0 0 5px 0;
-          font-size: 1.4em;
-          color: inherit;
-        };
-      }*/
-
-/*      #mainSearch iron-icon{
-        padding: 0 20px 5px;
-      }*/
-
     </style>
     
     <div class="horizontal layout flex" id="wrapper">
 
       <nav id="main-nav" class="main-nav-float">
-<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
-        <input type="checkbox" id="main-menu-toggle">
-        <h2 class="fat logo">AtelierBeats.</h2> -->
-        <!-- <div class="main-nav-content"> -->
-
-<!--           <paper-input id="mainSearch" label="Search" no-label-float>
-            <iron-icon icon="search" prefix></iron-icon>
-            <paper-icon-button suffix onclick="clearInput()"
-                icon="clear" alt="clear" title="clear" tabindex="0">
-            </paper-icon-button>
-          </paper-input> -->
         <iron-ajax
             auto
             url="http://localhost:3000/players"
             handle-as="json"
             last-response="{{players}}"
-            debounce-duration="300"></iron-ajax>
-
-          <!-- <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" players="{{}}"> -->
-                    <ab-tracklist data-route="library" players="{{players}}">
+            debounce-duration="300">
+          </iron-ajax>
+          <ab-tracklist data-route="library" players="{{players}}">
           </ab-tracklist>
-<!--             <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item> -->
-          <!-- </ab-menu> -->
-
-         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
-         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
-<!--          <ab-menu class="nav-menu" id="playlists">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
-            </template>
-          </ab-menu> -->
-      <!-- </div> -->
       </nav>
       
     
     
       <!-- Main Content -->
       <ez-canvas></ez-canvas>
-      <div class="content flex" id="main-content">
-              <!-- <ez-canvas></ez-canvas> -->
-
-
-
-<!--         <iron-ajax
-            auto
-            url="http://localhost:3000/tracks"
-            handle-as="json"
-            last-response="{{tracks}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            auto
-            url="http://localhost:3000/artists"
-            handle-as="json"
-            last-response="{{artists}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            auto
-            url="http://localhost:3000/albums"
-            handle-as="json"
-            last-response="{{albums}}"
-            debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
-            id="playlistAjax"
-            auto
-            url="http://localhost:3000/users/{{userid}}/playlists"
-            handle-as="json"
-            on-response="_onPlaylistAjax"
-            last-response="{{playlists}}"
-            debounce-duration="300"></iron-ajax>
-
-        
-        <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
-          <ab-tracklist data-route="library" tracks="{{players}}">
-          </ab-tracklist>
-
-          <ab-thumblist data-route="artists" data="{{artists}}"></ab-thumblist>
-
-          <ab-thumblist data-route="albums" data="{{albums}}"></ab-thumblist>
-
-          <section data-route="playlists" >
-            <ab-playlist-header playlist="{{selectedPlaylist}}"></ab-playlist-header>
-            <ab-tracklist tracks="{{selectedPlaylist.tracks}}"></ab-tracklist>
-          </section>
- -->
-        </iron-pages>
+      <div id="upperBar">
+        <paper-button id="btnHit">Hit</paper-button>
+        <span id="title">Choose what the fuck you want!</span>
+        <paper-button id="btnMiss">Miss</paper-button>
       </div>
-      <nav id="main-nav" class="main-nav-float">
-<!--         <label id="main-menu-toggle-label" for="main-menu-toggle"><i class="fa fa-bars"></i></label>
-        <input type="checkbox" id="main-menu-toggle">
-        <h2 class="fat logo">AtelierBeats.</h2> -->
-        <!-- <div class="main-nav-content"> -->
-
-<!--           <paper-input id="mainSearch" label="Search" no-label-float>
-            <iron-icon icon="search" prefix></iron-icon>
-            <paper-icon-button suffix onclick="clearInput()"
-                icon="clear" alt="clear" title="clear" tabindex="0">
-            </paper-icon-button>
-          </paper-input> -->
-<!--           <ab-menu attr-for-selected="data-route" selected="[[route]]" id="main-menu" class="nav-menu" >
-            <ab-menu-item data-route="home" href="/" value="13 | Nick Young"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | A. Someveryveryverylongname"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | D'Angelo Russell"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Brandon Bass"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Ryan Kelly"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Anthony Brown"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Jordan Clarkson"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Larry Nance Jr."></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Marcelo Huertas"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Roy Hibbert"></ab-menu-item>
-            <ab-menu-item data-route="home" href="/" value="13 | Louis Williams"></ab-menu-item>
-            <ab-menu-item data-route="artists" href="/artists" value="3 | Kobe Bryant"></ab-menu-item>
-
-            <ab-menu-item data-route="artists" href="/artists" value="Artists" icon="av:recent-actors"></ab-menu-item>
-          </ab-menu> -->
-          <ab-tracklist data-route="library" players="{{players}}">
-          </ab-tracklist>
-
-         <!-- <a href="#" class="create-playlist" id="create-pl-btn"> -->
-         <!-- <iron-icon icon="av:playlist-add"></iron-icon> new playlist</a> -->
-<!--          <ab-menu class="nav-menu" id="playlists">
-            <template is="dom-repeat" items="{{playlists}}" as="playlist">
-              <ab-menu-item editable href$="{{_calcPlaylistHref(playlist._id)}}" value="{{playlist.name}}" icon="image:music-note"></ab-menu-item>
-            </template>
-          </ab-menu> -->
-      <!-- </div> -->
-      </nav>
+      
     </div>
 
-    <!-- <ab-player track="{{tracks.0}}"></ab-player> -->
-
-    <paper-toast id="toast">
+    <paper-toast id="toast" toggles class="custom x-scope paper-button-0" role="button" animated
+        aria-pressed="false" disabled="false" active>
       <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
     </paper-toast>
   <!-- /build -->
