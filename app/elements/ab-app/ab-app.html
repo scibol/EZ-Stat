@@ -317,6 +317,14 @@
 
                 <!--game view-->
                 <div data-route="games">
+                <iron-ajax
+                                    id="startGame"
+                                    url="http://localhost:3000/games/{{game._id}}"
+                                    handle-as="json"
+                                    content-type="application/json"
+                                    method="PUT"
+                                    debounce-duration="3000">
+                            </iron-ajax>
                     <iron-ajax
                             auto
                             url="http://localhost:3000/games/{{params.gameid}}"
@@ -332,10 +340,11 @@
                         <div state="0">
                             <div id="boxInputs">
                             Fill the following data
-                            <paper-input class="inputPapers" label="First name"></paper-input>
-                            <paper-input class="inputPapers" label="Last name"></paper-input>
-                            <paper-input class="inputPapers" label="Number"></paper-input>
+                                <paper-input id="firstname" label="first name"></paper-input>
+                                <paper-input id="lastname" label="last name"></paper-input>
                             </div>
+                            <paper-button on-click="_createPlayer">create player</paper-button>
+
                             <iron-ajax
                                     id="startGame"
                                     url="http://localhost:3000/games/{{game._id}}"
@@ -465,6 +474,15 @@
                     var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
                     page.show(resource)
                 },
+
+                _createPlayer: function (event, detail) {
+                    this.$.createPlayer.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                    })
+                    this.$.createPlayer.generateRequest();
+                },
+
 
                 _gameItem: function (event, detail) {
                     event.preventDefault();
