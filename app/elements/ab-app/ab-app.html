@@ -274,6 +274,7 @@
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
+                last-response="{{newGame}}"
                 debounce-duration="3000">
         </iron-ajax>
 
@@ -300,11 +301,13 @@
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <a href="/createGame" on-click="_newGame" class="inherit"><paper-button>create game</paper-button></a>
+                <!--<a href="/games/{{newGame._id}}" on-click="_createGame" class="inherit"><paper-button>create game</paper-button></a>-->
+                <paper-button on-click="_createGame">create game</paper-button>
                 <div class="float-right">
-                    <a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>
-                    <a><paper-button on-click="">{{user}}user</paper-button></a>
-                    <a><paper-button on-click="">signout</paper-button></a>
+                    <!--<a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>-->
+                    <paper-button on-click="_redirect">home</paper-button>
+                    <paper-button on-click="">{{user}}user</paper-button>
+                    <paper-button on-click="">signout</paper-button>
                 </div>
             </paper-toolbar>
 
@@ -468,10 +471,9 @@
                         "date": Date.now(),
                         "result": "true",
                     });
-                    event.preventDefault()
-                    console.log(event.currentTarget.href);
+                    event.preventDefault();
                     this.$.newGame.generateRequest();
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
                     page.show(resource)
                 },
 
@@ -512,6 +514,7 @@
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
+                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
                     page.show(resource)
                 },
 
@@ -524,10 +527,7 @@
                 },
 
                 _redirect: function(event, detail){
-                    event.preventDefault()
-                    console.log(event.currentTarget)
-                    console.log(event.currentTarget.href)
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"") 
+                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
                     page.show(resource)
                 },
 
