@@ -14,7 +14,7 @@
 <link rel="import" href="../../components/paper-item/paper-item.html">
 <link rel="import" href="../../components/paper-menu/paper-menu.html">
 <link rel="import" href="../../components/paper-button/paper-button.html">
-<link rel="import" href="../../components/paper-icon/paper-icon.html">
+<link rel="import" href="../../components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../components/paper-input/paper-input.html">
@@ -127,6 +127,15 @@
             /*      #main-menu{
                     margin-bottom: 60px;
                   }*/
+
+
+            /*
+             * In order to not have the liks modify the appearance.
+            */
+            .inherit {
+                color: inherit;
+                background-color: inherit;
+            }
 
             .nav-menu {
                 line-height: 8.4vh;
@@ -261,19 +270,11 @@
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <paper-button on-click="_newGame">
-                    create game
-                </paper-button>
+                <a href="/createGame" on-click="_newGame" class="inherit"><paper-button>create game</paper-button></a>
                 <div class="float-right">
-                    <paper-button href$="/index" on-click="_redirect">
-                        home
-                    </paper-button>
-                    <paper-button on-click="">
-                        {{user}}user
-                    </paper-button>
-                    <paper-button on-click="">
-                        signout
-                    </paper-button>
+                    <a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>
+                    <a><paper-button on-click="">{{user}}user</paper-button></a>
+                    <a><paper-button on-click="">signout</paper-button></a>
                 </div>
             </paper-toolbar>
 
@@ -417,14 +418,16 @@
                     }
                 },
 
-                _newGame: function (event, detail) {
+                _createGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
                         "date": Date.now(),
                         "result": "true",
                     });
                     event.preventDefault()
+                    console.log(event.currentTarget.href);
                     this.$.newGame.generateRequest();
-//                     page.show(resource)
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+                    page.show(resource)
                 },
 
                 _gameItem: function (event, detail) {
@@ -449,12 +452,13 @@
                 },
 
                 _startGame: function (event, detail) {
+                    console.log("Starting game!")
                     this.$.startGame.body = JSON.stringify({
                         "state": "1",
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
-//                     page.show(resource)
+                    page.show(resource)
                 },
 
                 _setFail: function (event, detail) {
@@ -468,8 +472,8 @@
                 _redirect: function(event, detail){
                     event.preventDefault()
                     console.log(event.currentTarget)
-                    console.log(event.target.href)
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+                    console.log(event.currentTarget.href)
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"") 
                     page.show(resource)
                 },
 
