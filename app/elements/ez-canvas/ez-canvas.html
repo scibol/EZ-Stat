@@ -21,7 +21,7 @@
 
 
         </style>
-        <canvas id="myCanvas" width="1500px" height="1500px"></canvas>
+        <canvas id="myCanvas" width="1500px" height="700px"></canvas>
 
     </template>
 
@@ -105,8 +105,14 @@
             });
         })()
 
-        function setWidth() {
+        function _getWidth() {
+//            console.log(window.innerWidth)
           return window.innerWidth;
+
+        }
+
+        function _getHeight() {
+            return window.innerHeight;
         }
 
         function measures() {

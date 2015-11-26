@@ -16,7 +16,7 @@
 
     // Routes
     page('/', scrollToTop, function() {
-      abApp.route = 'library';
+      abApp.route = 'main';
     });
 
     page('/albums', scrollToTop, function() {
@@ -49,6 +49,7 @@
 
     page('/games/:gameid', scrollToTop, function(data) {
       abApp.route = 'games';
+      console.log(data.params)
       abApp.params = data.params;
     });
     //<!-- /build -->

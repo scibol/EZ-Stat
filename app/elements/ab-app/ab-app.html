@@ -16,6 +16,8 @@
 <link rel="import" href="../../components/paper-button/paper-button.html">
 <link rel="import" href="../../components/paper-icon/paper-icon.html">
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../components/paper-input/paper-input.html">
 
 
 <link rel="import" href="../routing.html">
@@ -58,6 +60,10 @@
                 background-color: rgba(0, 0, 0, 0.1);
             }
 
+            a:hover {
+                text-underline: none;
+            }
+
             #wrapper, #main-content {
                 overflow-y: auto;
             }
@@ -65,22 +71,22 @@
             #upperBar {
                 width: 100%;
                 height: 5em;
-                margin-top:3em;
+                margin-top: 3em;
 
             }
 
             #btnMiss {
                 float: right;
                 width: 10em;
-                background-color: rgba(0,0,0,0.3);
+                background-color: rgba(0, 0, 0, 0.3);
             }
 
             #btnHit {
                 width: 10em;
-                background-color: rgba(0,0,0,0.3);
+                background-color: rgba(0, 0, 0, 0.3);
             }
 
-            #main-nav {
+            .main-nav {
                 width: 20vw;
                 height: 100vh;
                 background: #2A2C2B;
@@ -132,8 +138,13 @@
                 right: 1em;
             }
 
-            .auto-align {
-                margin: auto;
+            .max-height {
+                max-height: 70vh;
+                overflow-y: scroll;
+            }
+
+            #search {
+                background-color: #2A2C2B;
             }
 
             .header {
@@ -226,6 +237,7 @@
                 debounce-duration="3000">
         </iron-ajax>
 
+
         <iron-ajax
                 auto
                 url="http://localhost:3000/players"
@@ -233,14 +245,17 @@
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
 
-
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
-                <paper-dropdown-menu label="choose game...">
+                <paper-dropdown-menu label="choose game..." placeholder="{{params.gameid}}">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{playlists}}" as="playlist">
-                            <paper-item><a href$="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>
-                            </paper-item>
+                            <!--<paper-item><a href="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>-->
+                            <!--</paper-item>-->
+                            <!--<a href="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>-->
+                            <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist._id}}">
+                            </ab-menu-item>
+
                         </template>
 
                     </paper-menu>
@@ -258,34 +273,91 @@
                 </div>
             </paper-toolbar>
 
-            <div class="horizontal layout flex" id="wrapper">
-
-                <nav id="main-nav" class="main-nav-float">
-                    <ab-tracklist data-route="library" players="{{players}}">
-                    </ab-tracklist>
-                </nav>
-
-
-                <!-- Main Content -->
-
-
-                <div class="content flex" id="main-content">
-                    <div id="upperBar"> 
-                        <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
-                        <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
-                         
-                    </div>
-                     
-                    <ez-canvas>
-                    </ez-canvas>
+             <!--iron pages for different views-->
+            <iron-pages attr-for-selected="data-route" selected="{{route}}">
+                 <!--main view-->
+                <div data-route="main" class="horizontal layout flex" id="wrapper">
+                    some info text
                 </div>
-                <nav id="main-nav" class="main-nav-float">
 
-                    <ab-tracklist data-route="library" players="{{players}}">
-                    </ab-tracklist>
+                <!--game view-->
+                <div data-route="games">
+                    <iron-ajax
+                            auto
+                            url="http://localhost:3000/games/{{params.gameid}}"
+                            handle-as="json"
+                            last-response="{{game}}"
+                            debounce-duration="300"></iron-ajax>
+                    <!--game is {{params.id}}-->
+                    game is {{game._id}}
+                    <!--iron-pages to change view-->
+                    <iron-pages attr-for-selected="state" selected="{{game.state}}">
 
-                </nav>
-            </div>
+                        <!--game not started yet-->
+                        <div state="0">
+                            <iron-ajax
+                                    id="startGame"
+                                    url="http://localhost:3000/games/{{game._id}}"
+                                    handle-as="json"
+                                    content-type="application/json"
+                                    method="PUT"
+                                    debounce-duration="3000">
+                            </iron-ajax>
+
+                            <!--FIXME start button changes data but doesn't reload page-->
+                            <paper-button on-click="_startGame">start game</paper-button>
+                            <div class="float-right max-height">
+                                <paper-input id="search" label="player name"></paper-input>
+                                <paper-listbox>
+                                    <template is="dom-repeat" items="{{players}}" as="player">
+                                        <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                                <!--<ab-tracklist tracks="{{players}}"></ab-tracklist>-->
+                            </div>
+                        </div>
+
+                        <!--game started-->
+                        <div state="1">
+
+                            <!--TODO swap players with game's players (first we have to put players in a game)-->
+                            <nav class="main-nav-float main-nav">
+                                <paper-listbox>
+                                    <template is="dom-repeat" items="{{players}}" as="player">
+                                        <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </nav>
+
+                            <div class="content flex" id="main-content">
+                                <div id="upperBar"> 
+                                    <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
+                                    <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
+                                     
+                                </div>
+                                 
+                                <ez-canvas>
+                                </ez-canvas>
+                            </div>
+                            <nav class="main-nav-float main-nav">
+                                <paper-listbox>
+                                    <template is="dom-repeat" items="{{players}}" as="player">
+                                        <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}</paper-item>
+                                    </template>
+                                </paper-listbox>
+                            </nav>
+                        </div>
+
+                        <!--game finished-->
+                        <div state="2">
+
+                        </div>
+
+                    </iron-pages>
+
+                </div>
+
+            </iron-pages>
 
         </paper-header-panel>
 
@@ -351,6 +423,15 @@
 
                 _setSuccess: function (event, detail) {
                     console.log("success")
+                },
+
+                _startGame: function (event, detail) {
+                    this.$.startGame.body = JSON.stringify({
+                        "state": "1",
+                    });
+                    event.preventDefault()
+                    this.$.startGame.generateRequest();
+//                     page.show(resource)
                 },
 
                 _setFail: function (event, detail) {
