@@ -10,13 +10,13 @@
   <template>
 
   <!-- build:remove -->
-    <!-- /*<style include="shared-styles"></style>*/ -->
+    <style include="shared-styles"></style>
     <style>
-/*    :host{
+    :host{
       display: block;
       font-size: var(--ab-track-font-size, --ab-primary-font-size);
-    }*/
-/*
+    }
+
     .fl-tl-row{
        @apply(--layout-horizontal);
       width:100%;
@@ -60,9 +60,9 @@
       text-align: right;
       width: 78px;
       padding: 0 5px 0 12px;
-    }*/
+    }
 
- /*   @media (max-width: 641px) {
+    @media (max-width: 641px) {
       .fl-tl-thead{
         display:none;
       }
@@ -105,98 +105,26 @@
       .fl-tl-album a{
         color: rgb(162,162,162);
         font-weight: 300;
-      }*/
-    /*}*/
+      }
+    }
     </style>
-        <style>
-      :host {
-        /*display: block;*/
-        position:relative;
-        -webkit-transition: background 0.3s, box-shadow 0.3s;
-        -moz-transition: background 0.3s, box-shadow 0.3s;
-        transition: background 0.3s, box-shadow 0.3s;
-        --paper-input-container-input:{
-          color:inherit;
-          font-size: inherit;
-        };
-      }
 
-      :host(:hover){
-        background: rgba(0,0,0,0.2);
-        /*box-shadow: inset 0 -1px rgba(0,0,0,0);*/
-      };
-
-      a {
-        display: block;
-        outline: none;
-        text-decoration: none;
-        box-shadow: inset 0 -1px 0px rgba(127,127,127,0.2), 0 1px 2px rgba(0,0,0,0.2);
-        /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
-        font-size: 1.2em;
-        color: inherit;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        transition: background-color 0.2s, color 0.2s;
-        line-height: 8.4vh;
-        vertical-align: middle;
-      }
-
-      a:hover {
-        background-color: rgba(255,255,255,0.7);
-        color: rgba(0,0,0,0.7);
-      }
-/*
-      iron-icon{
-        padding: 0 20px;
-      }*/
-
-      #leLink {
-        padding-left: 10px;
-      }
-
-/*      #editBtn{
-        display: none; 
-        position:absolute;
-        padding-left: 10px;
-        top: 14px;
-        right: 10px;
-        z-index:10;
-        white-space: initial;
-        line-height: 1;
-        color: rgba(0,0,0,0.4);
-      }
-
-      #editBtn:hover{
-        color:inherit;
-      }
-
-      :host(:hover) #editBtn{
-        display: block;
-      };*/
-
-/*      #editInput{
-        display:none;
-        line-height:1;
-        padding-left: 12px;
-      }*/
-    </style>
-<!-- 
-  <div class="fl-tl-thead fl-tl-row">
-    <div class="fl-tl-th fl-tl-name">Song</div>
-    <div class="fl-tl-th fl-tl-artist">Artist</div>
-    <div class="fl-tl-th fl-tl-album">Album</div>
-    <div class="fl-tl-th fl-tl-time">Time</div>
-  </div> -->
+  <!--<div class="fl-tl-thead fl-tl-row">-->
+    <!--<div class="fl-tl-th fl-tl-name">Song</div>-->
+    <!--<div class="fl-tl-th fl-tl-artist">Artist</div>-->
+    <!--<div class="fl-tl-th fl-tl-album">Album</div>-->
+    <!--<div class="fl-tl-th fl-tl-time">Time</div>-->
+  <!--</div>-->
   
-  <template is="dom-repeat" items="[[players]]" as="player">
-    <!-- <div id="t1" class="fl-tl-row" draggable="true" ondragstart="drag(event)"> -->
-      <!-- <div class="fl-tl-cell fl-tl-name"> -->
-        <a id="leLink" href="{{href}}" on-click="_onClick" class="fl-tl-file-link" data-tid="t1">
-          {{player.number}} | {{player.firstName}} {{player.lastName}}
-        </a>
-
-    <!-- </div> -->
+  <template is="dom-repeat" items="[[tracks]]" as="track">
+    <div id="t1" class="fl-tl-row" draggable="true" ondragstart="drag(event)">
+      <div class="fl-tl-cell fl-tl-name">
+        <a class="fl-tl-file-link" href="#" data-tid="t1">{{track.firstName}} {{track.lastName}}</a>
+      </div>
+      <!--<div class="fl-tl-cell fl-tl-artist"><a href="artists/Iron%20Maiden">{{track.artist.name}}</a></div>-->
+      <!--<div class="fl-tl-cell fl-tl-album"><a href="albums/Seventh%20Son%20of%20a%20Seventh%20Son">{{track.album.name}}</a></div>-->
+      <!--<div class="fl-tl-cell fl-tl-time">{{_formatDuration(track.duration)}}</div>-->
+    </div>
   </template>  
 
 <!-- /build -->
@@ -213,10 +141,9 @@
         //<!-- build:remove -->
         properties: {
         },
-        _onClick: function(event, detail){
-          event.preventDefault()
-          var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
-          page.show(resource)
+
+        _formatDuration(t){
+          return formatTime(t)
         }
         
         //<!-- /build -->

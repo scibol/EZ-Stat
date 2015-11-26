@@ -21,7 +21,7 @@
 
 
         </style>
-        <canvas id="myCanvas" width="1500px" height="1500px"></canvas>
+        <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
 
@@ -107,12 +107,20 @@
 
         function setWidth() {
             return window.innerWidth;
+
+        function _getWidth() {
+          return window.innerWidth;
+
+        }
+
+        function _getHeight() {
+            return window.innerHeight;
         }
 
         function measures() {
-            var width = window.innerWidth * 0.6;
+            var width = 1500;
             console.log(width)
-            var ratio = width / 94 * 1.74;
+            var ratio = width / 94;
             var field = {
                 width: 94 * ratio,
                 height: 50 * ratio,
