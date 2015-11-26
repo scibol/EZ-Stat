@@ -162,6 +162,15 @@
                 background-color: inherit;
             }
 
+
+            /*
+             * In order to not have the liks modify the appearance.
+            */
+            .inherit {
+                color: inherit;
+                background-color: inherit;
+            }
+
             .nav-menu {
                 line-height: 8.4vh;
             }
@@ -260,6 +269,11 @@
 
             #btnCreate {
                 width: 100%;
+            }
+
+            #boxInputs {
+                border: solid;
+                width: 300px;
             }
 
         </style>
@@ -493,22 +507,11 @@
                 },
 
                 _createPlayer: function (event, detail) {
-                    console.log("_createPlayer")
                     this.$.createPlayer.body = JSON.stringify({
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
                     })
-                    console.log("BOG")
                     this.$.createPlayer.generateRequest();
-                    console.log("DIO")
-                    this.$.updateGame.body = JSON.stringify({
-                        "players" : [{
-                            "firstName": this.$.firstname.value,
-                            "lastName": this.$.lastname.value,
-                        }],
-                    })
-                    console.log(this.$.updateGame.body)
-                    this.$.updateGame.generateRequest();
                 },
 
 
