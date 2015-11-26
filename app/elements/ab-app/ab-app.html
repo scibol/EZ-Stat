@@ -47,7 +47,6 @@
         <!-- build:remove -->
 
         <style include="shared-styles">
-
             :host {
             @apply(- -layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
@@ -59,7 +58,33 @@
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
                 background-color: rgba(0, 0, 0, 0.1);
-            }
+           }
+
+            /*Style of the paper-input*/
+                paper-input.inputPapers {
+                    /* Label and underline color when the input is not focused */
+                    --paper-input-container-color: green;
+                    /* Label and underline color when the input is focused */
+                    --paper-input-container-focus-color: green;
+                    /* Label and underline color when the input is invalid */
+                    --paper-input-container-invalid-color: green;
+                    /* Input foreground color */
+                    --paper-input-container-input-color: green;
+
+                    width: 200px;
+                }
+
+                paper-input.searchPapers {
+                    --paper-input-container-color:red ;
+                    --secondary-text-color: red;
+                    --default-primary-color: red;
+                    --text-primary-color: red;
+                    --text-secondary-color: red;
+                    --primary-text-color: red;
+                    --paper-menu-background-color: red;
+                    --primary-background-color: red;
+                    background-color: red;
+                }
 
             a:hover {
                 text-underline: none;
@@ -224,6 +249,11 @@
                     padding: 0 20px 5px;
                   }*/
 
+            #boxInputs {
+                border: solid;
+                width: 300px;
+            }
+
         </style>
         <iron-ajax
                 auto
@@ -300,6 +330,12 @@
 
                         <!--game not started yet-->
                         <div state="0">
+                            <div id="boxInputs">
+                            Fill the following data
+                            <paper-input class="inputPapers" label="First name"></paper-input>
+                            <paper-input class="inputPapers" label="Last name"></paper-input>
+                            <paper-input class="inputPapers" label="Number"></paper-input>
+                            </div>
                             <iron-ajax
                                     id="startGame"
                                     url="http://localhost:3000/games/{{game._id}}"
@@ -312,7 +348,7 @@
                             <!--FIXME start button changes data but doesn't reload page-->
                             <paper-button on-click="_startGame">start game</paper-button>
                             <div class="float-right max-height">
-                                <paper-input id="search" label="player name"></paper-input>
+                                <paper-input id="search" label="player name" class="searchPapers"></paper-input>
                                 <paper-listbox>
                                     <template is="dom-repeat" items="{{players}}" as="player">
                                         <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}

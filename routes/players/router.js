@@ -54,16 +54,17 @@ router.get('/:playerid', function(req, res, next) {
 
 //update a player
 router.put('/:playerid', function(req, res, next) {
+  console.log("router.put(/:playerid', ...")
   var data = req.body;
 
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
     if (player){
-      player.name =  data.name; 
-      player.artist = data.artist;
-      player.artwork = data.artwork;
-      player.dateCreated = data.dateCreated;
-      player.artwork = data.artwork;
+      player.firstName =  player.firstName || data.firstName; 
+      player.secondName = player.secondName || data.secondName;
+      player.number = player.number || data.number;
+      player.position = player.position || data.position;
+      player.team = player.team || data.team;
 
       player.save(onModelSave(res));
     }else{
