@@ -21,11 +21,7 @@
 
 
         </style>
-<<<<<<< HEAD
-        <canvas id="myCanvas" width="800px" height="430px"></canvas>
-=======
         <canvas id="myCanvas" width="1500px" height="1500px"></canvas>
->>>>>>> paolo
 
     </template>
 
@@ -41,23 +37,6 @@
                     var field = measures();
                     var stage = new createjs.Stage(canvas);
                     var rect = new createjs.Shape();
-
-                    var rectangleGraphics = new createjs.Graphics()
-                    rectangleGraphics.setStrokeStyle(2).beginFill("#ffffff").beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height)
-                    var rectangleShape = new createjs.Shape(rectangleGraphics)
-
-
-                    var twoPointsLeft = new createjs.Graphics()
-                    twoPointsLeft.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
-                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-                    lt(0, field.height - field.treyFromBorder)
-                    var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
-
-                    var twoPointsRight = new createjs.Graphics()
-                    twoPointsRight.setStrokeStyle(2).beginFill('#ffffff').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
-                    lt(field.width, field.height - field.treyFromBorder).
-                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843)
-
                     var circle = new createjs.Shape();
                     circle.graphics.beginFill("#ff0000").drawCircle(100,100,10)
 
@@ -67,14 +46,14 @@
 
                     var twoPointsLeft = new createjs.Graphics()
                     twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
-                            arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-                            lt(0, field.height - field.treyFromBorder)
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
+                    lt(0, field.height - field.treyFromBorder)
                     var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
 
                     var twoPointsRight = new createjs.Graphics()
                     twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
-                            lt(field.width, field.height - field.treyFromBorder).
-                            arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843)
+                    lt(field.width, field.height - field.treyFromBorder).
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843)
                     var twoPointsRightShape = new createjs.Shape(twoPointsRight);
 
 
@@ -87,9 +66,6 @@
                     drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
                     drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                            drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                            drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
                     // left side trey
@@ -97,14 +73,12 @@
                     rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
                     arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
-                            arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
 
                     // right side trey
                     rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
                     arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
-                            arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
 
 
 
@@ -124,7 +98,6 @@
                         console.log("2 points")
                     });
                     twoPointsRightShape.on("click", function(e) {
-                        console.log(e.stageX / field.width, e.stageY / field.height)
                         console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
@@ -132,12 +105,8 @@
             });
         })()
 
-        function measures() {
-            var width = window.innerWidth * 0.6;
-
-            var ratio = width / 94 * 0.93;
         function setWidth() {
-          return window.innerWidth;
+            return window.innerWidth;
         }
 
         function measures() {
@@ -157,8 +126,6 @@
             }
             return field;
         }
-
     </script>
 
 </dom-module>
->>>>>>> paolo

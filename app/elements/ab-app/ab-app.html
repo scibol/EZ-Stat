@@ -9,18 +9,11 @@
 <link rel="import" href="../../components/iron-icons/iron-icons.html">
 <link rel="import" href="../../components/iron-pages/iron-pages.html">
 <link rel="import" href="../../components/paper-toast/paper-toast.html">
-<link rel="import" href="../../components/paper-header-panel/paper-header-panel.html">
-<link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
-<link rel="import" href="../../components/paper-item/paper-item.html">
-<link rel="import" href="../../components/paper-menu/paper-menu.html">
-
 
 <link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../components/paper-item/paper-item.html">
 <link rel="import" href="../../components/paper-menu/paper-menu.html">
 <link rel="import" href="../../components/paper-button/paper-button.html">
-<link rel="import" href="../../components/paper-icon/paper-icon.html">
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
 
 
@@ -49,9 +42,10 @@
 
         <!-- build:remove -->
 
-        <style>
+        <style include="shared-styles">
+
             :host {
-            @apply(- -layout-vertical);
+                @apply(- -layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -94,254 +88,41 @@
                 overflow-y: auto;
                 color: #f7f7f7;
                 box-shadow: 0px 0 30px rgba(0, 0, 0, 0.2);
-
             }
 
-            /*      #main-menu-toggle-label {
-                    cursor: pointer;
-                    color: rgba(0,0,0,0.4);
-                    font-size: 32px;
-                    display: inline-block;
-                    border: 1px solid rgba(0,0,0,0.4);
-                    line-height: 0;
-                    text-align: center;
-                    border-radius: 4px;
-                    margin: 0;
-                    padding: 2px 7px 1px;
-                  }*/
+            /* #main-menu-toggle-label {
+            cursor: pointer;
+            color: rgba(0,0,0,0.4);
+            font-size: 32px;
+            display: inline-block;
+            border: 1px solid rgba(0,0,0,0.4);
+            line-height: 0;
+            text-align: center;
+            border-radius: 4px;
+            margin: 0;
+            padding: 2px 7px 1px;
+            }*/
 
-            /*      #main-menu-toggle {
-                    position: absolute;
-                    top: -9999px;
-                    left: -9999px;
-                  }*/
+            /* #main-menu-toggle {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            }*/
 
-            /*      #main-nav h2 {
-                    margin: 0;
-                    padding: 1em;
-                    color: rgba(0,0,0,0.4);
-                    font-size: 2em;
-                  }*/
+            /* #main-nav h2 {
+            margin: 0;
+            padding: 1em;
+            color: rgba(0,0,0,0.4);
+            font-size: 2em;
+            }*/
 
-            /*      #main-menu{
-                    margin-bottom: 60px;
-                  }*/
+            /* #main-menu{
+            margin-bottom: 60px;
+            }*/
 
             .nav-menu {
                 line-height: 8.4vh;
             }
-
-            @media (min-width: 841px) {
-                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item .nav-menu {
-                    display: none;
-                }
-
-                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
-                    display: none;
-                }
-            }
-
-            /*
-                  #create-pl-btn {
-                    color: rgba(0,0,0,0.4);
-                    background: rgba(0,0,0,0.1);
-                    display: inline-block;
-                    width: auto;
-                    padding: 2px 5px 4px;
-                    margin: 0 0 20px 10px;
-                    font-size: 1.2em;
-                    line-height: 1;
-                    white-space: nowrap;
-                    overflow: hidden;
-                  }*/
-
-            /*      #create-pl-btn:hover, #create-pl-btn:active {
-                    background: rgba(0,0,0,0.2);
-                    color: #f7f7f7;
-                    text-decoration: none;
-                  }*/
-
-            /*      ab-menu-item{
-                    outline: none;
-                  }*/
-
-            /*      ab-tracklist{
-                    font-weight: 500;
-                  }*/
-
-            /*      #mainSearch{
-                    box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
-                    --paper-input-container-label:{
-                      color:darkgrey;
-                      font-size: 1.4em;
-                      font-weight: inherit;
-                    };
-                    --paper-input-container-underline:{
-                      display:none;
-                    };
-                    --paper-input-container-underline-focus:{
-                      display:none;
-                    };
-                    --paper-input-container-input:{
-                      padding: 0 0 5px 0;
-                      font-size: 1.4em;
-                      color: inherit;
-                    };
-                  }*/
-
-            /*      #mainSearch iron-icon{
-                    padding: 0 20px 5px;
-                  }*/
-
-        </style>
-
-
-        <paper-header-panel class="flex">
-            <paper-toolbar>
-                <paper-dropdown-menu label="SCEGLI LA PARTITA">
-                    <paper-menu class="dropdown-content">
-                        <paper-item>Croissant</paper-item>
-                        <paper-item>Donut</paper-item>
-                        <paper-item>Financier</paper-item>
-                        <paper-item>Madeleine</paper-item>
-                    </paper-menu>
-                </paper-dropdown-menu>
-            </paper-toolbar>
-
-        <div class="horizontal layout flex" id="wrapper">
-
-            <nav id="main-nav" class="main-nav-float">
-                <iron-ajax
-                        auto
-                        url="http://localhost:3000/players"
-                        handle-as="json"
-                        last-response="{{players}}"
-                        debounce-duration="300"></iron-ajax>
-
-                <ab-tracklist data-route="library" players="{{players}}">
-                </ab-tracklist>
-            </nav>
-
-
-            <!-- Main Content -->
-
-
-            <div class="content flex" id="main-content">
-                <ez-canvas>
-
-                </ez-canvas>
-                </iron-pages>
-            </div>
-            <nav id="main-nav" class="main-nav-float">
-
-                <ab-tracklist data-route="library" players="{{players}}">
-                </ab-tracklist>
-
-            </nav>
-        </div>
-
-        </paper-header-panel>
-
-        <paper-toast id="toast">
-            <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
-        </paper-toast>
-        <!-- /build -->
-    </template>
-
-    <script>
-        (function () {
-            'use strict';
-
-            Polymer({
-                is: 'ab-app',
-
-                //
-                <!-- build:remove -->
-                properties: {
-                    route: {
-                        type: String,
-                        notify: true,
-                    },
-                    params: {
-                        type: Object,
-                        notify: true
-                    },
-                    userid: {
-                        type: String,
-                        value: '563fd9661d1e084ac3e1b6b2'
-                    },
-                    tracks: {
-                        type: Array
-                    },
-                    albums: {
-                        type: Array
-                    },
-                    artists: {
-                        type: Array
-                    },
-                    playlists: {
-                        type: Array
-                    },
-                    selectedPlaylist: {
-                        type: Object
-                    }
-                },
-
-                created: function () {
-                    this._hasReceivedAJAXPlaylistsResponse = false;
-                },
-
-                ready: function () {
-                    window.abApp = this;
-                    // window.onload = init;
-                },
-
-                // Scroll page to top
-                scrollPageToTop: function () {
-
-                },
-
-                _onPlaylistAjax: function (event) {
-                    this._hasReceivedAJAXPlaylistsResponse = true;
-                },
-
-                // page middleware for playlit
-                validatePlaylistId: function (ctx, next, timesTried) {
-                    timesTried = timesTried || 0;
-
-                    // try 10 times and then surrender
-                    if (timesTried > 9) {
-                        return next();
-                    }
-
-                    // make sure we have playlists
-                    if (!this._hasReceivedAJAXPlaylistsResponse) {
-                        return this.async(function () {
-                            this.validatePlaylistId(ctx, next, ++timesTried)
-                        }, 500)
-                    }
-
-                    ctx.playlistExists = false;
-                    for (var i = 0, l = this.playlists.length; i < l; i++) {
-                        if (this.playlists[i]._id == ctx.params.playlistid) {
-                            ctx.playlistExists = true;
-                            this.selectedPlaylist = this.playlists[i];
-                            break;
-                        }
-                    }
-                    next();
-                },
-
-                _calcPlaylistHref(pid)
-            {
-                return "/playlists/" + pid;
-            }
-            //
-            <!-- /build -->
-        })
-
-
-        })();
 
             .float-right {
                 float: right;
@@ -370,56 +151,57 @@
             }
 
             /*
-                  #create-pl-btn {
-                    color: rgba(0,0,0,0.4);
-                    background: rgba(0,0,0,0.1);
-                    display: inline-block;
-                    width: auto;
-                    padding: 2px 5px 4px;
-                    margin: 0 0 20px 10px;
-                    font-size: 1.2em;
-                    line-height: 1;
-                    white-space: nowrap;
-                    overflow: hidden;
-                  }*/
+            #create-pl-btn {
+            color: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.1);
+            display: inline-block;
+            width: auto;
+            padding: 2px 5px 4px;
+            margin: 0 0
+           20px 10px;
+            font-size: 1.2em;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            }*/
 
-            /*      #create-pl-btn:hover, #create-pl-btn:active {
-                    background: rgba(0,0,0,0.2);
-                    color: #f7f7f7;
-                    text-decoration: none;
-                  }*/
+            /* #create-pl-btn:hover, #create-pl-btn:active {
+            background: rgba(0,0,0,0.2);
+            color: #f7f7f7;
+            text-decoration: none;
+            }*/
 
-            /*      ab-menu-item{
-                    outline: none;
-                  }*/
+            /* ab-menu-item{
+            outline: none;
+            }*/
 
-            /*      ab-tracklist{
-                    font-weight: 500;
-                  }*/
+            /* ab-tracklist{
+            font-weight: 500;
+            }*/
 
-            /*      #mainSearch{
-                    box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
-                    --paper-input-container-label:{
-                      color:darkgrey;
-                      font-size: 1.4em;
-                      font-weight: inherit;
-                    };
-                    --paper-input-container-underline:{
-                      display:none;
-                    };
-                    --paper-input-container-underline-focus:{
-                      display:none;
-                    };
-                    --paper-input-container-input:{
-                      padding: 0 0 5px 0;
-                      font-size: 1.4em;
-                      color: inherit;
-                    };
-                  }*/
+            /* #mainSearch{
+            box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
+            --paper-input-container-label:{
+            color:darkgrey;
+            font-size: 1.4em;
+            font-weight: inherit;
+            };
+            --paper-input-container-underline:{
+            display:none;
+            };
+            --paper-input-container-underline-focus:{
+            display:none;
+            };
+            --paper-input-container-input:{
+            padding: 0 0 5px 0;
+            font-size: 1.4em;
+            color: inherit;
+            };
+            }*/
 
-            /*      #mainSearch iron-icon{
-                    padding: 0 20px 5px;
-                  }*/
+            /* #mainSearch iron-icon{
+            padding: 0 20px 5px;
+            }*/
 
         </style>
         <iron-ajax
@@ -488,12 +270,12 @@
 
 
                 <div class="content flex" id="main-content">
-                    <div id="upperBar"> 
+                    <div id="upperBar">
                         <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
                         <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
-                         
+
                     </div>
-                     
+
                     <ez-canvas>
                     </ez-canvas>
                 </div>
@@ -559,7 +341,7 @@
                     });
                     event.preventDefault()
                     this.$.newGame.generateRequest();
-//                     page.show(resource)
+// page.show(resource)
                 },
 
                 _gameItem: function (event, detail) {
@@ -630,7 +412,6 @@
 
         })
         ();
->>>>>>> paolo
 
     </script>
 
