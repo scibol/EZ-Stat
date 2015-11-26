@@ -14,6 +14,7 @@
 <link rel="import" href="../../components/paper-item/paper-item.html">
 <link rel="import" href="../../components/paper-menu/paper-menu.html">
 <link rel="import" href="../../components/paper-button/paper-button.html">
+<link rel="import" href="../../components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../components/paper-input/paper-input.html">
@@ -46,9 +47,8 @@
         <!-- build:remove -->
 
         <style include="shared-styles">
-
             :host {
-                @apply(- -layout-vertical);
+            @apply(- -layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -58,7 +58,33 @@
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
                 background-color: rgba(0, 0, 0, 0.1);
-            }
+           }
+
+            /*Style of the paper-input*/
+                paper-input.inputPapers {
+                    /* Label and underline color when the input is not focused */
+                    --paper-input-container-color: green;
+                    /* Label and underline color when the input is focused */
+                    --paper-input-container-focus-color: green;
+                    /* Label and underline color when the input is invalid */
+                    --paper-input-container-invalid-color: green;
+                    /* Input foreground color */
+                    --paper-input-container-input-color: green;
+
+                    width: 200px;
+                }
+
+                paper-input.searchPapers {
+                    --paper-input-container-color:red ;
+                    --secondary-text-color: red;
+                    --default-primary-color: red;
+                    --text-primary-color: red;
+                    --text-secondary-color: red;
+                    --primary-text-color: red;
+                    --paper-menu-background-color: red;
+                    --primary-background-color: red;
+                    background-color: red;
+                }
 
             a:hover {
                 text-underline: none;
@@ -97,35 +123,44 @@
                 box-shadow: 0px 0 30px rgba(0, 0, 0, 0.2);
             }
 
-            /* #main-menu-toggle-label {
-            cursor: pointer;
-            color: rgba(0,0,0,0.4);
-            font-size: 32px;
-            display: inline-block;
-            border: 1px solid rgba(0,0,0,0.4);
-            line-height: 0;
-            text-align: center;
-            border-radius: 4px;
-            margin: 0;
-            padding: 2px 7px 1px;
-            }*/
+            /*      #main-menu-toggle-label {
+                    cursor: pointer;
+                    color: rgba(0,0,0,0.4);
+                    font-size: 32px;
+                    display: inline-block;
+                    border: 1px solid rgba(0,0,0,0.4);
+                    line-height: 0;
+                    text-align: center;
+                    border-radius: 4px;
+                    margin: 0;
+                    padding: 2px 7px 1px;
+                  }*/
 
-            /* #main-menu-toggle {
-            position: absolute;
-            top: -9999px;
-            left: -9999px;
-            }*/
+            /*      #main-menu-toggle {
+                    position: absolute;
+                    top: -9999px;
+                    left: -9999px;
+                  }*/
 
-            /* #main-nav h2 {
-            margin: 0;
-            padding: 1em;
-            color: rgba(0,0,0,0.4);
-            font-size: 2em;
-            }*/
+            /*      #main-nav h2 {
+                    margin: 0;
+                    padding: 1em;
+                    color: rgba(0,0,0,0.4);
+                    font-size: 2em;
+                  }*/
 
-            /* #main-menu{
-            margin-bottom: 60px;
-            }*/
+            /*      #main-menu{
+                    margin-bottom: 60px;
+                  }*/
+
+
+            /*
+             * In order to not have the liks modify the appearance.
+            */
+            .inherit {
+                color: inherit;
+                background-color: inherit;
+            }
 
             .nav-menu {
                 line-height: 8.4vh;
@@ -163,57 +198,69 @@
             }
 
             /*
-            #create-pl-btn {
-            color: rgba(0,0,0,0.4);
-            background: rgba(0,0,0,0.1);
-            display: inline-block;
-            width: auto;
-            padding: 2px 5px 4px;
-            margin: 0 0
-           20px 10px;
-            font-size: 1.2em;
-            line-height: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            }*/
+                  #create-pl-btn {
+                    color: rgba(0,0,0,0.4);
+                    background: rgba(0,0,0,0.1);
+                    display: inline-block;
+                    width: auto;
+                    padding: 2px 5px 4px;
+                    margin: 0 0 20px 10px;
+                    font-size: 1.2em;
+                    line-height: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  }*/
 
-            /* #create-pl-btn:hover, #create-pl-btn:active {
-            background: rgba(0,0,0,0.2);
-            color: #f7f7f7;
-            text-decoration: none;
-            }*/
+            /*      #create-pl-btn:hover, #create-pl-btn:active {
+                    background: rgba(0,0,0,0.2);
+                    color: #f7f7f7;
+                    text-decoration: none;
+                  }*/
 
-            /* ab-menu-item{
-            outline: none;
-            }*/
+            /*      ab-menu-item{
+                    outline: none;
+                  }*/
 
-            /* ab-tracklist{
-            font-weight: 500;
-            }*/
+            /*      ab-tracklist{
+                    font-weight: 500;
+                  }*/
 
-            /* #mainSearch{
-            box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
-            --paper-input-container-label:{
-            color:darkgrey;
-            font-size: 1.4em;
-            font-weight: inherit;
-            };
-            --paper-input-container-underline:{
-            display:none;
-            };
-            --paper-input-container-underline-focus:{
-            display:none;
-            };
-            --paper-input-container-input:{
-            padding: 0 0 5px 0;
-            font-size: 1.4em;
-            color: inherit;
-            };
-            }*/
+            /*      #mainSearch{
+                    box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
+                    --paper-input-container-label:{
+                      color:darkgrey;
+                      font-size: 1.4em;
+                      font-weight: inherit;
+                    };
+                    --paper-input-container-underline:{
+                      display:none;
+                    };
+                    --paper-input-container-underline-focus:{
+                      display:none;
+                    };
+                    --paper-input-container-input:{
+                      padding: 0 0 5px 0;
+                      font-size: 1.4em;
+                      color: inherit;
+                    };
+                  }*/
 
-            /* #mainSearch iron-icon{
-            padding: 0 20px 5px;
-            }*/
+            /*      #mainSearch iron-icon{
+                    padding: 0 20px 5px;
+                  }*/
+
+            #boxInputs {
+                border: solid;
+                width: 200px;
+                border-radius: 5px;
+                padding: 5px;
+                margin: 5px;
+                border-color: rgb(32,32,32);
+            }
+
+            #btnCreate {
+                width: 100%;
+            }
 
         </style>
         <iron-ajax
@@ -261,19 +308,11 @@
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <paper-button on-click="_newGame">
-                    create game
-                </paper-button>
+                <a href="/createGame" on-click="_newGame" class="inherit"><paper-button>create game</paper-button></a>
                 <div class="float-right">
-                    <paper-button href$="/index" on-click="_redirect">
-                        home
-                    </paper-button>
-                    <paper-button on-click="">
-                        {{user}}user
-                    </paper-button>
-                    <paper-button on-click="">
-                        signout
-                    </paper-button>
+                    <a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>
+                    <a><paper-button on-click="">{{user}}user</paper-button></a>
+                    <a><paper-button on-click="">signout</paper-button></a>
                 </div>
             </paper-toolbar>
 
@@ -286,6 +325,14 @@
 
                 <!--game view-->
                 <div data-route="games">
+                <iron-ajax
+                                    id="startGame"
+                                    url="http://localhost:3000/games/{{game._id}}"
+                                    handle-as="json"
+                                    content-type="application/json"
+                                    method="PUT"
+                                    debounce-duration="3000">
+                            </iron-ajax>
                     <iron-ajax
                             auto
                             url="http://localhost:3000/games/{{params.gameid}}"
@@ -299,8 +346,25 @@
 
                         <!--game not started yet-->
                         <div state="0">
+                            <div id="boxInputs">
+                            Fill the following data
+                                <paper-input id="firstname" label="first name" class="inputPapers"></paper-input>
+                                <paper-input id="lastname" label="last name" class="inputPapers"></paper-input>
+                                <paper-input id="team" label="team name" class="inputPapers"></paper-input>
+                                <paper-button on-click="_createPlayer" id="btnCreate">create player</paper-button>
+                            </div>
+
                             <iron-ajax
-                                    id="startGame"
+                                    id="createPlayer"
+                                    url="http://localhost:3000/players"
+                                    handle-as="json"
+                                    content-type="application/json"
+                                    method="POST"
+                                    debounce-duration="3000">
+                            </iron-ajax>
+
+                            <iron-ajax
+                                    id="updateGame"
                                     url="http://localhost:3000/games/{{game._id}}"
                                     handle-as="json"
                                     content-type="application/json"
@@ -311,7 +375,6 @@
                             <!--FIXME start button changes data but doesn't reload page-->
                             <paper-button on-click="_startGame">start game</paper-button>
                             <div class="float-right max-height">
-                                <paper-input id="search" label="player name"></paper-input>
                                 <paper-listbox>
                                     <template is="dom-repeat" items="{{players}}" as="player">
                                         <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
@@ -365,16 +428,6 @@
 
                     </iron-pages>
 
-                <div class="content flex" id="main-content">
-                    <div id="upperBar">
-                        <paper-button id="btnHit" on-click="_setSuccess">Hit</paper-button>
-                        <paper-button id="btnMiss" on-click="_setFail">Miss</paper-button>
-
-                    </div>
-
-                    <ez-canvas>
-                    </ez-canvas>
-
                 </div>
 
             </iron-pages>
@@ -427,15 +480,37 @@
                     }
                 },
 
-                _newGame: function (event, detail) {
+                _createGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
                         "date": Date.now(),
                         "result": "true",
                     });
                     event.preventDefault()
+                    console.log(event.currentTarget.href);
                     this.$.newGame.generateRequest();
-// page.show(resource)
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+                    page.show(resource)
                 },
+
+                _createPlayer: function (event, detail) {
+                    console.log("_createPlayer")
+                    this.$.createPlayer.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                    })
+                    console.log("BOG")
+                    this.$.createPlayer.generateRequest();
+                    console.log("DIO")
+                    this.$.updateGame.body = JSON.stringify({
+                        "players" : [{
+                            "firstName": this.$.firstname.value,
+                            "lastName": this.$.lastname.value,
+                        }],
+                    })
+                    console.log(this.$.updateGame.body)
+                    this.$.updateGame.generateRequest();
+                },
+
 
                 _gameItem: function (event, detail) {
                     event.preventDefault();
@@ -459,12 +534,13 @@
                 },
 
                 _startGame: function (event, detail) {
+                    console.log("Starting game!")
                     this.$.startGame.body = JSON.stringify({
                         "state": "1",
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
-//                     page.show(resource)
+                    page.show(resource)
                 },
 
                 _setFail: function (event, detail) {
@@ -478,8 +554,8 @@
                 _redirect: function(event, detail){
                     event.preventDefault()
                     console.log(event.currentTarget)
-                    console.log(event.target.href)
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+                    console.log(event.currentTarget.href)
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"") 
                     page.show(resource)
                 },
 
