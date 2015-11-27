@@ -265,6 +265,7 @@
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
+
         <iron-ajax id="andreaTest"
                 auto
                 url="http://localhost:3000/games"
@@ -342,6 +343,7 @@
                                     debounce-duration="3000">
                             </iron-ajax>
                     <iron-ajax
+                            id="getGame"
                             auto
                             url="http://localhost:3000/games/{{params.gameid}}"
                             handle-as="json"
@@ -497,9 +499,10 @@
                     });
                     event.preventDefault();
                     this.$.newGame.generateRequest();
-                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-                    console.log(resource)
-                    page.redirect(resource);
+                    this.$.andreaTest.generateRequest();
+//                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+//                    console.log(resource)
+//                    page.redirect(resource);
                 },
 
                 _createPlayer: function (event, detail) {
@@ -550,10 +553,7 @@
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
-                    console.log()
-                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-
-                    page.redirect(resource)
+                    this.$.getGame.generateRequest();
                 },
 
                 _setFail: function (event, detail) {
