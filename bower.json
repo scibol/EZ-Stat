@@ -1,8 +1,8 @@
 {
-  "name": "wa-exercise-7-2015-2016",
+  "name": "ez-stat",
   "version": "0.0.0",
   "private": true,
-  "description": "Exercise 7 of Web Atelier@inf.usi.ch. Web Components",
+  "description": "Basketball games statistics monitoring application",
   "dependencies": {
     "iron-elements": "PolymerElements/iron-elements#^1.0.0",
     "neon-elements": "PolymerElements/neon-elements#^1.0.0",

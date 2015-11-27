@@ -24,10 +24,6 @@
 
 <link rel="import" href="../ab-menu-item/ab-menu-item.html">
 <link rel="import" href="../ab-menu/ab-menu.html">
-<link rel="import" href="../ab-player/ab-player.html">
-<link rel="import" href="../ab-playlist-header-info/ab-playlist-header-info.html">
-<link rel="import" href="../ab-thumblist/ab-thumblist.html">
-<link rel="import" href="../ab-tracklist/ab-tracklist.html">
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
 
@@ -41,7 +37,7 @@
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
 
-<dom-module id="ab-app">
+<dom-module id="ez-app">
     <template>
 
         <!-- build:remove -->
@@ -58,33 +54,33 @@
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
                 background-color: rgba(0, 0, 0, 0.1);
-           }
+            }
 
             /*Style of the paper-input*/
-                paper-input.inputPapers {
-                    /* Label and underline color when the input is not focused */
-                    --paper-input-container-color: green;
-                    /* Label and underline color when the input is focused */
-                    --paper-input-container-focus-color: green;
-                    /* Label and underline color when the input is invalid */
-                    --paper-input-container-invalid-color: green;
-                    /* Input foreground color */
-                    --paper-input-container-input-color: green;
+            paper-input.inputPapers {
+                /* Label and underline color when the input is not focused */
+                --paper-input-container-color: green;
+                /* Label and underline color when the input is focused */
+                --paper-input-container-focus-color: green;
+                /* Label and underline color when the input is invalid */
+                --paper-input-container-invalid-color: green;
+                /* Input foreground color */
+                --paper-input-container-input-color: green;
 
-                    width: 200px;
-                }
+                width: 200px;
+            }
 
-                paper-input.searchPapers {
-                    --paper-input-container-color:red ;
-                    --secondary-text-color: red;
-                    --default-primary-color: red;
-                    --text-primary-color: red;
-                    --text-secondary-color: red;
-                    --primary-text-color: red;
-                    --paper-menu-background-color: red;
-                    --primary-background-color: red;
-                    background-color: red;
-                }
+            paper-input.searchPapers {
+                --paper-input-container-color: red;
+                --secondary-text-color: red;
+                --default-primary-color: red;
+                --text-primary-color: red;
+                --text-secondary-color: red;
+                --primary-text-color: red;
+                --paper-menu-background-color: red;
+                --primary-background-color: red;
+                background-color: red;
+            }
 
             a:hover {
                 text-underline: none;
@@ -113,7 +109,7 @@
             }
 
             /*paper-button[toggles] {*/
-                /*background-color: #000066;*/
+            /*background-color: #000066;*/
             /*}*/
 
             .main-nav {
@@ -144,7 +140,6 @@
             }
 
             .header {
-                /*border-bottom: 1px solid rgba(255, 255, 255, 0.3);*/
                 box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
             }
 
@@ -165,18 +160,19 @@
 
         </style>
         <iron-ajax
+                id="getPlayers"
                 auto
                 url="http://localhost:3000/players"
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
 
-        <iron-ajax id="andreaTest"
-                auto
-                url="http://localhost:3000/games"
-                handle-as="json"
-                last-response="{{playlists}}"
-                debounce-duration="300"></iron-ajax>
+        <iron-ajax id="getGames"
+                   auto
+                   url="http://localhost:3000/games"
+                   handle-as="json"
+                   last-response="{{games}}"
+                   debounce-duration="300"></iron-ajax>
 
         <iron-ajax
                 id="newGame"
@@ -190,13 +186,6 @@
 
 
         <iron-ajax
-                auto
-                url="http://localhost:3000/players"
-                handle-as="json"
-                last-response="{{players}}"
-                debounce-duration="300"></iron-ajax>
-
-        <iron-ajax
                 id="createPlayer"
                 url="http://localhost:3000/players"
                 handle-as="json"
@@ -205,30 +194,27 @@
                 debounce-duration="3000">
         </iron-ajax>
 
+        <!--header-->
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
                 <paper-dropdown-menu label="choose game..." placeholder="{{params.gameid}}">
                     <paper-menu class="dropdown-content">
-                        <template is="dom-repeat" items="{{playlists}}" as="playlist">
-                            <!--<paper-item><a href="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>-->
-                            <!--</paper-item>-->
-                            <!--<a href="/games/{{playlist._id}}" on-click="_gameItem">{{playlist.date}}</a>-->
-                            <ab-menu-item editable href$="/games/{{playlist._id}}" value="{{playlist._id}}">
+                        <template is="dom-repeat" items="{{games}}" as="game">
+                            <ab-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
                             </ab-menu-item>
 
                         </template>
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <!--<a href="/games/{{newGame._id}}" on-click="_createGame" class="inherit"><paper-button>create game</paper-button></a>-->
                 <paper-button on-click="_createGame">create game</paper-button>
                 <div class="float-right">
-                    <!--<a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>-->
                     <paper-button on-click="_redirect">home</paper-button>
                     <paper-button on-click="">{{user}}user</paper-button>
                     <paper-button on-click="">signout</paper-button>
                 </div>
             </paper-toolbar>
+
 
             <!--iron pages for different views-->
             <iron-pages attr-for-selected="data-route" selected="{{route}}">
@@ -239,14 +225,14 @@
 
                 <!--game view-->
                 <div data-route="games">
-                <iron-ajax
-                                    id="startGame"
-                                    url="http://localhost:3000/games/{{game._id}}"
-                                    handle-as="json"
-                                    content-type="application/json"
-                                    method="PUT"
-                                    debounce-duration="3000">
-                            </iron-ajax>
+                    <iron-ajax
+                            id="setGame"
+                            url="http://localhost:3000/games/{{game._id}}"
+                            handle-as="json"
+                            content-type="application/json"
+                            method="PUT"
+                            debounce-duration="3000">
+                    </iron-ajax>
                     <iron-ajax
                             id="getGame"
                             auto
@@ -255,9 +241,7 @@
                             last-response="{{game}}"
                             debounce-duration="300"></iron-ajax>
 
-                    <!--game is {{params.id}}-->
-                    <!--game is {{game._id}}-->
-                    <!--iron-pages to change view-->
+                    <!--different states of game-->
                     <iron-pages attr-for-selected="state" selected="{{game.state}}">
 
                         <!--game not started yet-->
@@ -270,16 +254,7 @@
                                 <paper-button on-click="_createPlayer" id="btnCreate">create player</paper-button>
                             </div>
 
-                            <!--<iron-ajax-->
-                                    <!--id="startGame"-->
-                                    <!--url="http://localhost:3000/games/{{game._id}}"-->
-                                    <!--handle-as="json"-->
-                                    <!--content-type="application/json"-->
-                                    <!--method="PUT"-->
-                                    <!--debounce-duration="3000">-->
-                            <!--</iron-ajax>-->
 
-                            <!--FIXME start button changes data but doesn't reload page-->
                             <paper-button on-click="_startGame">start game</paper-button>
                             <template is="dom-repeat" items="{{game.players}}" as="player">
                                 <paper-item>{{player.firstName}} {{player.lastName}}
@@ -294,20 +269,19 @@
                                         </paper-item>
                                     </template>
                                 </paper-listbox>
-                                <!--<ab-tracklist tracks="{{players}}"></ab-tracklist>-->
                             </div>
                         </div>
 
                         <!--game started-->
                         <div state="1">
 
-                            <!--TODO swap players with game's players (first we have to put players in a game)-->
                             <div class="horizontal layout flex" id="wrapper">
-
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1" selectedItem>
-                                        <template is="dom-repeat" items="{{players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1"
+                                                   selectedItem>
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                                                {{player.lastName}}
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -315,8 +289,12 @@
 
                                 <div class="content flex" id="main-content">
                                     <div id="upperBar"> 
-                                        <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">Hit</paper-button>
-                                        <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">Miss</paper-button>
+                                        <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
+                                            Hit
+                                        </paper-button>
+                                        <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
+                                            Miss
+                                        </paper-button>
                                          
                                     </div>
                                      
@@ -338,7 +316,7 @@
 
                         <!--game finished-->
                         <div state="2">
-                        finished game
+                            finished game
                         </div>
 
                     </iron-pages>
@@ -350,7 +328,7 @@
         </paper-header-panel>
 
         <paper-toast id="toast">
-            <span class="toast-hide-button" role="button" tabindex="0" onclick="abApp.$.toast.hide()">Ok</span>
+            <span class="toast-hide-button" role="button" tabindex="0" onclick="ezApp.$.toast.hide()">Ok</span>
         </paper-toast>
         <!-- /build -->
     </template>
@@ -361,13 +339,13 @@
             'use strict';
 
             Polymer({
-                is: 'ab-app',
+                is: 'ez-app',
 
                 //
                 <!-- build:remove -->
                 properties: {
                     selected: {
-                      type: String,
+                        type: String,
                         notify: true
                     },
                     route: {
@@ -381,21 +359,6 @@
                     userid: {
                         type: String,
                         value: '563fd9661d1e084ac3e1b6b2'
-                    },
-                    tracks: {
-                        type: Array
-                    },
-                    albums: {
-                        type: Array
-                    },
-                    artists: {
-                        type: Array
-                    },
-                    playlists: {
-                        type: Array
-                    },
-                    selectedPlaylist: {
-                        type: Object
                     }
                 },
 
@@ -405,7 +368,7 @@
                         "result": "true"
                     });
                     this.$.newGame.generateRequest();
-                    this.$.andreaTest.generateRequest();
+                    this.$.getGames.generateRequest();
                 },
 
                 _createPlayer: function (event, detail) {
@@ -423,32 +386,30 @@
 
                 _setSuccess: function (event, detail) {
                     this.$.canv.hit = "hit";
-
                 },
 
                 _setSelected: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
-
                 },
 
-                _activateButtons: function(event, detail) {
+                _activateButtons: function (event, detail) {
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
                 },
 
                 _startGame: function (event, detail) {
-                    this.$.startGame.body = JSON.stringify({
+                    this.$.setGame.body = JSON.stringify({
                         "state": "1"
                     });
-                    this.$.startGame.generateRequest();
+                    this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
                 },
 
                 _endGame: function (event, detail) {
-                    this.$.startGame.body = JSON.stringify({
+                    this.$.setGame.body = JSON.stringify({
                         "state": "2"
                     });
-                    this.$.startGame.generateRequest();
+                    this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
                 },
 
@@ -457,22 +418,19 @@
 
                 },
 
-                _redirect: function(event, detail){
+//                TODO home button doesn't reset game placeholder
+                _redirect: function (event, detail) {
                     page.redirect("/")
                 },
 
                 ready: function () {
-                    window.abApp = this;
+                    window.ezApp = this;
                 },
 
-                // Scroll page to top
                 scrollPageToTop: function () {
 
                 }
-
-            //
-            <!-- /build -->
-        });
+            });
 
         })
         ();
