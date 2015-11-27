@@ -15,6 +15,7 @@
                 display: block;
 
             }
+
             #myCanvas {
                 width: 60vw;
             }
@@ -30,9 +31,9 @@
                 debounce-duration="3000">
         </iron-ajax>
         <!--<p id="selPlayer" class="player" style="display:none">[[selected]]</p>-->
-        <p id="selPlayer" class="player" >[[selected]]</p>
+        <p id="selPlayer" class="player">[[selected]]</p>
         <!--<p id="hitPlayer" style="display:none">[[hit]]</p>-->
-        <p id="selHit" >[[hit]]</p>
+        <p id="selHit">[[hit]]</p>
 
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
@@ -47,18 +48,17 @@
                 properties: {
                     selected: {
                         type: String,
-                        notify: true,
+                        notify: true
                     },
                     hit: {
                         type: String,
-                        notify: true,
-                    },
+                        notify: true
+                    }
                 },
 
 
-
-                attached: function() {
-                    var player = this.$.selPlayer;
+                attached: function () {
+//                    var player = this.$.selPlayer;
                     var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
                     var canvas = this.$.myCanvas;
@@ -66,24 +66,23 @@
                     var stage = new createjs.Stage(canvas);
                     var rect = new createjs.Shape();
                     var circle = new createjs.Shape();
-                    circle.graphics.beginFill("#ff0000").drawCircle(100,100,10)
+                    circle.graphics.beginFill("#ff0000").drawCircle(100, 100, 10);
 
-                    var rectangleGraphics = new createjs.Graphics()
-                    rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height)
-                    var rectangleShape = new createjs.Shape(rectangleGraphics)
+                    var rectangleGraphics = new createjs.Graphics();
+                    rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height);
+                    var rectangleShape = new createjs.Shape(rectangleGraphics);
 
-                    var twoPointsLeft = new createjs.Graphics()
+                    var twoPointsLeft = new createjs.Graphics();
                     twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
                             arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-                            lt(0, field.height - field.treyFromBorder)
+                            lt(0, field.height - field.treyFromBorder);
                     var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
 
-                    var twoPointsRight = new createjs.Graphics()
+                    var twoPointsRight = new createjs.Graphics();
                     twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
                             lt(field.width, field.height - field.treyFromBorder).
-                            arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843)
+                            arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
                     var twoPointsRightShape = new createjs.Shape(twoPointsRight);
-
 
 
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
@@ -109,53 +108,35 @@
                             arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
 
 
-
-                    stage.addChild(rectangleShape)
-                    stage.addChild(twoPointsLeftShape)
-                    stage.addChild(twoPointsRightShape)
+                    stage.addChild(rectangleShape);
+                    stage.addChild(twoPointsLeftShape);
+                    stage.addChild(twoPointsRightShape);
                     stage.addChild(rect);
                     stage.update();
 
-                    rectangleShape.on("click", function(e) {
-//                        console.log(e.stageX / field.width, e.stageY / field.height);
-//                        console.log("3 points")
-//                        console.log(player.innerHTML)
-//                        console.log(playerHit)
-//                        console.log(String(playerHit))
-//                        console.log(String(playerHit) =="hit")
-
+                    rectangleShape.on("click", function (e) {
                         ironAjax.body = JSON.stringify({
                             "pos_x": String(e.stageX / field.width),
                             "pos_y": String(e.stageY / field.height),
-                            "success" : playerHit.innerHTML == "hit",
-                            "two_points" : false
+                            "success": playerHit.innerHTML == "hit",
+                            "two_points": false
                         });
                         ironAjax.generateRequest();
                     });
 
-                    twoPointsLeftShape.on("click", function(e) {
+                    twoPointsLeftShape.on("click", function (e) {
                         console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
-                    twoPointsRightShape.on("click", function(e) {
+                    twoPointsRightShape.on("click", function (e) {
                         console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
-                },
+                }
 
 
             });
-        })()
-
-        function _getWidth() {
-//            console.log(window.innerWidth)
-          return window.innerWidth;
-
-        }
-
-        function _getHeight() {
-            return window.innerHeight;
-        }
+        })();
 
         function measures() {
             var width = 1500;
@@ -169,8 +150,8 @@
                 treyFromBorder: 3 * ratio,
                 treyLength: 14 * ratio,
                 treyRadius: 23.9 * ratio,
-                basketFromBorder: 4.6 * ratio,
-            }
+                basketFromBorder: 4.6 * ratio
+            };
             return field;
         }
     </script>

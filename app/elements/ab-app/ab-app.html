@@ -124,50 +124,7 @@
                 transition: width 150ms ease-out;
                 overflow-y: auto;
                 color: #f7f7f7;
-                box-shadow: 0px 0 30px rgba(0, 0, 0, 0.2);
-            }
-
-            /*      #main-menu-toggle-label {
-                    cursor: pointer;
-                    color: rgba(0,0,0,0.4);
-                    font-size: 32px;
-                    display: inline-block;
-                    border: 1px solid rgba(0,0,0,0.4);
-                    line-height: 0;
-                    text-align: center;
-                    border-radius: 4px;
-                    margin: 0;
-                    padding: 2px 7px 1px;
-                  }*/
-
-            /*      #main-menu-toggle {
-                    position: absolute;
-                    top: -9999px;
-                    left: -9999px;
-                  }*/
-
-            /*      #main-nav h2 {
-                    margin: 0;
-                    padding: 1em;
-                    color: rgba(0,0,0,0.4);
-                    font-size: 2em;
-                  }*/
-
-            /*      #main-menu{
-                    margin-bottom: 60px;
-                  }*/
-
-
-            /*
-             * In order to not have the liks modify the appearance.
-            */
-            .inherit {
-                color: inherit;
-                background-color: inherit;
-            }
-
-            .nav-menu {
-                line-height: 8.4vh;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
             }
 
             .float-right {
@@ -200,58 +157,6 @@
                     display: none;
                 }
             }
-
-            /*
-                  #create-pl-btn {
-                    color: rgba(0,0,0,0.4);
-                    background: rgba(0,0,0,0.1);
-                    display: inline-block;
-                    width: auto;
-                    padding: 2px 5px 4px;
-                    margin: 0 0 20px 10px;
-                    font-size: 1.2em;
-                    line-height: 1;
-                    white-space: nowrap;
-                    overflow: hidden;
-                  }*/
-
-            /*      #create-pl-btn:hover, #create-pl-btn:active {
-                    background: rgba(0,0,0,0.2);
-                    color: #f7f7f7;
-                    text-decoration: none;
-                  }*/
-
-            /*      ab-menu-item{
-                    outline: none;
-                  }*/
-
-            /*      ab-tracklist{
-                    font-weight: 500;
-                  }*/
-
-            /*      #mainSearch{
-                    box-shadow: inset 0 -1px rgba(0,0,0,0.2), inset 0 1px rgba(0,0,0,0.2);
-                    --paper-input-container-label:{
-                      color:darkgrey;
-                      font-size: 1.4em;
-                      font-weight: inherit;
-                    };
-                    --paper-input-container-underline:{
-                      display:none;
-                    };
-                    --paper-input-container-underline-focus:{
-                      display:none;
-                    };
-                    --paper-input-container-input:{
-                      padding: 0 0 5px 0;
-                      font-size: 1.4em;
-                      color: inherit;
-                    };
-                  }*/
-
-            /*      #mainSearch iron-icon{
-                    padding: 0 20px 5px;
-                  }*/
 
             #boxInputs {
                 border: solid;
@@ -417,6 +322,8 @@
                                      
                                     <ez-canvas id="canv" selected="not" hit="boh">
                                     </ez-canvas>
+                                    <paper-button on-click="_endGame">end game</paper-button>
+
                                 </div>
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox>
@@ -431,7 +338,7 @@
 
                         <!--game finished-->
                         <div state="2">
-
+                        finished game
                         </div>
 
                     </iron-pages>
@@ -461,11 +368,11 @@
                 properties: {
                     selected: {
                       type: String,
-                        notify: true,
+                        notify: true
                     },
                     route: {
                         type: String,
-                        notify: true,
+                        notify: true
                     },
                     params: {
                         type: Object,
@@ -495,14 +402,10 @@
                 _createGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
                         "date": Date.now(),
-                        "result": "true",
+                        "result": "true"
                     });
-                    event.preventDefault();
                     this.$.newGame.generateRequest();
                     this.$.andreaTest.generateRequest();
-//                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-//                    console.log(resource)
-//                    page.redirect(resource);
                 },
 
                 _createPlayer: function (event, detail) {
@@ -510,14 +413,8 @@
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
                         "team": this.$.team.value
-                    })
+                    });
                     this.$.createPlayerAndAdd.generateRequest();
-//                    this.$.startGame.body = JSON.stringify({
-//                        "firstName": this.$.firstname.value,
-//                        "lastName": this.$.lastname.value,
-//                        "team": this.$.team.value
-//                    })
-//                    this.$.startGame.generateRequest();
                 },
 
                 _gameItem: function (event, detail) {
@@ -525,101 +422,54 @@
                 },
 
                 _setSuccess: function (event, detail) {
-                    console.log("success")
-//                        console.log(this.$.team1.selectedItem)
-                    this.$.canv.hit = "hit"
-                    console.log(this.$.canv.hit)
+                    this.$.canv.hit = "hit";
 
                 },
 
                 _setSelected: function (event, detail) {
-//                    console.log(this.$.team1.selected)
-//                    this.$.team1.selected = "te";
-//                    console.log(this.$.canv.selected)
                     this.$.canv.selected = this.$.team1.selectedItem.id;
-                    console.log(this.$.canv.selected)
 
                 },
 
                 _activateButtons: function(event, detail) {
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
-//                    console.log(this.$.team1.selected)
                 },
 
                 _startGame: function (event, detail) {
                     this.$.startGame.body = JSON.stringify({
-                        "state": "1",
+                        "state": "1"
                     });
-                    event.preventDefault()
+                    this.$.startGame.generateRequest();
+                    this.$.getGame.generateRequest();
+                },
+
+                _endGame: function (event, detail) {
+                    this.$.startGame.body = JSON.stringify({
+                        "state": "2"
+                    });
                     this.$.startGame.generateRequest();
                     this.$.getGame.generateRequest();
                 },
 
                 _setFail: function (event, detail) {
-                    console.log("fail")
                     this.$.canv.hit = "fail"
 
                 },
 
-                created: function () {
-                    this._hasReceivedAJAXPlaylistsResponse = false;
-                },
-
                 _redirect: function(event, detail){
-//                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
                     page.redirect("/")
                 },
 
                 ready: function () {
                     window.abApp = this;
-                    // window.onload = init;
                 },
 
                 // Scroll page to top
                 scrollPageToTop: function () {
 
-                },
+                }
 
-                _onPlaylistAjax: function (event) {
-                    this._hasReceivedAJAXPlaylistsResponse = true;
-                },
-
-                // page middleware for playlit
-                validatePlaylistId: function (ctx, next, timesTried) {
-                    timesTried = timesTried || 0;
-
-                    // try 10 times and then surrender
-                    if (timesTried > 9) {
-                        return next();
-                    }
-
-                    // make sure we have playlists
-                    if (!this._hasReceivedAJAXPlaylistsResponse) {
-                        return this.async(function () {
-                            this.validatePlaylistId(ctx, next, ++timesTried)
-                        }, 500)
-                    }
-
-                    ctx.playlistExists = false;
-                    for (var i = 0, l = this.playlists.length; i < l; i++) {
-                        if (this.playlists[i]._id == ctx.params.playlistid) {
-                            ctx.playlistExists = true;
-                            this.selectedPlaylist = this.playlists[i];
-                            break;
-                        }
-                    }
-                    next();
-                },
-
-                _calcPlaylistHref(pid)
-            {
-                return "/playlists/" + pid;
-            },
-
-            _andreaTest: function(s) {
-                this.$.andreaTest.url = s;
-            }
             //
             <!-- /build -->
         });

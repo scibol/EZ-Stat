@@ -19,28 +19,10 @@
       abApp.route = 'main';
     });
 
-    page('/albums', scrollToTop, function() {
-      abApp.route = 'albums';
-    });
-
-    page('/albums/:album', scrollToTop, function(data) {
-      abApp.route = 'albums';
-      abApp.params = data.params;
-    });
-
-    page('/artists', scrollToTop, function() {
-      abApp.route = 'artists';
-    });
 
 
     /* Implement the routing for the playlists here */
     //<!-- build:remove -->
-    page('/playlists/:playlistid', scrollToTop, abApp.validatePlaylistId.bind(abApp),  function(data) {
-      if( data.playlistExists) {
-        abApp.route = 'playlists';
-        abApp.params = data.params;
-        return;
-      }
 
       abApp.$.toast.text = 'Can\'t find playlist with id: ' + data.params.playlistid  + '. Redirected you to Home Page';
       abApp.$.toast.show();
