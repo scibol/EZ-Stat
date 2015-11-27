@@ -9,6 +9,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var Game = mongoose.model('Game');
 var config = require("../../config");
 var pubsub = require('../../pubsub');
+var Player = mongoose.model('Player');
 
 //fields we don't want to show to the client
 var fieldsFilter = {'__v': 0};
@@ -19,9 +20,7 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 
 //list games
 router.get('/', function (req, res, next) {
-    console.log('asd')
     Game.find({}, fieldsFilter).lean().exec(function (err, games) {
-        console.log(games)
         if (err) return next(err);
         // games.forEach(function(game){
         //   addLinks(game);
@@ -32,8 +31,6 @@ router.get('/', function (req, res, next) {
 
 //create new game
 router.post('/', function (req, res, next) {
-    console.log("asdasda")
-    console.log(req.body)
     var newGame = new Game(req.body);
     newGame.save(onModelSave(res, 201, true));
 });
@@ -58,12 +55,13 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
-
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
-            if (data.players) {
-                game.players = data.players;
+            if (data.firstName) {
+                Player.findOne(data, fieldsFilter, function (err, player) {
+                    game.players.push(player)
+                });
             }
             if (data.result) {
                 game.result = data.result;
@@ -71,7 +69,6 @@ router.put('/:gameid', function (req, res, next) {
             if (data.state) {
                 game.state = data.state;
             }
-
             game.save(onModelSave(res));
         } else {
             //game does not exist create it

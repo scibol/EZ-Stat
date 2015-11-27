@@ -107,32 +107,34 @@
 
         function setWidth() {
             return window.innerWidth;
-
-        function _getWidth() {
-          return window.innerWidth;
-
         }
+            function _getWidth() {
+                return window.innerWidth;
 
-        function _getHeight() {
-            return window.innerHeight;
-        }
-
-        function measures() {
-            var width = 1500;
-            var ratio = width / 94;
-            var field = {
-                width: 94 * ratio,
-                height: 50 * ratio,
-                radius: 6 * ratio,
-                smallAreaWidth: 19 * ratio,
-                smallAreaHeight: 16 * ratio,
-                treyFromBorder: 3 * ratio,
-                treyLength: 14 * ratio,
-                treyRadius: 23.9 * ratio,
-                basketFromBorder: 4.6 * ratio,
             }
-            return field;
-        }
+
+            function _getHeight() {
+                return window.innerHeight;
+            }
+
+
+            function measures() {
+                var width = 1500;
+                var ratio = width / 94;
+                var field = {
+                    width: 94 * ratio,
+                    height: 50 * ratio,
+                    radius: 6 * ratio,
+                    smallAreaWidth: 19 * ratio,
+                    smallAreaHeight: 16 * ratio,
+                    treyFromBorder: 3 * ratio,
+                    treyLength: 14 * ratio,
+                    treyRadius: 23.9 * ratio,
+                    basketFromBorder: 4.6 * ratio,
+                }
+                return field;
+            }
+
     </script>
 
 </dom-module>

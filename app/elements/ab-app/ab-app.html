@@ -48,7 +48,8 @@
 
         <style include="shared-styles">
             :host {
-            @apply(- -layout-vertical);
+                @apply(
+                --layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -58,33 +59,33 @@
                 --paper-menu-background-color: rgba(255, 255, 255, 0.95);
                 --primary-background-color: #2A2C2B;
                 background-color: rgba(0, 0, 0, 0.1);
-           }
+            }
 
             /*Style of the paper-input*/
-                paper-input.inputPapers {
-                    /* Label and underline color when the input is not focused */
-                    --paper-input-container-color: green;
-                    /* Label and underline color when the input is focused */
-                    --paper-input-container-focus-color: green;
-                    /* Label and underline color when the input is invalid */
-                    --paper-input-container-invalid-color: green;
-                    /* Input foreground color */
-                    --paper-input-container-input-color: green;
+            paper-input.inputPapers {
+                /* Label and underline color when the input is not focused */
+                --paper-input-container-color: green;
+                /* Label and underline color when the input is focused */
+                --paper-input-container-focus-color: green;
+                /* Label and underline color when the input is invalid */
+                --paper-input-container-invalid-color: green;
+                /* Input foreground color */
+                --paper-input-container-input-color: green;
 
-                    width: 200px;
-                }
+                width: 200px;
+            }
 
-                paper-input.searchPapers {
-                    --paper-input-container-color:red ;
-                    --secondary-text-color: red;
-                    --default-primary-color: red;
-                    --text-primary-color: red;
-                    --text-secondary-color: red;
-                    --primary-text-color: red;
-                    --paper-menu-background-color: red;
-                    --primary-background-color: red;
-                    background-color: red;
-                }
+            paper-input.searchPapers {
+                --paper-input-container-color: red;
+                --secondary-text-color: red;
+                --default-primary-color: red;
+                --text-primary-color: red;
+                --text-secondary-color: red;
+                --primary-text-color: red;
+                --paper-menu-background-color: red;
+                --primary-background-color: red;
+                background-color: red;
+            }
 
             a:hover {
                 text-underline: none;
@@ -153,7 +154,6 @@
                     margin-bottom: 60px;
                   }*/
 
-
             /*
              * In order to not have the liks modify the appearance.
             */
@@ -161,7 +161,6 @@
                 color: inherit;
                 background-color: inherit;
             }
-
 
             /*
              * In order to not have the liks modify the appearance.
@@ -264,7 +263,7 @@
                 border-radius: 5px;
                 padding: 5px;
                 margin: 5px;
-                border-color: rgb(32,32,32);
+                border-color: rgb(32, 32, 32);
             }
 
             #btnCreate {
@@ -322,11 +321,19 @@
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <a href="/createGame" on-click="_newGame" class="inherit"><paper-button>create game</paper-button></a>
+                <a href="/createGame" on-click="_newGame" class="inherit">
+                    <paper-button>create game</paper-button>
+                </a>
+
                 <div class="float-right">
-                    <a href="/index" on-click="_redirect" class="inherit"><paper-button >home</paper-button>
-                    <a><paper-button on-click="">{{user}}user</paper-button></a>
-                    <a><paper-button on-click="">signout</paper-button></a>
+                    <a href="/index" on-click="_redirect" class="inherit">
+                        <paper-button>home</paper-button>
+                        <a>
+                            <paper-button on-click="">{{user}}user</paper-button>
+                        </a>
+                        <a>
+                            <paper-button on-click="">signout</paper-button>
+                        </a>
                 </div>
             </paper-toolbar>
 
@@ -339,14 +346,14 @@
 
                 <!--game view-->
                 <div data-route="games">
-                <iron-ajax
-                                    id="startGame"
-                                    url="http://localhost:3000/games/{{game._id}}"
-                                    handle-as="json"
-                                    content-type="application/json"
-                                    method="PUT"
-                                    debounce-duration="3000">
-                            </iron-ajax>
+                    <iron-ajax
+                            id="startGame"
+                            url="http://localhost:3000/games/{{game._id}}"
+                            handle-as="json"
+                            content-type="application/json"
+                            method="PUT"
+                            debounce-duration="3000">
+                    </iron-ajax>
                     <iron-ajax
                             auto
                             url="http://localhost:3000/games/{{params.gameid}}"
@@ -361,7 +368,7 @@
                         <!--game not started yet-->
                         <div state="0">
                             <div id="boxInputs">
-                            Fill the following data
+                                Fill the following data
                                 <paper-input id="firstname" label="first name" class="inputPapers"></paper-input>
                                 <paper-input id="lastname" label="last name" class="inputPapers"></paper-input>
                                 <paper-input id="team" label="team name" class="inputPapers"></paper-input>
@@ -408,7 +415,8 @@
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" id="team1" selectedItem>
                                         <template is="dom-repeat" items="{{players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                                                {{player.lastName}}
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -416,8 +424,10 @@
 
                                 <div class="content flex" id="main-content">
                                     <div id="upperBar"> 
-                                        <paper-button id="btnHit" disabled="true" on-click="_setSuccess">Hit</paper-button>
-                                        <paper-button id="btnMiss" disabled="true" on-click="_setFail">Miss</paper-button>
+                                        <paper-button id="btnHit" disabled="true" on-click="_setSuccess">Hit
+                                        </paper-button>
+                                        <paper-button id="btnMiss" disabled="true" on-click="_setFail">Miss
+                                        </paper-button>
                                          
                                     </div>
                                      
@@ -502,7 +512,7 @@
                     event.preventDefault()
                     console.log(event.currentTarget.href);
                     this.$.newGame.generateRequest();
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/, "");
                     page.show(resource)
                 },
 
@@ -510,8 +520,15 @@
                     this.$.createPlayer.body = JSON.stringify({
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
                     })
                     this.$.createPlayer.generateRequest();
+                    this.$.startGame.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
+                    })
+                    this.$.startGame.generateRequest();
                 },
 
 
@@ -520,9 +537,10 @@
                     console.log("test")
                 },
 
+
                 _setSuccess: function (event, detail) {
                     console.log("success")
-                    if(this.$.team1.selectedItem) {
+                    if (this.$.team1.selectedItem) {
                         console.log(this.$.team1.selectedItem)
 
                     }
@@ -531,7 +549,7 @@
                     }
                 },
 
-                _activateButtons: function(event, detail) {
+                _activateButtons: function (event, detail) {
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
                 },
@@ -554,11 +572,11 @@
                     this._hasReceivedAJAXPlaylistsResponse = false;
                 },
 
-                _redirect: function(event, detail){
+                _redirect: function (event, detail) {
                     event.preventDefault()
                     console.log(event.currentTarget)
                     console.log(event.currentTarget.href)
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"") 
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/, "")
                     page.show(resource)
                 },
 
@@ -609,7 +627,8 @@
             }
             //
             <!-- /build -->
-        });
+        })
+            ;
 
         })
         ();
