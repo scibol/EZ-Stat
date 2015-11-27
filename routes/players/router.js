@@ -32,6 +32,7 @@ router.get('/', function(req, res, next) {
 //create new player
 router.post('/', function(req, res, next) {
     var newPlayer = new Player(req.body);
+    console.log(newPlayer)
     newPlayer.save(onModelSave(res, 201, true));
 });
 

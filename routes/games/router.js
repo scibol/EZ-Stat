@@ -60,7 +60,9 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    game.players.push(player)
+                    var playersArray = game.players;
+                    playersArray.push(player);
+                    game.players = playersArray;
                 });
             }
             if (data.result) {
@@ -116,7 +118,6 @@ function onModelSave(res, status, sendItAsResponse) {
                 return next(err);
             }
         }
-
         pubsub.emit('game.updated', {})
         if (sendItAsResponse) {
             var obj = saved.toObject();
