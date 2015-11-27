@@ -32,6 +32,7 @@
             Polymer({
                 is: 'ez-canvas',
 
+
                 attached: function() {
                     var canvas = this.$.myCanvas;
                     var field = measures();
@@ -89,7 +90,7 @@
                     stage.update();
 
                     rectangleShape.on("click", function(e) {
-                        console.log(e.stageX / field.width, e.stageY / field.height);
+                        console.log(typeof (e.stageX / field.width),typeof e.stageY / field.height);
                         console.log("3 points")
                     });
 

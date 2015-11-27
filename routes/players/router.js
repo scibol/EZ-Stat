@@ -55,8 +55,8 @@ router.get('/:playerid', function(req, res, next) {
 
 //update a player
 router.put('/:playerid', function(req, res, next) {
-  console.log("DIO")
   var data = req.body;
+  console.log(req.body)
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
     if (player){

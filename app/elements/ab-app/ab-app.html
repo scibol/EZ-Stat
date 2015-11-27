@@ -9,7 +9,6 @@
 <link rel="import" href="../../components/iron-icons/iron-icons.html">
 <link rel="import" href="../../components/iron-pages/iron-pages.html">
 <link rel="import" href="../../components/paper-toast/paper-toast.html">
-
 <link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../components/paper-item/paper-item.html">
 <link rel="import" href="../../components/paper-menu/paper-menu.html">
@@ -298,6 +297,15 @@
                 debounce-duration="3000">
         </iron-ajax>
 
+        <iron-ajax
+                id="newShot"
+                url="http://localhost:3000/players/{{player.id}}"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
 
         <iron-ajax
                 auto
@@ -321,9 +329,9 @@
 
                     </paper-menu>
                 </paper-dropdown-menu>
-                <a href="/createGame" on-click="_newGame" class="inherit">
-                    <paper-button>create game</paper-button>
-                </a>
+
+                    <paper-button on-click="_createGame">create game</paper-button>
+
 
                 <div class="float-right">
                     <a href="/index" on-click="_redirect" class="inherit">
@@ -398,11 +406,10 @@
                             <div class="float-right max-height">
                                 <paper-listbox>
                                     <template is="dom-repeat" items="{{players}}" as="player">
-                                        <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                        <paper-item>{{player.firstName}} {{player.lastName}}
                                         </paper-item>
                                     </template>
                                 </paper-listbox>
-                                <!--<ab-tracklist tracks="{{players}}"></ab-tracklist>-->
                             </div>
                         </div>
 
@@ -413,9 +420,9 @@
                             <div class="horizontal layout flex" id="wrapper">
 
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" id="team1" selectedItem>
-                                        <template is="dom-repeat" items="{{players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                                    <paper-listbox on-tap="_activateButtons" id="team1">
+                                        <template is="dom-repeat" items="{{game.players}}" as="player"">
+                                            <paper-item on-click="getPlayerId" id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}
                                             </paper-item>
                                         </template>
@@ -428,16 +435,16 @@
                                         </paper-button>
                                         <paper-button id="btnMiss" disabled="true" on-click="_setFail">Miss
                                         </paper-button>
-                                         
                                     </div>
                                      
                                     <ez-canvas>
                                     </ez-canvas>
+
                                 </div>
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox>
-                                        <template is="dom-repeat" items="{{players}}" as="player">
-                                            <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item>{{player.firstName}} {{player.lastName}}
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -487,22 +494,31 @@
                         type: String,
                         value: '563fd9661d1e084ac3e1b6b2'
                     },
-                    tracks: {
-                        type: Array
-                    },
-                    albums: {
-                        type: Array
-                    },
-                    artists: {
-                        type: Array
-                    },
-                    playlists: {
-                        type: Array
-                    },
-                    selectedPlaylist: {
-                        type: Object
+                    playerId: {
+                        type: String,
+                        notify: true
                     }
                 },
+
+                getPlayerId: function(event, detail) {
+                    this.playerId = event.path[0].id;
+                    return this.playerId;
+                },
+
+                _setSuccess: function (event, detail) {
+                    console.log("success")
+                    if (this.$.team1.selectedItem) {
+                        console.log(this.$.team1.selectedItem)
+                    }
+                    else {
+                        console.log("you have to select a player!")
+                    }
+                    this.$.newShot.body = JSON.stringify({
+                        "success" : true
+                    });
+                    this.$.newShot.generateRequest()
+                },
+
 
                 _createGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
@@ -538,17 +554,6 @@
                 },
 
 
-                _setSuccess: function (event, detail) {
-                    console.log("success")
-                    if (this.$.team1.selectedItem) {
-                        console.log(this.$.team1.selectedItem)
-
-                    }
-                    else {
-                        console.log("you have to select a player!")
-                    }
-                },
-
                 _activateButtons: function (event, detail) {
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
@@ -561,7 +566,7 @@
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
-                    page.show(resource)
+                    location.reload(); //TODO: USE page.js to reload in some way
                 },
 
                 _setFail: function (event, detail) {

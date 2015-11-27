@@ -60,9 +60,8 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    var playersArray = game.players;
-                    playersArray.push(player);
-                    game.players = playersArray;
+                    game.players.push(player)
+                    game.save(onModelSave(res));
                 });
             }
             if (data.result) {
