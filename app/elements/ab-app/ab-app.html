@@ -104,13 +104,17 @@
             #btnMiss {
                 float: right;
                 width: 10em;
-                background-color: rgba(0, 0, 0, 0.3);
+                background-color: rgba(0, 0, 0, 0.1);
             }
 
             #btnHit {
                 width: 10em;
-                background-color: rgba(0, 0, 0, 0.3);
+                background-color: rgba(0, 0, 0, 0.1);
             }
+
+            /*paper-button[toggles] {*/
+                /*background-color: #000066;*/
+            /*}*/
 
             .main-nav {
                 width: 20vw;
@@ -388,8 +392,8 @@
 
                                 <div class="content flex" id="main-content">
                                     <div id="upperBar"> 
-                                        <paper-button id="btnHit" disabled="true" on-click="_setSuccess">Hit</paper-button>
-                                        <paper-button id="btnMiss" disabled="true" on-click="_setFail">Miss</paper-button>
+                                        <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">Hit</paper-button>
+                                        <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">Miss</paper-button>
                                          
                                     </div>
                                      
@@ -474,7 +478,8 @@
                     event.preventDefault();
                     this.$.newGame.generateRequest();
                     var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-                    page.show(resource)
+                    console.log(resource)
+                    page.redirect(resource);
                 },
 
                 _createPlayer: function (event, detail) {
@@ -488,18 +493,11 @@
 
                 _gameItem: function (event, detail) {
                     event.preventDefault();
-                    console.log("test")
                 },
 
                 _setSuccess: function (event, detail) {
                     console.log("success")
-                    if(this.$.team1.selectedItem) {
-                        console.log(this.$.team1.selectedItem)
-
-                    }
-                    else {
-                        console.log("you have to select a player!")
-                    }
+//                        console.log(this.$.team1.selectedItem)
                 },
 
                 _activateButtons: function(event, detail) {
@@ -508,14 +506,14 @@
                 },
 
                 _startGame: function (event, detail) {
-                    console.log("Starting game!")
                     this.$.startGame.body = JSON.stringify({
                         "state": "1",
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
                     var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-                    page.show(resource)
+
+                    page.redirect(resource)
                 },
 
                 _setFail: function (event, detail) {
@@ -527,8 +525,8 @@
                 },
 
                 _redirect: function(event, detail){
-                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
-                    page.show(resource)
+//                    var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
+                    page.redirect("/")
                 },
 
                 ready: function () {

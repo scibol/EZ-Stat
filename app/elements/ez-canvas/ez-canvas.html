@@ -8,6 +8,14 @@
 <!-- /build -->
 
 <dom-module id="ez-canvas">
+    <iron-ajax
+            id="shot"
+            url="http://localhost:3000/games/{{game._id}}"
+            handle-as="json"
+            content-type="application/json"
+            method="PUT"
+            debounce-duration="3000">
+    </iron-ajax>
     <template>
 
         <style>
