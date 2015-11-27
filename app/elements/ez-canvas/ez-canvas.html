@@ -8,14 +8,6 @@
 <!-- /build -->
 
 <dom-module id="ez-canvas">
-    <iron-ajax
-            id="shot"
-            url="http://localhost:3000/games/{{game._id}}"
-            handle-as="json"
-            content-type="application/json"
-            method="PUT"
-            debounce-duration="3000">
-    </iron-ajax>
     <template>
 
         <style>
@@ -29,6 +21,19 @@
 
 
         </style>
+        <iron-ajax
+                id="shot"
+                url="http://localhost:3000/players/[[selected]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                debounce-duration="3000">
+        </iron-ajax>
+        <!--<p id="selPlayer" class="player" style="display:none">[[selected]]</p>-->
+        <p id="selPlayer" class="player" >[[selected]]</p>
+        <!--<p id="hitPlayer" style="display:none">[[hit]]</p>-->
+        <p id="selHit" >[[hit]]</p>
+
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -39,8 +44,23 @@
 
             Polymer({
                 is: 'ez-canvas',
+                properties: {
+                    selected: {
+                        type: String,
+                        notify: true,
+                    },
+                    hit: {
+                        type: String,
+                        notify: true,
+                    },
+                },
+
+
 
                 attached: function() {
+                    var player = this.$.selPlayer;
+                    var playerHit = this.$.selHit;
+                    var ironAjax = this.$.shot;
                     var canvas = this.$.myCanvas;
                     var field = measures();
                     var stage = new createjs.Stage(canvas);
@@ -97,8 +117,20 @@
                     stage.update();
 
                     rectangleShape.on("click", function(e) {
-                        console.log(e.stageX / field.width, e.stageY / field.height);
-                        console.log("3 points")
+//                        console.log(e.stageX / field.width, e.stageY / field.height);
+//                        console.log("3 points")
+//                        console.log(player.innerHTML)
+//                        console.log(playerHit)
+//                        console.log(String(playerHit))
+//                        console.log(String(playerHit) =="hit")
+
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success" : playerHit.innerHTML == "hit",
+                            "two_points" : false
+                        });
+                        ironAjax.generateRequest();
                     });
 
                     twoPointsLeftShape.on("click", function(e) {
@@ -109,7 +141,9 @@
                         console.log(e.stageX / field.width, e.stageY / field.height);
                         console.log("2 points")
                     });
-                }
+                },
+
+
             });
         })()
 

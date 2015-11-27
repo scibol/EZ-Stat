@@ -265,7 +265,7 @@
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
-        <iron-ajax
+        <iron-ajax id="andreaTest"
                 auto
                 url="http://localhost:3000/games"
                 handle-as="json"
@@ -289,6 +289,15 @@
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+                id="createPlayer"
+                url="http://localhost:3000/players"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
 
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
@@ -338,6 +347,7 @@
                             handle-as="json"
                             last-response="{{game}}"
                             debounce-duration="300"></iron-ajax>
+
                     <!--game is {{params.id}}-->
                     <!--game is {{game._id}}-->
                     <!--iron-pages to change view-->
@@ -346,23 +356,29 @@
                         <!--game not started yet-->
                         <div state="0">
                             <div id="boxInputs">
-                            Fill the following data
-                                <paper-input id="firstname" label="first name"></paper-input>
-                                <paper-input id="lastname" label="last name"></paper-input>
+                                Fill the following data
+                                <paper-input id="firstname" label="first name" class="inputPapers"></paper-input>
+                                <paper-input id="lastname" label="last name" class="inputPapers"></paper-input>
+                                <paper-input id="team" label="team name" class="inputPapers"></paper-input>
+                                <paper-button on-click="_createPlayer" id="btnCreate">create player</paper-button>
                             </div>
-                            <paper-button on-click="_createPlayer">create player</paper-button>
 
-                            <iron-ajax
-                                    id="startGame"
-                                    url="http://localhost:3000/games/{{game._id}}"
-                                    handle-as="json"
-                                    content-type="application/json"
-                                    method="PUT"
-                                    debounce-duration="3000">
-                            </iron-ajax>
+                            <!--<iron-ajax-->
+                                    <!--id="startGame"-->
+                                    <!--url="http://localhost:3000/games/{{game._id}}"-->
+                                    <!--handle-as="json"-->
+                                    <!--content-type="application/json"-->
+                                    <!--method="PUT"-->
+                                    <!--debounce-duration="3000">-->
+                            <!--</iron-ajax>-->
 
                             <!--FIXME start button changes data but doesn't reload page-->
                             <paper-button on-click="_startGame">start game</paper-button>
+                            <template is="dom-repeat" items="{{game.players}}" as="player">
+                                <paper-item>{{player.firstName}} {{player.lastName}}
+                                </paper-item>
+                            </template>
+
                             <div class="float-right max-height">
                                 <paper-input id="search" label="player name" class="searchPapers"></paper-input>
                                 <paper-listbox>
@@ -382,7 +398,7 @@
                             <div class="horizontal layout flex" id="wrapper">
 
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" id="team1" selectedItem>
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1" selectedItem>
                                         <template is="dom-repeat" items="{{players}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}} {{player.lastName}}
                                             </paper-item>
@@ -397,7 +413,7 @@
                                          
                                     </div>
                                      
-                                    <ez-canvas>
+                                    <ez-canvas id="canv" selected="not" hit="boh">
                                     </ez-canvas>
                                 </div>
                                 <nav class="main-nav-float main-nav">
@@ -441,6 +457,10 @@
                 //
                 <!-- build:remove -->
                 properties: {
+                    selected: {
+                      type: String,
+                        notify: true,
+                    },
                     route: {
                         type: String,
                         notify: true,
@@ -483,13 +503,19 @@
                 },
 
                 _createPlayer: function (event, detail) {
-                    this.$.createPlayer.body = JSON.stringify({
+                    this.$.createPlayerAndAdd.body = JSON.stringify({
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
                     })
-                    this.$.createPlayer.generateRequest();
+                    this.$.createPlayerAndAdd.generateRequest();
+//                    this.$.startGame.body = JSON.stringify({
+//                        "firstName": this.$.firstname.value,
+//                        "lastName": this.$.lastname.value,
+//                        "team": this.$.team.value
+//                    })
+//                    this.$.startGame.generateRequest();
                 },
-
 
                 _gameItem: function (event, detail) {
                     event.preventDefault();
@@ -498,11 +524,24 @@
                 _setSuccess: function (event, detail) {
                     console.log("success")
 //                        console.log(this.$.team1.selectedItem)
+                    this.$.canv.hit = "hit"
+                    console.log(this.$.canv.hit)
+
+                },
+
+                _setSelected: function (event, detail) {
+//                    console.log(this.$.team1.selected)
+//                    this.$.team1.selected = "te";
+//                    console.log(this.$.canv.selected)
+                    this.$.canv.selected = this.$.team1.selectedItem.id;
+                    console.log(this.$.canv.selected)
+
                 },
 
                 _activateButtons: function(event, detail) {
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
+//                    console.log(this.$.team1.selected)
                 },
 
                 _startGame: function (event, detail) {
@@ -511,6 +550,7 @@
                     });
                     event.preventDefault()
                     this.$.startGame.generateRequest();
+                    console.log()
                     var resource = window.location.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"");
 
                     page.redirect(resource)
@@ -518,6 +558,8 @@
 
                 _setFail: function (event, detail) {
                     console.log("fail")
+                    this.$.canv.hit = "fail"
+
                 },
 
                 created: function () {
@@ -573,6 +615,10 @@
                 _calcPlaylistHref(pid)
             {
                 return "/playlists/" + pid;
+            },
+
+            _andreaTest: function(s) {
+                this.$.andreaTest.url = s;
             }
             //
             <!-- /build -->
