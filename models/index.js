@@ -16,5 +16,5 @@ module.exports = {
   'Game' : mongoose.model('Game'),
   'Player' : mongoose.model('Player'),
   'User' : mongoose.model('User')
-}
+};
 

@@ -32,6 +32,7 @@ router.get('/', function(req, res, next) {
 //create new player
 router.post('/', function(req, res, next) {
     var newPlayer = new Player(req.body);
+    console.log(newPlayer)
     newPlayer.save(onModelSave(res, 201, true));
 });
 
@@ -54,21 +55,16 @@ router.get('/:playerid', function(req, res, next) {
 
 //update a player
 router.put('/:playerid', function(req, res, next) {
-  console.log("router.put(/:playerid', ...")
   var data = req.body;
-  console.log(data)
+  console.log(req.body)
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
     if (player){
-      if (data.pos_x) {
-          player.shots.push(data)
-          player.save(onModelSave(res));
-      }
-      //player.firstName =  player.firstName || data.firstName;
-      //player.secondName = player.secondName || data.secondName;
-      //player.number = player.number || data.number;
-      //player.position = player.position || data.position;
-      //player.team = player.team || data.team;
+      player.firstName =  player.firstName || data.firstName; 
+      player.secondName = player.secondName || data.secondName;
+      player.number = player.number || data.number;
+      player.position = player.position || data.position;
+      player.team = player.team || data.team;
 
       player.save(onModelSave(res));
     }else{

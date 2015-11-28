@@ -7,9 +7,9 @@ var middleware = require('../middleware');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var Game = mongoose.model('Game');
-var Player = mongoose.model('Player');
 var config = require("../../config");
 var pubsub = require('../../pubsub');
+var Player = mongoose.model('Player');
 
 //fields we don't want to show to the client
 var fieldsFilter = {'__v': 0};
@@ -21,7 +21,6 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 //list games
 router.get('/', function (req, res, next) {
     Game.find({}, fieldsFilter).lean().exec(function (err, games) {
-        console.log(games)
         if (err) return next(err);
         // games.forEach(function(game){
         //   addLinks(game);
@@ -61,14 +60,10 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    var playersArray = game.players;
-                    playersArray.push(player);
-                    game.players = playersArray;
+                    game.players.push(player)
                     game.save(onModelSave(res));
                 });
-                return;
             }
-
             if (data.result) {
                 game.result = data.result;
             }
@@ -122,7 +117,6 @@ function onModelSave(res, status, sendItAsResponse) {
                 return next(err);
             }
         }
-
         pubsub.emit('game.updated', {})
         if (sendItAsResponse) {
             var obj = saved.toObject();
