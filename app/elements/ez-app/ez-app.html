@@ -87,7 +87,7 @@
                 text-underline: none;
             }
 
-            #wrapper, #main-content {
+            .wrapper, .main-content {
                 overflow-y: auto;
             }
 
@@ -220,7 +220,7 @@
             <!--iron pages for different views-->
             <iron-pages attr-for-selected="data-route" selected="{{route}}">
                 <!--main view-->
-                <div data-route="main" class="horizontal layout flex" id="wrapper">
+                <div data-route="main" class="horizontal layout flex wrapper">
                     some info text
                 </div>
 
@@ -247,13 +247,13 @@
 
                         <!--game not started yet-->
                         <div state="0">
-                            <div class="horizontal layout flex" id="wrapper">
+                            <div class="horizontal layout flex wrapper">
 
 
                                 <nav class="main-nav-float main-nav">
                                     <ez-player-item game="{{game}}" editable></ez-player-item>
                                 </nav>
-                                <div class="content flex" id="main-content">
+                                <div class="content flex main-content">
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
@@ -277,7 +277,7 @@
                                     </paper-listbox>
                                 </nav>
 
-                                <div class="content flex" id="main-content">
+                                <div class="content flex main-content">
                                     <div id="upperBar"> 
                                         <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
                                             Hit
@@ -294,9 +294,9 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1"
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team2"
                                                    selectedItem>
-                                        <template is="dom-repeat" items="{{players}}" as="player">
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
                                             <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
                                             </paper-item>
                                         </template>
@@ -428,7 +428,6 @@
 
                 }
             });
-
         })
         ();
 
