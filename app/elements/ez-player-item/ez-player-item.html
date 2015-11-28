@@ -21,7 +21,6 @@
                 transition: background 0.3s, box-shadow 0.3s;
             --paper-input-container-input:{
                  color:inherit;
-                 font-size: inherit;
              };
             }
 
@@ -31,13 +30,14 @@
             };
 
             #textVal{
+                padding-left: 1em;
                 padding-top: 1.15em;
                 display: inline-block;
                 outline: none;
                 text-decoration: none;
                 /*box-shadow: inset 0 -1px rgba(0,0,0,0.2);*/
                 /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
-                /*font-size: 1.4em;*/
+                font-size: 17px;
                 color: inherit;
                 overflow: hidden;
                 white-space: nowrap;
@@ -64,7 +64,7 @@
 
             :host(:hover) #editBtn{
                 visibility: visible;
-            };
+            }
 
             #editInput{
                 display:none;
