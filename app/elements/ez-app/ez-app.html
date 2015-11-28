@@ -372,12 +372,18 @@
                 },
 
                 _createPlayer: function (event, detail) {
-                    this.$.createPlayerAndAdd.body = JSON.stringify({
+                    this.$.createPlayer.body = JSON.stringify({
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
                         "team": this.$.team.value
                     });
-                    this.$.createPlayerAndAdd.generateRequest();
+                    this.$.setGame.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
+                    });
+                    this.$.createPlayer.generateRequest();
+                    this.$.setGame.generateRequest();
                 },
 
                 _gameItem: function (event, detail) {
