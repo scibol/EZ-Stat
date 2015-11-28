@@ -74,7 +74,7 @@
         </style>
         <iron-ajax
                 id="setGame"
-                url="http://localhost:3000/games/[[game]]"
+                url="http://localhost:3000/games/[[game._id]]"
                 handle-as="json"
                 content-type="application/json"
                 method="PUT"
@@ -93,25 +93,24 @@
         <iron-ajax
                 id="getGame"
                 auto
-                url="http://localhost:3000/games/5659e8282a3b2bfa5ac56a76"
+                url="http://localhost:3000/games/[[game._id]]"
                 handle-as="json"
                 last-response="{{game}}"
                 debounce-duration="300"></iron-ajax>
 
 
-        <!--<a id="leLink" href="{{href}}" on-click="_onClick">-->
-            <!--<iron-icon icon="[[icon]]"></iron-icon>-->
-            <div id="textVal">{{value}}</div>
-        <paper-input id="editInput" placeholder="player..."></paper-input>
+        <paper-listbox selectedItem>
+        <template is="dom-repeat" items="{{game.players}}" as="player">
+            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                {{player.lastName}}
+            </paper-item>
+        </template>
+            <div id="textVal">Player...</div>
+        <paper-input id="editInput" placeholder="Player..."></paper-input>
         <template is="dom-if" if="{{editable}}">
             <paper-icon-button id="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
         </template>
-        <!--</a>-->
-        <!--<template is="dom-if" if="{{editable}}">-->
-            <!--<paper-icon-button id="editBtn" icon="image:edit" on-tap="_editTapped" toggles></paper-icon-button>-->
-            <!--<paper-input id="editInput" value="{{value}}"></paper-input>-->
-        <!--</template>-->
-        <!-- /build -->
+        </paper-listbox>
     </template>
 
     <script>
@@ -129,13 +128,7 @@
                 properties: {
                     href: String,
                     icon: String,
-                    game: String,
-                    value:{
-                        type: String,
-                        default: false,
-                        notify:true
-                    },
-
+                    game: Object,
                     editable:{
                         type: Boolean,
                         default: false,
@@ -174,12 +167,6 @@
                     this.$.getGame.generateRequest();
                 }
 
-//                _onClick: function(event, detail){
-//                    event.preventDefault()
-//                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
-//                    page.show(resource)
-//                }
-                //<!-- /build -->
             });
 
 

@@ -251,53 +251,15 @@
 
 
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox selectedItem>
-                                        <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
-                                                {{player.lastName}}
-                                            </paper-item>
-                                        </template>
-                                        <ez-player-item game="{{game._id}}" editable value="player..."
-                                                        icon="image:music-note"></ez-player-item>
-                                    </paper-listbox>
+                                    <ez-player-item game="{{game}}" editable></ez-player-item>
                                 </nav>
-
-                                <!--<div id="boxInputs">-->
-                                <!--Fill the following data-->
-                                <!--<paper-input id="firstname" label="first name" class="inputPapers"></paper-input>-->
-                                <!--<paper-input id="lastname" label="last name" class="inputPapers"></paper-input>-->
-                                <!--<paper-input id="team" label="team name" class="inputPapers"></paper-input>-->
-                                <!--<paper-button on-click="_createPlayer" id="btnCreate">create player</paper-button>-->
-                                <!--</div>-->
-                                <!--<ez-player-item editable value="player..." icon="image:music-note"></ez-player-item>-->
-
-                                <!--<div class="content flex" id="main-content">-->
                                 <div class="content flex" id="main-content">
-
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox selectedItem>
-                                        <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
-                                                {{player.lastName}}
-                                            </paper-item>
-                                        </template>
-                                        <ez-player-item game="{{game._id}}" editable value="player..."
-                                                        icon="image:music-note"></ez-player-item>
-                                    </paper-listbox>
+                                    <ez-player-item game="{{game}}" editable></ez-player-item>
                                 </nav>
                             </div>
-
-                            <!--<div class="float-right max-height">-->
-                            <!--<paper-input id="search" label="player name" class="searchPapers"></paper-input>-->
-                            <!--<paper-listbox>-->
-                            <!--<template is="dom-repeat" items="{{players}}" as="player">-->
-                            <!--<paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}-->
-                            <!--</paper-item>-->
-                            <!--</template>-->
-                            <!--</paper-listbox>-->
-                            <!--</div>-->
                         </div>
 
                         <!--game started-->
@@ -332,7 +294,8 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox>
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1"
+                                                   selectedItem>
                                         <template is="dom-repeat" items="{{players}}" as="player">
                                             <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
                                             </paper-item>
