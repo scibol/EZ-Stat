@@ -91,6 +91,16 @@
                 overflow-y: auto;
             }
 
+            .wrapper {
+                position: absolute;
+                top: 64px;
+                bottom:0;
+                left: 0;
+                /*padding-top: 64px;*/
+                /*height:100vh;*/
+
+            }
+
             #upperBar {
                 width: 100%;
                 height: 5em;
@@ -115,7 +125,7 @@
 
             .main-nav {
                 width: 20vw;
-                height: 92vh;
+                /*height: 92vh;*/
                 background: #2A2C2B;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
@@ -265,9 +275,9 @@
                         <!--game started-->
                         <div state="1">
 
-                            <div class="horizontal layout flex" id="wrapper">
+                            <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team1"
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
@@ -294,10 +304,10 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected" id="team2"
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <paper-item>{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}} {{player.lastName}}
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -385,8 +395,12 @@
                     this.$.canv.hit = "hit";
                 },
 
-                _setSelected: function (event, detail) {
+                _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
+                },
+
+                _setSelected2: function (event, detail) {
+                    this.$.canv.selected = this.$.team2.selectedItem.id;
                 },
 
                 _activateButtons: function (event, detail) {
