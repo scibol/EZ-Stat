@@ -98,13 +98,12 @@
                 left: 0;
                 /*padding-top: 64px;*/
                 /*height:100vh;*/
-
             }
 
             #upperBar {
                 width: 100%;
                 height: 5em;
-                margin-top: 3em;
+                margin-top: 1em;
 
             }
 
@@ -208,7 +207,7 @@
         <!--header-->
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
-                <paper-dropdown-menu label="choose game..." placeholder="{{params.gameid}}">
+                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game._id}}">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
                             <ab-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
@@ -280,7 +279,7 @@
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                                            <paper-item id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}
                                             </paper-item>
                                         </template>
@@ -307,7 +306,7 @@
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}} {{player.lastName}}
+                                            <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -431,6 +430,7 @@
 
 //                TODO home button doesn't reset game placeholder
                 _redirect: function (event, detail) {
+                    this.$.drop.placeholder = "";
                     page.redirect("/")
                 },
 
