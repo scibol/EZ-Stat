@@ -17,7 +17,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
-var PlaylistSchema = require('./Playlist');
+//var PlaylistSchema = require('./Playlist');
 
 /** @constructor
 * @param {Object} definition
@@ -30,7 +30,8 @@ var userSchema = new mongoose.Schema(
   password : { type: String, required: true },
   email   : { type: String, required: true },
   dateCreated : { type: Date, required: true, default: Date.now },
-  playlists : { type: [PlaylistSchema], default: [] }
+  //playlists : { type: [PlaylistSchema], default: [] }
+  playlists : { type: Array, default: [] }
 }
 );
 
