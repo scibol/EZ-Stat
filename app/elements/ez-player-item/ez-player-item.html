@@ -1,0 +1,189 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/iron-icon/iron-icon.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<!-- /build -->
+
+<dom-module id="ez-player-item">
+    <template>
+
+        <!-- build:remove -->
+
+        <style>
+            :host {
+                display: block;
+                /*position:relative;*/
+                -webkit-transition: background 0.3s, box-shadow 0.3s;
+                -moz-transition: background 0.3s, box-shadow 0.3s;
+                transition: background 0.3s, box-shadow 0.3s;
+            --paper-input-container-input:{
+                 color:inherit;
+                 font-size: inherit;
+             };
+            }
+
+            :host(:hover){
+                background: rgba(0,0,0,0.2);
+                box-shadow: inset 0 -1px rgba(0,0,0,0);
+            };
+
+            #textVal{
+                padding-top: 1.15em;
+                display: inline-block;
+                outline: none;
+                text-decoration: none;
+                /*box-shadow: inset 0 -1px rgba(0,0,0,0.2);*/
+                /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
+                /*font-size: 1.4em;*/
+                color: inherit;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            iron-icon{
+                padding: 0 20px;
+            }
+
+            #editBtn{
+                visibility: visible;
+                /*position:absolute;*/
+                /*top: 14px;*/
+                /*right: 10px;*/
+                z-index:10;
+                /*white-space: initial;*/
+                line-height: 1;
+                color: rgba(255,255,255,0.4);
+            }
+
+            #editBtn:hover{
+                color:inherit;
+            }
+
+            :host(:hover) #editBtn{
+                visibility: visible;
+            };
+
+            #editInput{
+                display:none;
+                line-height:1;
+                padding-left: 12px;
+            }
+        </style>
+        <iron-ajax
+                id="setGame"
+                url="http://localhost:3000/games/[[game]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="createPlayer"
+                url="http://localhost:3000/players"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="getGame"
+                auto
+                url="http://localhost:3000/games/5659e8282a3b2bfa5ac56a76"
+                handle-as="json"
+                last-response="{{game}}"
+                debounce-duration="300"></iron-ajax>
+
+
+        <!--<a id="leLink" href="{{href}}" on-click="_onClick">-->
+            <!--<iron-icon icon="[[icon]]"></iron-icon>-->
+            <div id="textVal">{{value}}</div>
+        <paper-input id="editInput" placeholder="player..."></paper-input>
+        <template is="dom-if" if="{{editable}}">
+            <paper-icon-button id="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
+        </template>
+        <!--</a>-->
+        <!--<template is="dom-if" if="{{editable}}">-->
+            <!--<paper-icon-button id="editBtn" icon="image:edit" on-tap="_editTapped" toggles></paper-icon-button>-->
+            <!--<paper-input id="editInput" value="{{value}}"></paper-input>-->
+        <!--</template>-->
+        <!-- /build -->
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-player-item',
+
+                //<!-- build:remove -->
+                listeners: {
+//                    "blur": "_onBlur"
+                },
+
+                properties: {
+                    href: String,
+                    icon: String,
+                    game: String,
+                    value:{
+                        type: String,
+                        default: false,
+                        notify:true
+                    },
+
+                    editable:{
+                        type: Boolean,
+                        default: false,
+                        reflectToAttribute:true
+                    }
+                },
+
+                _editTapped: function(event, detail){
+                    if(!this.editable) return;
+                    if(event.target.active){
+                        this.$.textVal.style.display = "none";
+                        this.$$('#editInput').style.display = "inline-block";
+                        event.target.icon = "icons:save";
+                    }else{
+                        this._onBlur();
+                        event.target.icon = "icons:add";
+                    }
+                },
+
+                _onBlur: function(){
+                    if(!this.editable) return;
+                    this.$.textVal.style.display = "inline-block";
+                    this.$$('#editInput').style.display = "none";
+                    this.$.createPlayer.body = JSON.stringify({
+                        "firstName": this.$.editInput.value.split(" ")[0],
+                        "lastName": this.$.editInput.value.split(" ")[1],
+                        "team": "bho"
+                    });
+                    this.$.setGame.body = JSON.stringify({
+                        "firstName": this.$.editInput.value.split(" ")[0],
+                        "lastName": this.$.editInput.value.split(" ")[1],
+                        "team": "bho"
+                    });
+                    this.$.createPlayer.generateRequest();
+                    this.$.setGame.generateRequest();
+                    this.$.getGame.generateRequest();
+                }
+
+//                _onClick: function(event, detail){
+//                    event.preventDefault()
+//                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+//                    page.show(resource)
+//                }
+                //<!-- /build -->
+            });
+
+
+        })();
+    </script>
+
+</dom-module>

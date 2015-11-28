@@ -32,7 +32,7 @@ router.get('/', function(req, res, next) {
 //create new player
 router.post('/', function(req, res, next) {
     var newPlayer = new Player(req.body);
-    console.log(newPlayer)
+    console.log(newPlayer);
     newPlayer.save(onModelSave(res, 201, true));
 });
 
@@ -56,7 +56,7 @@ router.get('/:playerid', function(req, res, next) {
 //update a player
 router.put('/:playerid', function(req, res, next) {
   var data = req.body;
-  console.log(req.body)
+  console.log(req.body);
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
     if (player){
@@ -65,7 +65,6 @@ router.put('/:playerid', function(req, res, next) {
       player.number = player.number || data.number;
       player.position = player.position || data.position;
       player.team = player.team || data.team;
-
       player.save(onModelSave(res));
     }else{
       //player does not exist create it
@@ -103,7 +102,7 @@ function onModelSave(res, status, sendItAsResponse){
     if (err) {
       if (err.name === 'ValidationError' 
         || err.name === 'TypeError' ) {
-        res.status(400)
+        res.status(400);
         return res.json({
           statusCode: 400,
           message: "Bad Request"
@@ -113,7 +112,7 @@ function onModelSave(res, status, sendItAsResponse){
       }
     }
 
-    pubsub.emit('player.updated', {})
+    pubsub.emit('player.updated', {});
     if( sendItAsResponse){
       var obj = saved.toObject();
       delete obj.password;
