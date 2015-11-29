@@ -1,0 +1,453 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../components/iron-flex-layout/classes/iron-flex-layout.html">
+<link rel="import" href="../../components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<link rel="import" href="../../components/iron-icons/iron-icons.html">
+<link rel="import" href="../../components/iron-pages/iron-pages.html">
+<link rel="import" href="../../components/paper-toast/paper-toast.html">
+
+<link rel="import" href="../../components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../components/paper-item/paper-item.html">
+<link rel="import" href="../../components/paper-menu/paper-menu.html">
+<link rel="import" href="../../components/paper-button/paper-button.html">
+<link rel="import" href="../../components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../../components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../components/paper-input/paper-input.html">
+
+
+<link rel="import" href="../routing.html">
+
+<link rel="import" href="../ez-player-item/ez-player-item.html">
+<link rel="import" href="../ez-menu-item/ez-menu-item.html">
+<link rel="import" href="../ez-canvas/ez-canvas.html">
+
+
+<!-- /build -->
+
+<!-- the following script can help you formatting the dates -->
+<script type="text/javascript" src="../../js/utils.js"></script>
+
+<!-- stuff for easel, drawing canvas -->
+<script src="easeljs-0.8.1.min.js"></script>
+<script src="easeljs-NEXT.combined.js"></script>
+<script type="text/javascript" src="../../js/utils.js"></script>
+
+<dom-module id="ez-app">
+    <template>
+
+        <!-- build:remove -->
+
+        <style include="shared-styles">
+            :host {
+            @apply(- -layout-vertical);
+                --paper-input-container-color: rgba(255, 255, 255, 0.8);
+                --secondary-text-color: rgba(255, 255, 255, 0.8);
+                --default-primary-color: #2A2C2B;
+                --text-primary-color: rgba(255, 255, 255, 0.8);
+                --text-secondary-color: rgba(255, 255, 255, 0.8);
+                --primary-text-color: rgba(255, 255, 255, 0.8);
+                --paper-menu-background-color: rgba(255, 255, 255, 0.95);
+                --primary-background-color: #2A2C2B;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            /*Style of the paper-input*/
+            paper-input.inputPapers {
+                /* Label and underline color when the input is not focused */
+                --paper-input-container-color: green;
+                /* Label and underline color when the input is focused */
+                --paper-input-container-focus-color: green;
+                /* Label and underline color when the input is invalid */
+                --paper-input-container-invalid-color: green;
+                /* Input foreground color */
+                --paper-input-container-input-color: green;
+
+                width: 200px;
+            }
+
+            paper-input.searchPapers {
+                --paper-input-container-color: red;
+                --secondary-text-color: red;
+                --default-primary-color: red;
+                --text-primary-color: red;
+                --text-secondary-color: red;
+                --primary-text-color: red;
+                --paper-menu-background-color: red;
+                --primary-background-color: red;
+                background-color: red;
+            }
+
+            a:hover {
+                text-underline: none;
+            }
+
+            .wrapper, .main-content {
+                overflow-y: auto;
+            }
+
+            .wrapper {
+                position: absolute;
+                top: 64px;
+                bottom:0;
+                left: 0;
+                /*padding-top: 64px;*/
+                /*height:100vh;*/
+            }
+
+            #upperBar {
+                width: 100%;
+                height: 5em;
+                margin-top: 1em;
+
+            }
+
+            #btnMiss {
+                float: right;
+                width: 10em;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            #btnHit {
+                width: 10em;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .fill-width {
+                width: 60vw;
+            }
+
+            /*paper-button[toggles] {*/
+            /*background-color: #000066;*/
+            /*}*/
+
+            .main-nav {
+                width: 20vw;
+                /*height: 92vh;*/
+                background: #2A2C2B;
+                font-size: 1.3vw;
+                transition: width 150ms ease-out;
+                overflow-y: auto;
+                color: #f7f7f7;
+                box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+            }
+
+            .float-right {
+                float: right;
+                position: absolute;
+                margin-top: 1em;
+                right: 1em;
+            }
+
+            .max-height {
+                max-height: 70vh;
+                overflow-y: scroll;
+            }
+
+            #search {
+                background-color: #2A2C2B;
+            }
+
+            .header {
+                box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+            }
+
+            @media (min-width: 841px) {
+                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item .nav-menu {
+                    display: none;
+                }
+
+                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
+                    display: none;
+                }
+            }
+
+            #boxInputs {
+                border: solid;
+                width: 300px;
+            }
+
+        </style>
+        <iron-ajax
+                id="getPlayers"
+                auto
+                url="http://localhost:3000/players"
+                handle-as="json"
+                last-response="{{players}}"
+                debounce-duration="300"></iron-ajax>
+
+        <iron-ajax id="getGames"
+                   auto
+                   url="http://localhost:3000/games"
+                   handle-as="json"
+                   last-response="{{games}}"
+                   debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+                id="newGame"
+                url="http://localhost:3000/games"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                last-response="{{newGame}}"
+                debounce-duration="3000">
+        </iron-ajax>
+
+
+        <iron-ajax
+                id="createPlayer"
+                url="http://localhost:3000/players"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <!--header-->
+        <paper-header-panel class="flex">
+            <paper-toolbar class="header">
+                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game._id}}">
+                    <paper-menu class="dropdown-content">
+                        <template is="dom-repeat" items="{{games}}" as="game">
+                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
+                            </ez-menu-item>
+
+                        </template>
+
+                    </paper-menu>
+                </paper-dropdown-menu>
+                <paper-button on-click="_createGame">create game</paper-button>
+                <div class="float-right">
+                    <paper-button on-click="_redirect">home</paper-button>
+                    <paper-button on-click="">{{user}}user</paper-button>
+                    <paper-button on-click="">signout</paper-button>
+                </div>
+            </paper-toolbar>
+
+
+            <!--iron pages for different views-->
+            <iron-pages attr-for-selected="data-route" selected="{{route}}">
+                <!--main view-->
+                <div data-route="main" class="horizontal layout flex wrapper">
+                    some info text
+                </div>
+
+                <!--game view-->
+                <div data-route="games">
+                    <iron-ajax
+                            id="setGame"
+                            url="http://localhost:3000/games/{{game._id}}"
+                            handle-as="json"
+                            content-type="application/json"
+                            method="PUT"
+                            debounce-duration="3000">
+                    </iron-ajax>
+                    <iron-ajax
+                            id="getGame"
+                            auto
+                            url="http://localhost:3000/games/{{params.gameid}}"
+                            handle-as="json"
+                            last-response="{{game}}"
+                            debounce-duration="300"></iron-ajax>
+
+                    <!--different states of game-->
+                    <iron-pages attr-for-selected="state" selected="{{game.state}}">
+
+                        <!--game not started yet-->
+                        <div state="0">
+                            <div class="horizontal layout flex wrapper">
+
+
+                                <nav class="main-nav-float main-nav">
+                                    <ez-player-item game="{{game}}" editable></ez-player-item>
+                                </nav>
+                                <div class="content flex main-content fill-width">
+                                    <paper-button on-click="_startGame">start game</paper-button>
+                                </div>
+                                <nav class="main-nav-float main-nav">
+                                    <ez-player-item game="{{game}}" editable></ez-player-item>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <!--game started-->
+                        <div state="1">
+
+                            <div class="horizontal layout flex wrapper">
+                                <nav class="main-nav-float main-nav">
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
+                                                   selectedItem>
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item id="{{player._id}}">{{player.firstName}}
+                                                {{player.lastName}}
+                                            </paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </nav>
+
+                                <div class="content flex main-content">
+                                    <div id="upperBar"> 
+                                        <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
+                                            Hit
+                                        </paper-button>
+                                        <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
+                                            Miss
+                                        </paper-button>
+                                         
+                                    </div>
+                                     
+                                    <ez-canvas id="canv" selected="not" hit="boh">
+                                    </ez-canvas>
+                                    <paper-button on-click="_endGame">end game</paper-button>
+
+                                </div>
+                                <nav class="main-nav-float main-nav">
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
+                                                   selectedItem>
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
+                                            </paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </nav>
+                            </div>
+                        </div>
+
+                        <!--game finished-->
+                        <div state="2">
+                            finished game
+                        </div>
+
+                    </iron-pages>
+
+                </div>
+
+            </iron-pages>
+
+        </paper-header-panel>
+
+        <paper-toast id="toast">
+            <span class="toast-hide-button" role="button" tabindex="0" onclick="ezApp.$.toast.hide()">Ok</span>
+        </paper-toast>
+        <!-- /build -->
+    </template>
+
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-app',
+
+                //
+                <!-- build:remove -->
+                properties: {
+                    selected: {
+                        type: String,
+                        notify: true
+                    },
+                    route: {
+                        type: String,
+                        notify: true
+                    },
+                    params: {
+                        type: Object,
+                        notify: true
+                    },
+                    userid: {
+                        type: String,
+                        value: '563fd9661d1e084ac3e1b6b2'
+                    }
+                },
+
+                _createGame: function (event, detail) {
+                    this.$.newGame.body = JSON.stringify({
+                        "date": Date.now(),
+                        "result": "true"
+                    });
+                    this.$.newGame.generateRequest();
+                    this.$.getGames.generateRequest();
+                },
+
+                _createPlayer: function (event, detail) {
+                    this.$.createPlayer.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
+                    });
+                    this.$.setGame.body = JSON.stringify({
+                        "firstName": this.$.firstname.value,
+                        "lastName": this.$.lastname.value,
+                        "team": this.$.team.value
+                    });
+                    this.$.createPlayer.generateRequest();
+                    this.$.setGame.generateRequest();
+                },
+
+                _gameItem: function (event, detail) {
+                    event.preventDefault();
+                },
+
+                _setSuccess: function (event, detail) {
+                    this.$.canv.hit = "hit";
+                },
+
+                _setSelected1: function (event, detail) {
+                    this.$.canv.selected = this.$.team1.selectedItem.id;
+                },
+
+                _setSelected2: function (event, detail) {
+                    this.$.canv.selected = this.$.team2.selectedItem.id;
+                },
+
+                _activateButtons: function (event, detail) {
+                    this.$.btnHit.disabled = false;
+                    this.$.btnMiss.disabled = false;
+                },
+
+                _startGame: function (event, detail) {
+                    this.$.setGame.body = JSON.stringify({
+                        "state": "1"
+                    });
+                    this.$.setGame.generateRequest();
+                    this.$.getGame.generateRequest();
+                },
+
+                _endGame: function (event, detail) {
+                    this.$.setGame.body = JSON.stringify({
+                        "state": "2"
+                    });
+                    this.$.setGame.generateRequest();
+                    this.$.getGame.generateRequest();
+                },
+
+                _setFail: function (event, detail) {
+                    this.$.canv.hit = "fail"
+
+                },
+
+//                TODO home button doesn't reset game placeholder
+                _redirect: function (event, detail) {
+                    this.$.drop.placeholder = "";
+                    page.redirect("/")
+                },
+
+                ready: function () {
+                    window.ezApp = this;
+                },
+
+                scrollPageToTop: function () {
+
+                }
+            });
+        })
+        ();
+
+    </script>
+
+</dom-module>
