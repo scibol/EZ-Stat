@@ -23,8 +23,7 @@
 <link rel="import" href="../routing.html">
 
 <link rel="import" href="../ez-player-item/ez-player-item.html">
-<link rel="import" href="../ab-menu-item/ab-menu-item.html">
-<link rel="import" href="../ab-menu/ab-menu.html">
+<link rel="import" href="../ez-menu-item/ez-menu-item.html">
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
 
@@ -116,6 +115,10 @@
             #btnHit {
                 width: 10em;
                 background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            .fill-width {
+                width: 60vw;
             }
 
             /*paper-button[toggles] {*/
@@ -210,8 +213,8 @@
                 <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game._id}}">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
-                            <ab-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
-                            </ab-menu-item>
+                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
+                            </ez-menu-item>
 
                         </template>
 
@@ -262,7 +265,7 @@
                                 <nav class="main-nav-float main-nav">
                                     <ez-player-item game="{{game}}" editable></ez-player-item>
                                 </nav>
-                                <div class="content flex main-content">
+                                <div class="content flex main-content fill-width">
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
