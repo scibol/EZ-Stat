@@ -59,14 +59,18 @@ router.put('/:playerid', function(req, res, next) {
   console.log(req.body);
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
-    if (player){
-      player.firstName =  player.firstName || data.firstName; 
-      player.secondName = player.secondName || data.secondName;
-      player.number = player.number || data.number;
-      player.position = player.position || data.position;
-      player.team = player.team || data.team;
-      player.save(onModelSave(res));
-    }else{
+    if (player) {
+      if (data.pos_x) {
+        player.shots.push(data)
+        player.save(onModelSave(res));
+      }
+      //player.firstName =  player.firstName || data.firstName;
+      //player.secondName = player.secondName || data.secondName;
+      //player.number = player.number || data.number;
+      //player.position = player.position || data.position;
+      //player.team = player.team || data.team;
+    }
+    else{
       //player does not exist create it
       var newPlayer = new Player(data);
       newPlayer._id = ObjectId(req.params.playerid);
