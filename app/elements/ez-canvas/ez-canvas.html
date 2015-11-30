@@ -7,71 +7,6 @@
 <script type="text/javascript" src="../../js/utils.js"></script>
 <!-- /build -->
 
-<<<<<<< HEAD
-<dom-module id="ez-canvas" id="canv">
-  <template>
-
-  <!-- build:remove -->
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-
-  <canvas id='myCanvas'></canvas>
-
-  <!-- /build -->
-  </template>
-  
-  <script>
-    (function () {
-      'use strict';
-
-      Polymer({
-        is: 'ez-canvas',
-        ready: function(){
-          var canvas = document.getElementById('myCanvas');
-          console.log(canvas);
-        }
-        //<!-- /build -->
-      });
-              function init(){
-                console.log("Inside init()");                
-                // var canvas = document.getElementById('canvas');
-                // var deus = document.getElementById('content')
-                // console.log(deus)
-                var canvas = document.getElementById('myCanvas');
-                canvas.setAttribute('style', 'width:400px; height:400px');
-                // canvas.style.height = 100%
-                console.log(canvas);
-                var field = measures(canvas.width);
-                var stage = new createjs.Stage("testCanvas");
-                 
-                var rect = new createjs.Shape();
-                rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0,0,field.width-5,field.height-5);
-                stage.addChild(rect);
-                stage.update();    
-              }
-              function measures(width) {
-                var ratio = width/94;
-                var field = {
-                  width : 94*ratio,
-                  height : 50*ratio,
-                  radius : 6*ratio,
-                  smallAreaWidth : 19*ratio,
-                  smallAreaHeight : 16*ratio,
-                  treyFromBorder : 3*ratio,
-                  treyLength : 14*ratio,
-                  treyRadius : 23.9*ratio,
-                  basketFromBorder : 4.6*ratio,
-                }
-                return field;
-              }
-    })();
-  </script>
-
-</dom-module>
-=======
 <dom-module id="ez-canvas">
     <template>
 
@@ -327,4 +262,3 @@
     </script>
 
 </dom-module>
->>>>>>> paolo
