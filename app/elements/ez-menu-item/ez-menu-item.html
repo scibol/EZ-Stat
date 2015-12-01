@@ -1,0 +1,143 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/iron-icon/iron-icon.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<!-- /build -->
+
+<dom-module id="ez-menu-item">
+    <template>
+
+        <!-- build:remove -->
+
+        <style>
+            :host {
+                /*display: block;*/
+                /*position:relative;*/
+                -webkit-transition: background 0.3s, box-shadow 0.3s;
+                -moz-transition: background 0.3s, box-shadow 0.3s;
+                transition: background 0.3s, box-shadow 0.3s;
+            --paper-input-container-input:{
+                 color:inherit;
+                 font-size: inherit;
+             };
+            }
+
+            :host(:hover){
+                background: rgba(0,0,0,0.2);
+                box-shadow: inset 0 -1px rgba(0,0,0,0);
+            };
+
+            a{
+                display: block;
+                outline: none;
+                text-decoration: none;
+                color: var(--default-primary-color);
+                /*box-shadow: inset 0 -1px rgba(0,0,0,0.2);*/
+                /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
+                /*font-size: 1.4em;*/
+                /*color: inherit;*/
+                /*overflow: hidden;*/
+                /*white-space: nowrap;*/
+            }
+
+            /*iron-icon{*/
+            /*padding: 0 20px;*/
+            /*}*/
+
+            /*#editBtn{*/
+            /*display: none; */
+            /*position:absolute;*/
+            /*top: 14px;*/
+            /*right: 10px;*/
+            /*z-index:10;*/
+            /*white-space: initial;*/
+            /*line-height: 1;*/
+            /*color: rgba(0,0,0,0.4);*/
+            /*}*/
+
+            /*#editBtn:hover{*/
+            /*color:inherit;*/
+            /*}*/
+
+            :host(:hover) #editBtn{
+                display: block;
+            };
+
+            /*#editInput{*/
+            /*display:none;*/
+            /*line-height:1;*/
+            /*padding-left: 12px;*/
+            /*}*/
+        </style>
+        <a id="leLink" href="{{href}}" on-click="_onClick">
+            {{value}}
+        </a>
+        <!--<template is="dom-if" if="{{editable}}">-->
+        <!--&lt;!&ndash;<paper-icon-button id="editBtn" icon="image:edit" on-tap="_editTapped" toggles></paper-icon-button>&ndash;&gt;-->
+        <!--<paper-input id="editInput" value="{{value}}"></paper-input>-->
+        <!--</template>-->
+        <!-- /build -->
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-menu-item',
+
+                //<!-- build:remove -->
+                listeners: {
+                    "blur": "_onBlur"
+                },
+
+                properties: {
+                    href: String,
+                    icon: String,
+                    value:{
+                        type: String,
+                        default: false,
+                        notify:true
+                    },
+
+                    editable:{
+                        type: Boolean,
+                        default: false,
+                        reflectToAttribute:true
+                    }
+                },
+
+                _editTapped: function(event, detail){
+                    if(!this.editable) return;
+                    if(event.target.active){
+                        this.$.leLink.style.display = "none";
+                        this.$$('#editInput').style.display = "block";
+                        event.target.icon = "icons:check";
+                    }else{
+                        this._onBlur();
+                        event.target.icon = "image:edit";
+                    }
+                },
+
+                _onBlur: function(){
+//          if(!this.editable) return;
+//          this.$.leLink.style.display = "block";
+//          this.$$('#editInput').style.display = "none";
+                },
+
+                _onClick: function(event, detail){
+                    event.preventDefault();
+                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+                    page.show(resource)
+                }
+                //<!-- /build -->
+            });
+
+
+        })();
+    </script>
+
+</dom-module>

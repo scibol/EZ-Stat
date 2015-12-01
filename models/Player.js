@@ -28,7 +28,7 @@ var PlayerSchema = new mongoose.Schema(
   lastName : { type: String, required: true },
   number : {type: String, default : ""},
   position : {type: String, default : ""},
-  team : {type: String, required: true},
+  team : {type: String, default: ""},
   shots : {type: [CoordinateSchema], default: []},
 }
 
