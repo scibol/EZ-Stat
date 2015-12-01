@@ -23,6 +23,7 @@
 <link rel="import" href="../routing.html">
 
 <link rel="import" href="../ez-player-item/ez-player-item.html">
+<link rel="import" href="../ez-stat-counter/ez-stat-counter.html">
 <link rel="import" href="../ez-menu-item/ez-menu-item.html">
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
@@ -93,10 +94,16 @@
             .wrapper {
                 position: absolute;
                 top: 64px;
-                bottom:0;
+                bottom: 0;
                 left: 0;
                 /*padding-top: 64px;*/
                 /*height:100vh;*/
+            }
+
+            .makeFlex {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
             }
 
             #upperBar {
@@ -290,6 +297,13 @@
                                 </nav>
 
                                 <div class="content flex main-content">
+                                    <div class="makeFlex">
+                                        <ez-stat-counter editable value="10" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable value="7" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable value="1" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable value="5" game="{{game}}"></ez-stat-counter>
+                                    </div>
+
                                     <div id="upperBar"> 
                                         <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
                                             Hit
