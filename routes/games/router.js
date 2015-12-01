@@ -67,6 +67,9 @@ router.put('/:gameid', function (req, res, next) {
             if (data.result) {
                 game.result = data.result;
             }
+            if (data.assists) {
+                game.assists = data.assists;
+            }
             if (data.state) {
                 game.state = data.state;
             }

@@ -15,18 +15,8 @@
         <style>
             :host {
                 display: block;
-                /*position:relative;*/
                 -webkit-transition: background 0.3s, box-shadow 0.3s;
                 -moz-transition: background 0.3s, box-shadow 0.3s;
-                transition: background 0.3s, box-shadow 0.3s;
-                --paper-input-container-input: {
-                    color: inherit;
-                }
-            }
-
-            :host(:hover) {
-                background: rgba(0, 0, 0, 0.2);
-                box-shadow: inset 0 -1px rgba(0, 0, 0, 0);
             }
 
             .text {
@@ -39,6 +29,15 @@
                 top: -0.8em;
                 font-size: 0.8em;
                 color: rgba(0, 0, 0, 0.6);
+            }
+
+            .button {
+                transition: all 0.2s;
+
+            }
+
+            .button:hover {
+                background: rgba(0, 0, 0, 0.2);
             }
 
             .inline-container {
@@ -57,15 +56,6 @@
         </iron-ajax>
 
         <iron-ajax
-                id="createPlayer"
-                url="http://localhost:3000/players"
-                handle-as="json"
-                content-type="application/json"
-                method="POST"
-                debounce-duration="3000">
-        </iron-ajax>
-
-        <iron-ajax
                 id="getGame"
                 auto
                 url="http://localhost:3000/games/[[game._id]]"
@@ -76,12 +66,12 @@
         <paper-item>
             <paper-item-body two-line>
                 <div class="inline-container">
-                    <paper-button id="minus" on-click="_subtract">-</paper-button>
+                    <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
                     <div class="text">
                         <div>{{value}}</div>
                         <div class="secondary">Assists</div>
                     </div>
-                    <paper-button id="plus" on-click="_add">+</paper-button>
+                    <paper-button id="plus" class="button" on-click="_add">+</paper-button>
                 </div>
             </paper-item-body>
         </paper-item>
@@ -113,15 +103,24 @@
                 _add: function(evt) {
                     var newValue = parseInt(this.value) + 1;
                     this.value = newValue;
+                    this.$.setGame.body = JSON.stringify({
+                        "assists": newValue
+                    });
+                    this.$.setGame.generateRequest();
+                    this.$.getGame.generateRequest();
                 },
 
                 _subtract: function(evt) {
                         var newValue = parseInt(this.value) + -1;
                     if (newValue >= 0) {
                         this.value = newValue;
+                        this.$.setGame.body = JSON.stringify({
+                            "assists": newValue
+                        });
+                        this.$.setGame.generateRequest();
+                        this.$.getGame.generateRequest();
                     }
                 }
-
             });
 
 
