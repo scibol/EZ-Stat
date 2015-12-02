@@ -128,7 +128,10 @@
                 properties: {
                     href: String,
                     icon: String,
-                    game: Object,
+                    game: {
+                        type: Object,
+                        observer: "_gameChange"
+                    },
                     editable:{
                         type: Boolean,
                         default: false,
@@ -165,8 +168,11 @@
                     this.$.createPlayer.generateRequest();
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
-                }
+                },
 
+                _gameChange: function(newValue, oldValue) {
+                    console.log(newValue)
+                } 
             });
 
 

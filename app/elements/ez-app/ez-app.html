@@ -171,6 +171,15 @@
                 width: 300px;
             }
 
+            #btnEdit, #btnStats {
+                width: 10em;
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+
+            #btnStats {
+                float: right;
+            }
+
         </style>
         <iron-ajax
                 id="getPlayers"
@@ -289,22 +298,45 @@
                                     </paper-listbox>
                                 </nav>
 
-                                <div class="content flex main-content">
-                                    <div id="upperBar"> 
-                                        <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
-                                            Hit
-                                        </paper-button>
-                                        <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
-                                            Miss
-                                        </paper-button>
-                                         
+                                <iron-pages id='my_iron_pages' attr-for-selected="property" selected="0">
+                                    
+                                    <div property="0">
+                                    
+                                        <div class="content flex main-content">
+                                        <div id="upperBar"> 
+                                                <paper-button toggles="true" id="btnEdit" disabled="false" on-click="">
+                                                    Edit
+                                                </paper-button>
+                                                <paper-button toggles="true" id="btnStats" disabled="false" on-click="_switchToStats">
+                                                    Stats
+                                                </paper-button>
+                                                 
+                                            </div>
+                                            <div id="upperBar"> 
+                                                <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
+                                                    Hit
+                                                </paper-button>
+                                                <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
+                                                    Miss
+                                                </paper-button>
+                                                 
+                                            </div>
+                                             
+                                            <ez-canvas id="canv" selected="not" hit="boh">
+                                            </ez-canvas>
+                                            <paper-button on-click="_endGame">end game</paper-button>
+                                        </div>
+                                        
+                                        Normal text
                                     </div>
-                                     
-                                    <ez-canvas id="canv" selected="not" hit="boh">
-                                    </ez-canvas>
-                                    <paper-button on-click="_endGame">end game</paper-button>
+                                    <div property="1">
+                                        Stats
+                                    </div>
+                                    <div property="2">
+                                        Edit
+                                    </div>
 
-                                </div>
+                                </iron-pages>
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
@@ -406,8 +438,11 @@
                 },
 
                 _activateButtons: function (event, detail) {
+                    console.log("Buttons enabled!")
                     this.$.btnHit.disabled = false;
                     this.$.btnMiss.disabled = false;
+                    this.$.btnStats.disabled = false;
+                    this.$.btnEdit.disabled = false;
                 },
 
                 _startGame: function (event, detail) {
@@ -443,6 +478,13 @@
 
                 scrollPageToTop: function () {
 
+                },
+
+                _switchToStats: function(){
+                    console.log("Switching to stats!");
+                    var pages = this.$.my_iron_pages;
+                    console.log(pages.selectedItem);
+                    pages.selectNext();
                 }
             });
         })
