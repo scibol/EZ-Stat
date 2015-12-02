@@ -32,6 +32,7 @@ router.get('/', function(req, res, next) {
 //create new player
 router.post('/', function(req, res, next) {
     var newPlayer = new Player(req.body);
+    console.log(newPlayer);
     newPlayer.save(onModelSave(res, 201, true));
 });
 
@@ -55,18 +56,21 @@ router.get('/:playerid', function(req, res, next) {
 //update a player
 router.put('/:playerid', function(req, res, next) {
   var data = req.body;
-
+  console.log(req.body);
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
-    if (player){
-      player.name =  data.name; 
-      player.artist = data.artist;
-      player.artwork = data.artwork;
-      player.dateCreated = data.dateCreated;
-      player.artwork = data.artwork;
-
-      player.save(onModelSave(res));
-    }else{
+    if (player) {
+      if (data.pos_x) {
+        player.shots.push(data)
+        player.save(onModelSave(res));
+      }
+      //player.firstName =  player.firstName || data.firstName;
+      //player.secondName = player.secondName || data.secondName;
+      //player.number = player.number || data.number;
+      //player.position = player.position || data.position;
+      //player.team = player.team || data.team;
+    }
+    else{
       //player does not exist create it
       var newPlayer = new Player(data);
       newPlayer._id = ObjectId(req.params.playerid);
@@ -102,7 +106,7 @@ function onModelSave(res, status, sendItAsResponse){
     if (err) {
       if (err.name === 'ValidationError' 
         || err.name === 'TypeError' ) {
-        res.status(400)
+        res.status(400);
         return res.json({
           statusCode: 400,
           message: "Bad Request"
@@ -112,7 +116,7 @@ function onModelSave(res, status, sendItAsResponse){
       }
     }
 
-    pubsub.emit('player.updated', {})
+    pubsub.emit('player.updated', {});
     if( sendItAsResponse){
       var obj = saved.toObject();
       delete obj.password;

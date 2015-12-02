@@ -14,9 +14,10 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var CoordinateSchema = new mongoose.Schema(
 
 {
-  pos_x: {type: String, required: true},
-  pos_y: { type: String, required: true},
-  success : { type: String, required: true}
+  pos_x: {type: String, default: ""},
+  pos_y: { type: String, default: ""},
+  success : { type: Boolean, required: true},
+  two_points: { type: Boolean, default: false}
 }
 
 );
