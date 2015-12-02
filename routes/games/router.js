@@ -60,14 +60,16 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    game.players.push(player)
+                    game.players.push(player);
                     game.save(onModelSave(res));
                 });
             }
             if (data.result) {
                 game.result = data.result;
             }
-            if (data.assists) {
+            console.log(data.assists);
+            console.log(typeof data.assists);
+            if (!isNaN(data.assists)) {
                 game.assists = data.assists;
             }
             if (data.state) {

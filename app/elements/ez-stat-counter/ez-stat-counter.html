@@ -111,12 +111,13 @@
                 },
 
                 _subtract: function(evt) {
-                        var newValue = parseInt(this.value) + -1;
+                    var newValue = parseInt(this.value) - 1;
                     if (newValue >= 0) {
                         this.value = newValue;
                         this.$.setGame.body = JSON.stringify({
                             "assists": newValue
                         });
+//                        console.log(this.$.setGame.body);
                         this.$.setGame.generateRequest();
                         this.$.getGame.generateRequest();
                     }

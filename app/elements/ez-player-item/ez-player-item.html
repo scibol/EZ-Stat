@@ -78,6 +78,7 @@
                 handle-as="json"
                 content-type="application/json"
                 method="PUT"
+                on-response="_makeGet"
                 debounce-duration="3000">
         </iron-ajax>
 
@@ -164,6 +165,9 @@
                     });
                     this.$.createPlayer.generateRequest();
                     this.$.setGame.generateRequest();
+                },
+
+                _makeGet: function () {
                     this.$.getGame.generateRequest();
                 }
 
