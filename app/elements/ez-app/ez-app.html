@@ -23,6 +23,7 @@
 <link rel="import" href="../routing.html">
 
 <link rel="import" href="../ez-player-item/ez-player-item.html">
+<link rel="import" href="../ez-stat-counter/ez-stat-counter.html">
 <link rel="import" href="../ez-menu-item/ez-menu-item.html">
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
@@ -36,6 +37,8 @@
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
+
+
 
 <dom-module id="ez-app">
     <template>
@@ -93,10 +96,16 @@
             .wrapper {
                 position: absolute;
                 top: 64px;
-                bottom:0;
+                bottom: 0;
                 left: 0;
                 /*padding-top: 64px;*/
                 /*height:100vh;*/
+            }
+
+            .makeFlex {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
             }
 
             #upperBar {
@@ -175,21 +184,21 @@
         <iron-ajax
                 id="getPlayers"
                 auto
-                url="http://localhost:3000/players"
+                url="/players"
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
 
         <iron-ajax id="getGames"
                    auto
-                   url="http://localhost:3000/games"
+                   url="/games"
                    handle-as="json"
                    last-response="{{games}}"
                    debounce-duration="300"></iron-ajax>
 
         <iron-ajax
                 id="newGame"
-                url="http://localhost:3000/games"
+                url="/games"
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
@@ -200,7 +209,7 @@
 
         <iron-ajax
                 id="createPlayer"
-                url="http://localhost:3000/players"
+                url="/players"
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
@@ -240,7 +249,7 @@
                 <div data-route="games">
                     <iron-ajax
                             id="setGame"
-                            url="http://localhost:3000/games/{{game._id}}"
+                            url="/games/{{game._id}}"
                             handle-as="json"
                             content-type="application/json"
                             method="PUT"
@@ -249,7 +258,7 @@
                     <iron-ajax
                             id="getGame"
                             auto
-                            url="http://localhost:3000/games/{{params.gameid}}"
+                            url="/games/{{params.gameid}}"
                             handle-as="json"
                             last-response="{{game}}"
                             debounce-duration="300"></iron-ajax>
@@ -290,6 +299,15 @@
                                 </nav>
 
                                 <div class="content flex main-content">
+                                    <div class="makeFlex">
+                                        <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable selected="" value="7" game="{{game}}"></ez-stat-counter>
+                                    </div>
+                                    <div class="makeFlex">
+                                        <ez-stat-counter editable value="1" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable value="5" game="{{game}}"></ez-stat-counter>
+                                    </div>
+
                                     <div id="upperBar"> 
                                         <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
                                             Hit
@@ -300,7 +318,8 @@
                                          
                                     </div>
                                      
-                                    <ez-canvas id="canv" selected="not" hit="boh">
+                                    <ez-canvas id="canv" selected="" hit="">
+
                                     </ez-canvas>
                                     <paper-button on-click="_endGame">end game</paper-button>
 
@@ -399,10 +418,12 @@
 
                 _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
+                    this.$.assistCount.selected = this.$.team1.selectedItem.id;
                 },
 
                 _setSelected2: function (event, detail) {
                     this.$.canv.selected = this.$.team2.selectedItem.id;
+                    this.$.assistCount.selected = this.$.team2.selectedItem.id;
                 },
 
                 _activateButtons: function (event, detail) {
@@ -447,6 +468,12 @@
             });
         })
         ();
+        function bho2() {
+            console.log(this)
+            console.log(document)
+            console.log(this.$.drop)
+
+        }
 
     </script>
 

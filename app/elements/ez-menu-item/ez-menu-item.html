@@ -130,7 +130,8 @@
 
                 _onClick: function(event, detail){
                     event.preventDefault();
-                    var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+                    var resource = event.currentTarget.href.split("3000")[1]
+
                     page.show(resource)
                 }
                 //<!-- /build -->
