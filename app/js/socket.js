@@ -1,5 +1,10 @@
 var socket = io.connect();
 
 socket.on("change-game", function(data) {
-    console.log("asd")
+    drawHit()
+});
+
+socket.on("change-player", function(data) {
+    console.log("in")
+    drawHitAndMiss(data.success, data.pos_x, data.pos_y)
 });

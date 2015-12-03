@@ -38,6 +38,8 @@
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
 
+
+
 <dom-module id="ez-app">
     <template>
 
@@ -182,21 +184,21 @@
         <iron-ajax
                 id="getPlayers"
                 auto
-                url="http://localhost:3000/players"
+                url="/players"
                 handle-as="json"
                 last-response="{{players}}"
                 debounce-duration="300"></iron-ajax>
 
         <iron-ajax id="getGames"
                    auto
-                   url="http://localhost:3000/games"
+                   url="/games"
                    handle-as="json"
                    last-response="{{games}}"
                    debounce-duration="300"></iron-ajax>
 
         <iron-ajax
                 id="newGame"
-                url="http://localhost:3000/games"
+                url="/games"
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
@@ -207,7 +209,7 @@
 
         <iron-ajax
                 id="createPlayer"
-                url="http://localhost:3000/players"
+                url="/players"
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
@@ -247,7 +249,7 @@
                 <div data-route="games">
                     <iron-ajax
                             id="setGame"
-                            url="http://localhost:3000/games/{{game._id}}"
+                            url="/games/{{game._id}}"
                             handle-as="json"
                             content-type="application/json"
                             method="PUT"
@@ -256,7 +258,7 @@
                     <iron-ajax
                             id="getGame"
                             auto
-                            url="http://localhost:3000/games/{{params.gameid}}"
+                            url="/games/{{params.gameid}}"
                             handle-as="json"
                             last-response="{{game}}"
                             debounce-duration="300"></iron-ajax>
@@ -465,6 +467,12 @@
             });
         })
         ();
+        function bho2() {
+            console.log(this)
+            console.log(document)
+            console.log(this.$.drop)
+
+        }
 
     </script>
 

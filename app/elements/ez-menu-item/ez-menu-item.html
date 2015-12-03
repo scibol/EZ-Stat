@@ -131,6 +131,9 @@
                 _onClick: function(event, detail){
                     event.preventDefault();
                     var resource = event.currentTarget.href.replace(/^http:\/\/localhost:[0-9]{1,4}/,"")
+                    resource = resource.replace(/^[^\/]*(?:\/[^\/]*){2}/, "")
+//                    url.replace(/^[^\/]*(?:\/[^\/]*){2}/, "")
+                    console.log(resource)
                     page.show(resource)
                 }
                 //<!-- /build -->
