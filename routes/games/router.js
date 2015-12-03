@@ -33,6 +33,7 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
     var newGame = new Game(req.body);
     newGame.save(onModelSave(res, 201, true));
+    pubsub.emit("game.created",newGame);
 });
 
 //get a game
@@ -55,17 +56,24 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
+    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    game.players.push(player)
+
+                    console.log()
+                    var p = new Player();
+                    game.players.push(player);
                     game.save(onModelSave(res));
                 });
             }
             if (data.result) {
                 game.result = data.result;
+            }
+            if (!isNaN(data.assists)) {
+                game.assists = data.assists;
             }
             if (data.state) {
                 game.state = data.state;

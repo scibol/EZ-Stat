@@ -78,6 +78,7 @@
                 handle-as="json"
                 content-type="application/json"
                 method="PUT"
+                on-response="_makeGet"
                 debounce-duration="3000">
         </iron-ajax>
 
@@ -152,22 +153,43 @@
                     if(!this.editable) return;
                     this.$.textVal.style.display = "inline-block";
                     this.$$('#editInput').style.display = "none";
-                    this.$.createPlayer.body = JSON.stringify({
-                        "firstName": this.$.editInput.value.split(" ")[0],
-                        "lastName": this.$.editInput.value.split(" ")[1],
-                        "team": "bho"
-                    });
-                    this.$.setGame.body = JSON.stringify({
-                        "firstName": this.$.editInput.value.split(" ")[0],
-                        "lastName": this.$.editInput.value.split(" ")[1],
-                        "team": "bho"
-                    });
-                    this.$.createPlayer.generateRequest();
-                    this.$.setGame.generateRequest();
+                    var first = this.$.editInput.value.split(" ")[0];
+                    var last = this.$.editInput.value.split(" ")[1];
+                    console.log(isNumber(first));
+                    if (first && last) {
+                        this.$.createPlayer.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": "bho"
+                        });
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": "bho"
+                        });
+                        this.$.createPlayer.generateRequest();
+                        this.$.setGame.generateRequest();
+                    }
+
+//                    TODO if name is number, put it as fake
+//                    else if (isNumber(first) && !last) {
+//                        this.$.setGame.body = JSON.stringify({
+//                            "firstName": first,
+//                            "lastName": "",
+//                            "team": "bho"
+//                        });
+//                        this.$.setGame.generateRequest();
+//                    }
+                },
+
+                _makeGet: function () {
                     this.$.getGame.generateRequest();
                 }
 
             });
+            function isNumber(n) {
+                return !isNaN(parseFloat(n)) && isFinite(n);
+            }
 
 
         })();

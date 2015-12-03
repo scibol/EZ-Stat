@@ -1,0 +1,148 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/iron-icon/iron-icon.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<!-- /build -->
+
+<dom-module id="ez-stat-counter">
+    <template>
+
+        <!-- build:remove -->
+
+        <style>
+            :host {
+                display: block;
+                -webkit-transition: background 0.3s, box-shadow 0.3s;
+                -moz-transition: background 0.3s, box-shadow 0.3s;
+            }
+
+            .text {
+                position: relative;
+                top: 0.5em;
+            }
+
+            .secondary {
+                position: relative;
+                top: -0.8em;
+                font-size: 0.8em;
+                color: rgba(0, 0, 0, 0.6);
+            }
+
+            .button {
+                transition: all 0.2s;
+
+            }
+
+            .button:hover {
+                background: rgba(0, 0, 0, 0.2);
+            }
+
+            .inline-container {
+                display: flex;
+            }
+
+
+        </style>
+        <iron-ajax
+                id="setGame"
+                url="http://localhost:3000/games/[[game._id]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="getPlayer"
+                auto
+                url="http://localhost:3000/players/[[selected]]"
+                handle-as="json"
+                last-response="{{player}}"
+                debounce-duration="300"></iron-ajax>
+        <paper-item>
+
+            <iron-ajax
+                    id="setAssist"
+                    url="http://localhost:3000/players/[[selected]]"
+                    handle-as="json"
+                    content-type="application/json"
+                    method="PUT"
+                    timeout="1000">
+            </iron-ajax>
+
+            <p id="selectPlayer" style="display: none">[[selected]]</p>
+            <!--<p id="selectPlayer">[[selected]]</p>-->
+            <paper-item-body two-line>
+                <div class="inline-container">
+                    <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
+                    <div class="text">
+                        <div>{{player.assists}}</div>
+                        <div class="secondary">Assists</div>
+                    </div>
+                    <paper-button id="plus" class="button" on-click="_add">+</paper-button>
+                </div>
+            </paper-item-body>
+        </paper-item>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-stat-counter',
+
+                //
+                <!-- build:remove -->
+                listeners: {
+                },
+
+                properties: {
+                    href: String,
+                    value: String,
+                    game: Object,
+                    selected: {type : String, notify : true, observer : "changedPlayer"},
+                    editable: {
+                        type: Boolean,
+                        default: false,
+                        reflectToAttribute: true
+                    }
+                },
+
+                changedPlayer : function () {
+                    this.$.selectPlayer.innerHTML
+                },
+
+                _add: function(evt) {
+//                    this.$.selectPlayer.innerHTML;
+                    console.log(this.value);
+                    var newValue = parseInt(this.value) + 1;
+                    this.value = newValue;
+                    console.log(newValue);
+                    this.$.setAssist.body = JSON.stringify({
+                        "assists": newValue
+                    });
+                    this.$.setAssist.generateRequest();
+                },
+
+                _subtract: function(evt) {
+//                    this.$.selectPlayer.innerHTML;
+                    var newValue = parseInt(this.value) - 1;
+                    if (newValue >= 0) {
+                        this.value = newValue;
+                        this.$.setAssist.body = JSON.stringify({
+                            "assists": newValue
+                        });
+                        this.$.setAssist.generateRequest();
+                    }
+                }
+            });
+
+
+        })();
+    </script>
+
+</dom-module>

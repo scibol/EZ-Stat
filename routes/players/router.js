@@ -56,6 +56,7 @@ router.get('/:playerid', function(req, res, next) {
 //update a player
 router.put('/:playerid', function(req, res, next) {
   var data = req.body;
+    console.log("maho")
   console.log(req.body);
   Player.findById(req.params.playerid, fieldsFilter , function(err, player){
     if (err) return next (err);
@@ -64,6 +65,12 @@ router.put('/:playerid', function(req, res, next) {
         player.shots.push(data)
         player.save(onModelSave(res));
       }
+        console.log()
+        if (data.assists) {
+            console.log("de")
+            player.assists = data.assists;
+            player.save(onModelSave(res));
+        }
       //player.firstName =  player.firstName || data.firstName;
       //player.secondName = player.secondName || data.secondName;
       //player.number = player.number || data.number;
