@@ -33,6 +33,7 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
     var newGame = new Game(req.body);
     newGame.save(onModelSave(res, 201, true));
+    pubsub.emit("game.created",newGame);
 });
 
 //get a game
