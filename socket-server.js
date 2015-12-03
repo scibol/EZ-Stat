@@ -19,8 +19,11 @@ module.exports = function(httpServer) {
 	});
 
 	eventBus.on('game.created', function(event){
-		console.log(event);
 		io.emit('change-game', event);
+	});
+
+	eventBus.on('player.changed', function(event){
+		io.emit('change-player', event);
 	});
 
 	eventBus.on('track.deleted', function(event){

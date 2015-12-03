@@ -48,7 +48,7 @@
         </style>
         <iron-ajax
                 id="setGame"
-                url="http://localhost:3000/games/[[game._id]]"
+                url="/games/[[game._id]]"
                 handle-as="json"
                 content-type="application/json"
                 method="PUT"
@@ -58,7 +58,7 @@
         <iron-ajax
                 id="getPlayer"
                 auto
-                url="http://localhost:3000/players/[[selected]]"
+                url="/players/[[selected]]"
                 handle-as="json"
                 last-response="{{player}}"
                 debounce-duration="300"></iron-ajax>
@@ -66,7 +66,7 @@
 
             <iron-ajax
                     id="setAssist"
-                    url="http://localhost:3000/players/[[selected]]"
+                    url="/players/[[selected]]"
                     handle-as="json"
                     content-type="application/json"
                     method="PUT"
