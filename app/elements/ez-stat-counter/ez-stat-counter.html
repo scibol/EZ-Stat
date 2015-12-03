@@ -56,19 +56,30 @@
         </iron-ajax>
 
         <iron-ajax
-                id="getGame"
+                id="getPlayer"
                 auto
-                url="http://localhost:3000/games/[[game._id]]"
+                url="http://localhost:3000/players/[[selected]]"
                 handle-as="json"
-                last-response="{{game}}"
+                last-response="{{player}}"
                 debounce-duration="300"></iron-ajax>
-
         <paper-item>
+
+            <iron-ajax
+                    id="setAssist"
+                    url="http://localhost:3000/players/[[selected]]"
+                    handle-as="json"
+                    content-type="application/json"
+                    method="PUT"
+                    timeout="1000">
+            </iron-ajax>
+
+            <p id="selectPlayer" style="display: none">[[selected]]</p>
+            <!--<p id="selectPlayer">[[selected]]</p>-->
             <paper-item-body two-line>
                 <div class="inline-container">
                     <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
                     <div class="text">
-                        <div>{{value}}</div>
+                        <div>{{player.assists}}</div>
                         <div class="secondary">Assists</div>
                     </div>
                     <paper-button id="plus" class="button" on-click="_add">+</paper-button>
@@ -93,6 +104,7 @@
                     href: String,
                     value: String,
                     game: Object,
+                    selected: {type : String, notify : true, observer : "changedPlayer"},
                     editable: {
                         type: Boolean,
                         default: false,
@@ -100,26 +112,31 @@
                     }
                 },
 
+                changedPlayer : function () {
+                    this.$.selectPlayer.innerHTML
+                },
+
                 _add: function(evt) {
+//                    this.$.selectPlayer.innerHTML;
+                    console.log(this.value);
                     var newValue = parseInt(this.value) + 1;
                     this.value = newValue;
-                    this.$.setGame.body = JSON.stringify({
+                    console.log(newValue);
+                    this.$.setAssist.body = JSON.stringify({
                         "assists": newValue
                     });
-                    this.$.setGame.generateRequest();
-                    this.$.getGame.generateRequest();
+                    this.$.setAssist.generateRequest();
                 },
 
                 _subtract: function(evt) {
+//                    this.$.selectPlayer.innerHTML;
                     var newValue = parseInt(this.value) - 1;
                     if (newValue >= 0) {
                         this.value = newValue;
-                        this.$.setGame.body = JSON.stringify({
+                        this.$.setAssist.body = JSON.stringify({
                             "assists": newValue
                         });
-//                        console.log(this.$.setGame.body);
-                        this.$.setGame.generateRequest();
-                        this.$.getGame.generateRequest();
+                        this.$.setAssist.generateRequest();
                     }
                 }
             });

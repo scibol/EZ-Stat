@@ -55,11 +55,15 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
+    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
+
+                    console.log()
+                    var p = new Player();
                     game.players.push(player);
                     game.save(onModelSave(res));
                 });
@@ -67,8 +71,6 @@ router.put('/:gameid', function (req, res, next) {
             if (data.result) {
                 game.result = data.result;
             }
-            console.log(data.assists);
-            console.log(typeof data.assists);
             if (!isNaN(data.assists)) {
                 game.assists = data.assists;
             }

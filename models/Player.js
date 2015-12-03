@@ -30,6 +30,9 @@ var PlayerSchema = new mongoose.Schema(
   position : {type: String, default : ""},
   team : {type: String, default: ""},
   shots : {type: [CoordinateSchema], default: []},
+  assists : {type: Number, default: 0},
+  fouls : {type: Number, default: 0},
+  freeShots : {type: Number, default: 0},
 }
 
 );
