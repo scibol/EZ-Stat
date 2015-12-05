@@ -1,5 +1,5 @@
 /** @module models/Game
-* The Game Model. 
+* The Game Model.
 * Schema:
 * teams            String       required   Unique
 * date             String       required   date of the game. Default: Date.now
@@ -12,6 +12,7 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var PlayerSchema = require('./Player');
+var tempPlayerSchema = require('./tempPlayer')
 
 
 /** @constructor
@@ -20,12 +21,16 @@ var PlayerSchema = require('./Player');
 var GameSchema = new mongoose.Schema(
 
 {
-	players: {type: [PlayerSchema], default: []},
-	date: { type: Date, default: Date.now},
-	result : { type: Boolean, default : false},
+	event: {type: [tempPlayerSchema], default: []},
+	date: {type: Date, default: Date.now},
+	result : {type: String, default: ""},
 	state : {type: Number, default: 0},
-	team1: {type: [PlayerSchema], default: []},
-    team2 : {type: [PlayerSchema], default: []}
+	teams: {
+        team1: {type: String, default: ""},
+        team2: {type:String, default: ""}
+	},
+	players: {type: [PlayerSchema], default: []},
+
 }
 
 );

@@ -39,7 +39,6 @@
 <script type="text/javascript" src="../../js/utils.js"></script>
 
 
-
 <dom-module id="ez-app">
     <template>
 
@@ -47,7 +46,7 @@
 
         <style include="shared-styles">
             :host {
-            @apply(- -layout-vertical);
+                @apply(--layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -206,13 +205,21 @@
                 debounce-duration="3000">
         </iron-ajax>
 
-
         <iron-ajax
                 id="createPlayer"
                 url="/players"
                 handle-as="json"
                 content-type="application/json"
                 method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="setTeam"
+                url="/games/{{game._id}}"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
                 debounce-duration="3000">
         </iron-ajax>
 
@@ -269,8 +276,6 @@
                         <!--game not started yet-->
                         <div state="0">
                             <div class="horizontal layout flex wrapper">
-
-
                                 <nav class="main-nav-float main-nav">
                                     <ez-player-item game="{{game}}" editable></ez-player-item>
                                 </nav>
@@ -300,8 +305,10 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                        <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>
-                                        <ez-stat-counter editable selected="" value="7" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}"
+                                                         game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable selected="" value="7"
+                                                         game="{{game}}"></ez-stat-counter>
                                     </div>
                                     <div class="makeFlex">
                                         <ez-stat-counter editable value="1" game="{{game}}"></ez-stat-counter>
@@ -398,6 +405,7 @@
                         "lastName": this.$.lastname.value,
                         "team": this.$.team.value
                     });
+
                     this.$.setGame.body = JSON.stringify({
                         "firstName": this.$.firstname.value,
                         "lastName": this.$.lastname.value,
@@ -405,6 +413,13 @@
                     });
                     this.$.createPlayer.generateRequest();
                     this.$.setGame.generateRequest();
+                },
+
+                _setTeam: function() {
+                    this.$.setTeam.body = JSON.stringify({
+                        "team1" : this.$.teamname1.value
+                    })
+                    this.$.setTeam.generateRequest()
                 },
 
                 _gameItem: function (event, detail) {
