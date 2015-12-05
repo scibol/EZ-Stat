@@ -28,6 +28,7 @@
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
 
+
 <!-- /build -->
 
 <!-- the following script can help you formatting the dates -->
@@ -37,7 +38,6 @@
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
-
 
 
 <dom-module id="ez-app">
@@ -265,7 +265,6 @@
 
                     <!--different states of game-->
                     <iron-pages attr-for-selected="state" selected="{{game.state}}">
-
                         <!--game not started yet-->
                         <div state="0">
                             <div class="horizontal layout flex wrapper">
@@ -300,8 +299,10 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                        <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>
-                                        <ez-stat-counter editable selected="" value="7" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}"
+                                                         game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter editable selected="" value="7"
+                                                         game="{{game}}"></ez-stat-counter>
                                     </div>
                                     <div class="makeFlex">
                                         <ez-stat-counter editable value="1" game="{{game}}"></ez-stat-counter>
@@ -317,9 +318,8 @@
                                         </paper-button>
                                          
                                     </div>
-                                     
-                                    <ez-canvas id="canv" selected="" hit="boh">
-                                    </ez-canvas>
+                                        <ez-canvas id="canv" selected="" hit="boh">
+                                        </ez-canvas>
                                     <paper-button on-click="_endGame">end game</paper-button>
 
                                 </div>
@@ -337,7 +337,54 @@
 
                         <!--game finished-->
                         <div state="2">
-                            finished game
+
+                            <div class="horizontal layout flex wrapper">
+                                <nav class="main-nav-float main-nav">
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
+                                                   selectedItem>
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item id="{{player._id}}">{{player.firstName}}
+                                                {{player.lastName}}
+                                            </paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </nav>
+
+                                <div class="content flex main-content">
+                                    <div class="makeFlex">
+                                        <ez-stat-counter id="assistCount" selected="" value="{{game.assists}}"
+                                                         game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter selected="" value="7" game="{{game}}"></ez-stat-counter>
+                                    </div>
+                                    <div class="makeFlex">
+                                        <ez-stat-counter value="1" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter value="5" game="{{game}}"></ez-stat-counter>
+                                    </div>
+
+                                    <!--<div id="upperBar"> -->
+                                    <!--<paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">-->
+                                    <!--Hit-->
+                                    <!--</paper-button>-->
+                                    <!--<paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">-->
+                                    <!--Miss-->
+                                    <!--</paper-button>-->
+                                    <!-- -->
+                                    <!--</div>-->
+                                    <!-- -->
+                                    <!--<ez-canvas id="canv2" selected="" hit="boh">-->
+                                    <!--</ez-canvas>-->
+
+                                </div>
+                                <nav class="main-nav-float main-nav">
+                                    <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
+                                                   selectedItem>
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
+                                            </paper-item>
+                                        </template>
+                                    </paper-listbox>
+                                </nav>
+                            </div>
                         </div>
 
                     </iron-pages>
@@ -467,7 +514,6 @@
             });
         })
         ();
-
     </script>
 
 </dom-module>
