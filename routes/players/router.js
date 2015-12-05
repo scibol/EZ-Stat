@@ -84,7 +84,6 @@ router.put('/:playerid', function (req, res, next) {
             newPlayer.save(onModelSave(res, 201, true));
         }
         //console.log(req.params.playerid)
-        console.log("DIODEDIO");
         pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
     });
 });
