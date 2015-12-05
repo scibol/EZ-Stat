@@ -355,7 +355,6 @@
         <!-- /build -->
     </template>
 
-
     <script>
         (function () {
             'use strict';
@@ -419,6 +418,7 @@
                 _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
                     this.$.assistCount.selected = this.$.team1.selectedItem.id;
+                    socket.emit("change", this.$.canv.selected);
                 },
 
                 _setSelected2: function (event, detail) {
@@ -468,12 +468,6 @@
             });
         })
         ();
-        function bho2() {
-            console.log(this)
-            console.log(document)
-            console.log(this.$.drop)
-
-        }
 
     </script>
 
