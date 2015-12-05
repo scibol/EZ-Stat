@@ -77,7 +77,7 @@
                     if (this.$.getShots.lastResponse != undefined) {
                         var response = this.$.getShots.lastResponse.shots;
                         for (var shot in response) {
-//                            console.log(response[shot].success, response[shot].pos_x, response[shot].pos_y)
+                            console.log(response[shot].success, response[shot].pos_x, response[shot].pos_y)
                             drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y);
                         }
                     }

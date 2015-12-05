@@ -18,13 +18,14 @@ module.exports = function(httpServer) {
 		});
 
 		socket.on("change", function(data){
-			if(socket.rooms.length > 1) {
-				socket.leave(socket.rooms[1]);
-			}
-			console.log(socket.rooms)
+			//for (var i = 0; i < socket.rooms.length - 1; i++) {
+			//	socket.leave(socket.rooms[i]);
+			//}
+			socket.rooms = [];
 			socket.join(data);
-			setTimeout(function(){console.log(socket.rooms)}, 1000);
+			console.log(data);
 			//console.log(socket.rooms)
+
 		});
 
 	});
