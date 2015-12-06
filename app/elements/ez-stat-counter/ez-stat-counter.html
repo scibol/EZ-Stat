@@ -82,7 +82,7 @@
                     </template>
                     <div class="text">
                         <div>{{player.assists}}</div>
-                        <div class="secondary">Assists</div>
+                        <div class="secondary">[[name]]</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
 
@@ -105,6 +105,7 @@
                 listeners: {},
 
                 properties: {
+                    name: String,
                     href: String,
                     value: String,
                     game: Object,
