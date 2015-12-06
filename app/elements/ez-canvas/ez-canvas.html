@@ -92,13 +92,13 @@
                     for (var players in window.shotsObj) {
                         if (players != window.player) {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = false
+                                window.shotsObj[players][shot].visible = false;
                                 window.stage.update()
                             }
                         }
                         else {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = true
+                                window.shotsObj[players][shot].visible = true;
                                 window.stage.update()
                             }
                         }
