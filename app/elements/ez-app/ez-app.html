@@ -436,6 +436,7 @@
                 _setSelected2: function (event, detail) {
                     this.$.canv.selected = this.$.team2.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
+                    socket.emit("change", this.$.canv.selected);
                 },
 
                 _activateButtons: function (event, detail) {

@@ -4,10 +4,6 @@ var socket = io.connect();
 //    drawHit()
 //});
 
-socket.on("change-room", function(data) {
-    console.log("Asd");
-    console.log(data)
-});
 
 socket.on("change-player", function(data) {
     console.log(socket);
