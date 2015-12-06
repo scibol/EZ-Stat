@@ -32,7 +32,6 @@ router.get('/', function (req, res, next) {
 //create new player
 router.post('/', function (req, res, next) {
     var newPlayer = new Player(req.body);
-    console.log(newPlayer);
     newPlayer.save(onModelSave(res, 201, true));
 });
 
@@ -56,8 +55,6 @@ router.get('/:playerid', function (req, res, next) {
 //update a player
 router.put('/:playerid', function (req, res, next) {
     var data = req.body;
-    console.log("maho")
-    console.log(req.body);
     Player.findById(req.params.playerid, fieldsFilter, function (err, player) {
         if (err) return next(err);
         if (player) {
@@ -65,12 +62,23 @@ router.put('/:playerid', function (req, res, next) {
                 player.shots.push(data)
                 player.save(onModelSave(res));
             }
-            console.log()
-            if (data.assists) {
-                console.log("de")
+            if (data.assists || data.assists == 0) {
                 player.assists = data.assists;
                 player.save(onModelSave(res));
             }
+            if (data.passes || data.passes == 0) {
+                player.passes = data.passes;
+                player.save(onModelSave(res));
+            }
+            if (data.freeShots || data.freeShots == 0) {
+                player.freeShots = data.freeShots;
+                player.save(onModelSave(res));
+            }
+            if (data.fouls || data.fouls == 0) {
+                player.fouls = data.fouls;
+                player.save(onModelSave(res));
+            }
+
             //player.firstName =  player.firstName || data.firstName;
             //player.secondName = player.secondName || data.secondName;
             //player.number = player.number || data.number;

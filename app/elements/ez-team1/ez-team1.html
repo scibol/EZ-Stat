@@ -7,7 +7,7 @@
 <link rel="import" href="../../components/iron-icons/image-icons.html">
 <!-- /build -->
 
-<dom-module id="ez-player-item">
+<dom-module id="ez-team1">
     <template>
 
         <!-- build:remove -->
@@ -53,7 +53,7 @@
                 white-space: nowrap;
             }
 
-            #deo, #saveTeam {
+            #test, #saveTeam {
                 display: inline-block;
             }
 
@@ -117,10 +117,11 @@
 
         <paper-listbox selectedItem>
             <div class="teamDiv">
-            <paper-input id="deo" placeholder="Team name" on-focus="_onFocus" on-blur="_loseFocus"></paper-input>
+            <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus" value="{{game.team1}}"></paper-input>
                 <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
             </div>
-        <template is="dom-repeat" items="{{game.players}}" as="player">
+
+        <template is="dom-repeat" items="{{game.players1}}" as="player">
             <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
                 {{player.lastName}}
             </paper-item>
@@ -138,7 +139,7 @@
             'use strict';
 
             Polymer({
-                is: 'ez-player-item',
+                is: 'ez-team1',
 
                 //<!-- build:remove -->
                 listeners: {
@@ -147,6 +148,7 @@
 
                 properties: {
                     href: String,
+                    team: String,
                     icon: String,
                     game: Object,
                     editable:{
@@ -165,6 +167,11 @@
                 _loseFocus: function() {
 //                    this.$.saveTeam.icon = "icons:create";
 //                    this.$.saveTeam.disabled = true;
+                    console.log(this.$.test.value)
+                    this.$.setGame.body = JSON.stringify({
+                        "team1": this.$.test.value
+                    });
+                    this.$.setGame.generateRequest();
                     console.log("save to be implemented")
                 },
 
@@ -192,12 +199,13 @@
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
-                            "team": "bho"
+                            "team": this.$.test.value
                         });
+                        console.log(this.$.test)
                         this.$.setGame.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
-                            "team": "bho"
+                            "team": this.$.test.value
                         });
                         this.$.createPlayer.generateRequest();
                         this.$.setGame.generateRequest();

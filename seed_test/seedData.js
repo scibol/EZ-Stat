@@ -239,7 +239,7 @@ var players = {
         "pos_x"          : "33.5",
         "pos_y"          : "100",
         "success"        : "true",
-      })]},            
+      })]},
       {"_id"          : ObjectId(),
       "firstName"    : "asxkaixas",
       "lastName"     : "Wedadedsah",
