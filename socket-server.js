@@ -22,9 +22,10 @@ module.exports = function(httpServer) {
 			//	socket.leave(socket.rooms[i]);
 			//}
 			//socket.rooms = [];
+			if(socket.rooms.length > 1) {
+				socket.leave(socket.rooms[1]);
+			}
 			socket.join(data);
-			console.log(socket.rooms)
-			console.log(data);
 			//console.log(socket.rooms)
 
 		});
