@@ -41,7 +41,7 @@
                 ></iron-ajax>
 
         <p id="selHit" style="display:none">[[hit]]</p>
-
+        <p id="score">{{team1}}-{{team2}}</p>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -65,6 +65,16 @@
                     shotsShapes: {
                         type: Array,
                         notify: true
+                    },
+                    team1: {
+                        type:Number,
+                        notify: true,
+                        value: 0
+                    },
+                    team2: {
+                        type:Number,
+                        notify: true,
+                        value: 0
                     }
                 },
 
@@ -170,6 +180,7 @@
                         rectangleShape.on("click", function (e) {
                             var success = (playerHit.innerHTML == "hit")
                             if (success) {
+
                                 drawHit(e)
                             }
                             else {
@@ -204,6 +215,7 @@
                         twoPointsRightShape.on("click", function (e) {
                             var success = (playerHit.innerHTML == "hit")
                             if (success) {
+
                                 drawHit(e)
                             }
                             else {
