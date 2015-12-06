@@ -295,7 +295,7 @@
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
-                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                        <template is="dom-repeat" items="{{game.players1}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}
                                             </paper-item>
@@ -305,15 +305,15 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                        <ez-stat-counter name="assists" id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>
-                                        <ez-stat-counter name="passes" editable selected="" value="{{game.passes}}" game="{{game}}"></ez-stat-counter>
-                                    </div>
-                                    <div class="makeFlex">
-                                        <ez-stat-counter name="fouls" editable value="{{game.fouls}}" game="{{game}}"></ez-stat-counter>
-                                        <ez-stat-counter name="free shots" editable value="{{game.freeShots}}" game="{{game}}"></ez-stat-counter>
+                                        <ez-stat-counter id="buttonCounter"editable selected="" game={{game}}></ez-stat-counter>
+                                        <!--<ez-stat-counter name="assists" id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>-->
+                                        <!--<ez-stat-counter name="passes" editable selected="" value="{{game.passes}}" game="{{game}}"></ez-stat-counter>-->
+                                    <!--</div>-->
+                                    <!--<div class="makeFlex">-->
+                                        <!--<ez-stat-counter name="fouls" editable value="{{game.fouls}}" game="{{game}}"></ez-stat-counter>-->
+                                        <!--<ez-stat-counter name="free shots" editable value="{{game.freeShots}}" game="{{game}}"></ez-stat-counter>-->
                                     </div>
 
-                                    <template is="dom-if" if="_notFinished({{game.finished}})">
                                         <div id="upperBar"> 
                                             <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
                                                 Hit
@@ -322,19 +322,16 @@
                                                 Miss
                                             </paper-button>
                                         </div>
-                                    </template>
 
                                     <ez-canvas id="canv" selected="" hit="boh">
                                     </ez-canvas>
-                                    <template is="dom-if" if="_notFinished({{game.finished}})">
                                         <paper-button on-click="_endGame">end game</paper-button>
-                                    </template>
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
-                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                        <template is="dom-repeat" items="{{game.players2}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
                                         </template>
@@ -432,13 +429,13 @@
 
                 _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
-                    this.$.assistCount.selected = this.$.team1.selectedItem.id;
+                    this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
                     socket.emit("change", this.$.canv.selected);
                 },
 
                 _setSelected2: function (event, detail) {
                     this.$.canv.selected = this.$.team2.selectedItem.id;
-                    this.$.assistCount.selected = this.$.team2.selectedItem.id;
+                    this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
                 },
 
                 _activateButtons: function (event, detail) {

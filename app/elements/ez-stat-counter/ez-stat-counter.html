@@ -78,15 +78,53 @@
             <paper-item-body two-line>
                 <div class="inline-container">
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
+                        <paper-button id="minus" class="button" on-click="_subtractAssist">-</paper-button>
                     </template>
                     <div class="text">
-                        <div id="getValue">{{player.assists}}</div>
-                        <div class="secondary">[[name]]</div>
+                        <div id="getAssists">{{player.assists}}</div>
+                        <div class="secondary">assists</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
+                        <paper-button id="plus" class="button" on-click="_addAssist">+</paper-button>
+                    </template>
+                </div>
+                <div class="inline-container">
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="minus" class="button" on-click="_subtractPasses">-</paper-button>
+                    </template>
+                    <div class="text">
+                        <div id="getPasses">{{player.passes}}</div>
+                        <div class="secondary">passes</div>
+                    </div>
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="plus" class="button" on-click="_addPasses">+</paper-button>
+                    </template>
+                </div>
+            </paper-item-body>
 
-                        <paper-button id="plus" class="button" on-click="_add">+</paper-button>
+            <paper-item-body two-line>
+                <div class="inline-container">
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="minus" class="button" on-click="_subtractFouls">-</paper-button>
+                    </template>
+                    <div class="text">
+                        <div id="getFouls">{{player.fouls}}</div>
+                        <div class="secondary">fouls</div>
+                    </div>
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="plus" class="button" on-click="_addFouls">+</paper-button>
+                    </template>
+                </div>
+                <div class="inline-container">
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="minus" class="button" on-click="_subtractFreeShots">-</paper-button>
+                    </template>
+                    <div class="text">
+                        <div id="getFreeShots">{{player.freeShots}}</div>
+                        <div class="secondary">free shots</div>
+                    </div>
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="plus" class="button" on-click="_addFreeShots">+</paper-button>
                     </template>
                 </div>
             </paper-item-body>
@@ -121,21 +159,80 @@
                     this.$.selectPlayer.innerHTML
                 },
 
-                _add: function (evt) {
-                    var newValue = parseInt(this.$.getValue.innerHTML) + 1;
-                    this.$.getValue.innerHTML = newValue;
+                _addAssist: function (evt) {
+                    var newValue = parseInt(this.$.getAssists.innerHTML) + 1;
+                    this.$.getAssists.innerHTML = newValue;
                     this.$.setAssist.body = JSON.stringify({
                         "assists": newValue
                     });
                     this.$.setAssist.generateRequest();
                 },
 
-                _subtract: function (evt) {
-                    var newValue = parseInt(this.$.getValue.innerHTML) - 1;
+                _subtractAssist: function (evt) {
+                    var newValue = parseInt(this.$.getAssists.innerHTML) - 1;
                     if (newValue >= 0) {
-                        this.$.getValue.innerHTML = newValue;
+                        this.$.getAssists.innerHTML = newValue;
                         this.$.setAssist.body = JSON.stringify({
                             "assists": newValue
+                        });
+                        this.$.setAssist.generateRequest();
+                    }
+                },
+
+                _addFouls: function (evt) {
+                    var newValue = parseInt(this.$.getFouls.innerHTML) + 1;
+                    this.$.getFouls.innerHTML = newValue;
+                    this.$.setAssist.body = JSON.stringify({
+                        "fouls": newValue
+                    });
+                    this.$.setAssist.generateRequest();
+                },
+
+                _subtractFouls: function (evt) {
+                    var newValue = parseInt(this.$.getFouls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFouls.innerHTML = newValue;
+                        this.$.setAssist.body = JSON.stringify({
+                            "fouls": newValue
+                        });
+                        this.$.setAssist.generateRequest();
+                    }
+                },
+
+                _addFreeShots: function (evt) {
+                    var newValue = parseInt(this.$.getFreeShots.innerHTML) + 1;
+                    this.$.getFreeShots.innerHTML = newValue;
+                    this.$.setAssist.body = JSON.stringify({
+                        "freeShots": newValue
+                    });
+                    this.$.setAssist.generateRequest();
+                },
+
+                _subtractFreeShots: function (evt) {
+                    var newValue = parseInt(this.$.getFreeShots.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFreeShots.innerHTML = newValue;
+                        this.$.setAssist.body = JSON.stringify({
+                            "freeShots": newValue
+                        });
+                        this.$.setAssist.generateRequest();
+                    }
+                },
+                _addPasses: function (evt) {
+                    var newValue = parseInt(this.$.getPasses.innerHTML) + 1;
+                    this.$.getPasses.innerHTML = newValue;
+                    this.$.setAssist.body = JSON.stringify({
+                        "passes": newValue
+                    });
+                    this.$.setAssist.generateRequest();
+                },
+
+                _subtractPasses: function (evt) {
+                    var newValue = parseInt(this.$.getAssists.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getPasses.innerHTML = newValue;
+                        this.$.setAssist.body = JSON.stringify({
+                            "passes": newValue
                         });
                         this.$.setAssist.generateRequest();
                     }
