@@ -62,12 +62,27 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-
-                    console.log()
-                    var p = new Player();
+                    //var p = new Player();
                     game.players.push(player);
+                    console.log(player.team)
+                    console.log(game.team1)
+                    console.log(game.team2)
+
+                    if (player.team === game.team1) {
+                        game.players1.push(player)
+                    }
+                    if (player.team === game.team2) {
+                        game.players2.push(player)
+                    }
+                    //game.player.push(player);
                     game.save(onModelSave(res));
                 });
+            }
+            if (data.team1) {
+                game.team1 = data.team1;
+            }
+            if (data.team2) {
+                game.team2 = data.team2;
             }
             if (data.result) {
                 game.result = data.result;
@@ -75,8 +90,11 @@ router.put('/:gameid', function (req, res, next) {
             if (!isNaN(data.assists)) {
                 game.assists = data.assists;
             }
-            if (data.state) {
-                game.state = data.state;
+            if (data.started) {
+                game.started = data.started;
+            }
+            if (data.started) {
+                game.started = data.started;
             }
             game.save(onModelSave(res));
         } else {

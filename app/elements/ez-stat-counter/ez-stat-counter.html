@@ -81,7 +81,7 @@
                         <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
                     </template>
                     <div class="text">
-                        <div>{{player.assists}}</div>
+                        <div id="getValue">{{player.assists}}</div>
                         <div class="secondary">[[name]]</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
@@ -122,11 +122,8 @@
                 },
 
                 _add: function (evt) {
-//                    this.$.selectPlayer.innerHTML;
-                    console.log(this.value);
-                    var newValue = parseInt(this.value) + 1;
-                    this.value = newValue;
-                    console.log(newValue);
+                    var newValue = parseInt(this.$.getValue.innerHTML) + 1;
+                    this.$.getValue.innerHTML = newValue;
                     this.$.setAssist.body = JSON.stringify({
                         "assists": newValue
                     });
@@ -134,10 +131,9 @@
                 },
 
                 _subtract: function (evt) {
-//                    this.$.selectPlayer.innerHTML;
-                    var newValue = parseInt(this.value) - 1;
+                    var newValue = parseInt(this.$.getValue.innerHTML) - 1;
                     if (newValue >= 0) {
-                        this.value = newValue;
+                        this.$.getValue.innerHTML = newValue;
                         this.$.setAssist.body = JSON.stringify({
                             "assists": newValue
                         });

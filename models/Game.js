@@ -21,13 +21,16 @@ var tempPlayerSchema = require('./tempPlayer')
 var GameSchema = new mongoose.Schema(
 
 {
-	event: {type: [tempPlayerSchema], default: []},
-	date: {type: Date, default: Date.now},
-	result : {type: String, default: ""},
-	state : {type: Number, default: 0},
-    finished: {type: Boolean, default: false},
-	team1: {type: [PlayerSchema], default: []},
-    team2 : {type: [PlayerSchema], default: []}
+	players: {type: [PlayerSchema], default: []},
+	date: { type: Date, default: Date.now},
+	result : { type: Boolean, default : false},
+	//state : {type: Number, default: 0},
+    started: {type: String, default: "0"},
+    finished: {type: String, default: "0"},
+    players1: {type: [PlayerSchema], default: []},
+    players2: {type: [PlayerSchema], default: []},
+    team1: {type: String, default:''},
+    team2: {type: String, default:''},
 }
 
 );
