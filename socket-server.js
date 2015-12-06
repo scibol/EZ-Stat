@@ -21,8 +21,9 @@ module.exports = function(httpServer) {
 			//for (var i = 0; i < socket.rooms.length - 1; i++) {
 			//	socket.leave(socket.rooms[i]);
 			//}
-			socket.rooms = [];
+			//socket.rooms = [];
 			socket.join(data);
+			console.log(socket.rooms)
 			console.log(data);
 			//console.log(socket.rooms)
 
@@ -42,31 +43,8 @@ module.exports = function(httpServer) {
 	eventBus.on('player.changed', function(event){
 		var room = event.url;
 		var data = event.data;
+		console.log("test")
 		console.log(room);
 		io.to(room).emit('change-player', data);
 	});
-
-	eventBus.on('track.deleted', function(event){
-		io.emit('change-track', event)
-	});
-
-	eventBus.on('track.updated', function(event){
-		io.emit('change-track', event)
-	});
-
-	eventBus.on('album.deleted', function(event){
-		io.emit('change-album', event)
-	});
-
-	eventBus.on('album.updated', function(event){
-		io.emit('change-album', event)
-	});
-
-	eventBus.on('artist.deleted', function(event){
-		io.emit('change-artist', event)
-	});
-
-	eventBus.on('artist.updated', function(event){
-		io.emit('change-artist', event)
-	})
 };

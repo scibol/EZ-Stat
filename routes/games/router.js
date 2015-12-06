@@ -93,8 +93,8 @@ router.put('/:gameid', function (req, res, next) {
             if (data.started) {
                 game.started = data.started;
             }
-            if (data.started) {
-                game.started = data.started;
+            if (data.finished) {
+                game.finished = data.finished;
             }
             game.save(onModelSave(res));
         } else {
