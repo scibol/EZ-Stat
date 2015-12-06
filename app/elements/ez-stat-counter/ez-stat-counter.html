@@ -77,12 +77,17 @@
             <!--<p id="selectPlayer">[[selected]]</p>-->
             <paper-item-body two-line>
                 <div class="inline-container">
-                    <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
+                    <template is="dom-if" if="{{editable}}">
+                        <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
+                    </template>
                     <div class="text">
                         <div>{{player.assists}}</div>
-                        <div class="secondary">Assists</div>
+                        <div class="secondary">[[name]]</div>
                     </div>
-                    <paper-button id="plus" class="button" on-click="_add">+</paper-button>
+                    <template is="dom-if" if="{{editable}}">
+
+                        <paper-button id="plus" class="button" on-click="_add">+</paper-button>
+                    </template>
                 </div>
             </paper-item-body>
         </paper-item>
@@ -97,14 +102,14 @@
 
                 //
                 <!-- build:remove -->
-                listeners: {
-                },
+                listeners: {},
 
                 properties: {
+                    name: String,
                     href: String,
                     value: String,
                     game: Object,
-                    selected: {type : String, notify : true, observer : "changedPlayer"},
+                    selected: {type: String, notify: true, observer: "changedPlayer"},
                     editable: {
                         type: Boolean,
                         default: false,
@@ -112,11 +117,11 @@
                     }
                 },
 
-                changedPlayer : function () {
+                changedPlayer: function () {
                     this.$.selectPlayer.innerHTML
                 },
 
-                _add: function(evt) {
+                _add: function (evt) {
 //                    this.$.selectPlayer.innerHTML;
                     console.log(this.value);
                     var newValue = parseInt(this.value) + 1;
@@ -128,7 +133,7 @@
                     this.$.setAssist.generateRequest();
                 },
 
-                _subtract: function(evt) {
+                _subtract: function (evt) {
 //                    this.$.selectPlayer.innerHTML;
                     var newValue = parseInt(this.value) - 1;
                     if (newValue >= 0) {

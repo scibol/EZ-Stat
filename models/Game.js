@@ -25,12 +25,9 @@ var GameSchema = new mongoose.Schema(
 	date: {type: Date, default: Date.now},
 	result : {type: String, default: ""},
 	state : {type: Number, default: 0},
-	teams: {
-        team1: {type: String, default: ""},
-        team2: {type:String, default: ""}
-	},
-	players: {type: [PlayerSchema], default: []},
-
+    finished: {type: Boolean, default: false},
+	team1: {type: [PlayerSchema], default: []},
+    team2 : {type: [PlayerSchema], default: []}
 }
 
 );

@@ -47,7 +47,22 @@
                 padding: 0 20px;
             }
 
-            #editBtn{
+            .teamDiv {
+                display: inline-block;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            #deo, #saveTeam {
+                display: inline-block;
+            }
+
+            #saveTeam[disabled] {
+                color: rgba(255,255,255,0.1);
+            }
+
+
+            .editBtn{
                 visibility: visible;
                 /*position:absolute;*/
                 /*top: 14px;*/
@@ -58,11 +73,11 @@
                 color: rgba(255,255,255,0.4);
             }
 
-            #editBtn:hover{
+            .editBtn:hover{
                 color:inherit;
             }
 
-            :host(:hover) #editBtn{
+            :host(:hover) .editBtn{
                 visibility: visible;
             }
 
@@ -101,6 +116,10 @@
 
 
         <paper-listbox selectedItem>
+            <div class="teamDiv">
+            <paper-input id="deo" placeholder="Team name" on-focus="_onFocus" on-blur="_loseFocus"></paper-input>
+                <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
+            </div>
         <template is="dom-repeat" items="{{game.players}}" as="player">
             <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
                 {{player.lastName}}
@@ -109,7 +128,7 @@
             <div id="textVal">Player...</div>
         <paper-input id="editInput" placeholder="Player..."></paper-input>
         <template is="dom-if" if="{{editable}}">
-            <paper-icon-button id="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
+            <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
         </template>
         </paper-listbox>
     </template>
@@ -136,6 +155,19 @@
                         reflectToAttribute:true
                     }
                 },
+
+                _onFocus: function() {
+//                    this.$.saveTeam.icon = "icons:save";
+//                    this.$.saveTeam.disabled = false;
+
+                },
+
+                _loseFocus: function() {
+//                    this.$.saveTeam.icon = "icons:create";
+//                    this.$.saveTeam.disabled = true;
+                    console.log("save to be implemented")
+                },
+
 
                 _editTapped: function(event, detail){
                     if(!this.editable) return;
