@@ -305,7 +305,7 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                    <ez-stat-counter id="buttonCounter"editable selected="" game={{game}}></ez-stat-counter>
+                                    <ez-stat-counter id="buttonCounter" editable disabled selected="" game={{game}}></ez-stat-counter>
 
                                     </div>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
@@ -386,6 +386,11 @@
                         type: Object,
                         notify: true
                     },
+                    game: {
+                        type: Object,
+                        notify: true
+                    },
+
                     userid: {
                         type: String,
                         value: '563fd9661d1e084ac3e1b6b2'
@@ -445,8 +450,11 @@
                 },
 
                 _activateButtons: function (event, detail) {
-                    this.$.btnHit.disabled = false;
-                    this.$.btnMiss.disabled = false;
+                    if (this.game.finished == 0){
+                        this.$.btnHit.disabled = false;
+                        this.$.btnMiss.disabled = false;
+                        this.$.buttonCounter.disabled = false;
+                    }
                 },
 
                 _startGame: function (event, detail) {
@@ -463,6 +471,7 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
+                    this.$.buttonCounter.disabled = true;
                 },
 
                 _setFail: function (event, detail) {
@@ -479,7 +488,6 @@
                     return val === "0";
                 },
 
-//                TODO home button doesn't reset game placeholder
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
                     page.redirect("/")

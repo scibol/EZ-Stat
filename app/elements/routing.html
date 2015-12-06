@@ -16,6 +16,7 @@
     page('/games/:gameid', scrollToTop, function(data) {
       ezApp.route = 'games';
       ezApp.params = data.params;
+        ezApp.game = data;
     });
 
     page('*', function() {

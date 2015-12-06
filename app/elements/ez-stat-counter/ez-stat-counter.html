@@ -36,12 +36,17 @@
 
             }
 
+            .button[disabled] {
+                background-color: rgba(0,0,0,0);
+            }
+
             .button:hover {
                 background: rgba(0, 0, 0, 0.2);
             }
 
             .inline-container {
                 display: flex;
+                justify-content: space-around;
             }
 
 
@@ -78,26 +83,26 @@
             <paper-item-body two-line>
                 <div class="inline-container">
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="minus" class="button" on-click="_subtractAssist">-</paper-button>
+                        <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractAssist">-</paper-button>
                     </template>
                     <div class="text">
                         <div id="getAssists">{{player.assists}}</div>
                         <div class="secondary">assists</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="plus" class="button" on-click="_addAssist">+</paper-button>
+                        <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addAssist">+</paper-button>
                     </template>
                 </div>
                 <div class="inline-container">
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="minus" class="button" on-click="_subtractPasses">-</paper-button>
+                        <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractPasses">-</paper-button>
                     </template>
                     <div class="text">
                         <div id="getPasses">{{player.passes}}</div>
                         <div class="secondary">passes</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="plus" class="button" on-click="_addPasses">+</paper-button>
+                        <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addPasses">+</paper-button>
                     </template>
                 </div>
             </paper-item-body>
@@ -105,26 +110,26 @@
             <paper-item-body two-line>
                 <div class="inline-container">
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="minus" class="button" on-click="_subtractFouls">-</paper-button>
+                        <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractFouls">-</paper-button>
                     </template>
                     <div class="text">
                         <div id="getFouls">{{player.fouls}}</div>
                         <div class="secondary">fouls</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="plus" class="button" on-click="_addFouls">+</paper-button>
+                        <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFouls">+</paper-button>
                     </template>
                 </div>
                 <div class="inline-container">
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="minus" class="button" on-click="_subtractFreeShots">-</paper-button>
+                        <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractFreeShots">-</paper-button>
                     </template>
                     <div class="text">
                         <div id="getFreeShots">{{player.freeShots}}</div>
                         <div class="secondary">free shots</div>
                     </div>
                     <template is="dom-if" if="{{editable}}">
-                        <paper-button id="plus" class="button" on-click="_addFreeShots">+</paper-button>
+                        <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFreeShots">+</paper-button>
                     </template>
                 </div>
             </paper-item-body>
@@ -151,6 +156,11 @@
                     editable: {
                         type: Boolean,
                         default: false,
+                        reflectToAttribute: true
+                    },
+                    disabled: {
+                        type: Boolean,
+                        default: true,
                         reflectToAttribute: true
                     }
                 },
