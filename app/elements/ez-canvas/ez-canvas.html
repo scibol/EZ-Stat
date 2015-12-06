@@ -42,7 +42,6 @@
 
         <p id="selHit" style="display:none">[[hit]]</p>
 
-
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -73,7 +72,6 @@
                     if (this.$.getShots.lastResponse != undefined) {
                         var response = this.$.getShots.lastResponse.shots;
                         for (var shot in response) {
-                            console.log(response[shot].success, response[shot].pos_x, response[shot].pos_y)
                             drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y);
                         }
                     }
@@ -82,6 +80,7 @@
 
                 changedPlayer: function () {
                     window.player = this.selected;
+
                     this.resetShots()
 //                    this.attached("draw")
                 },
@@ -105,8 +104,6 @@
                         }
                     }
                 },
-
-
 
 
                 attached: function (draw) {

@@ -1,5 +1,5 @@
 /** @module models/Game
-* The Game Model. 
+* The Game Model.
 * Schema:
 * teams            String       required   Unique
 * date             String       required   date of the game. Default: Date.now
@@ -12,6 +12,7 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var PlayerSchema = require('./Player');
+var tempPlayerSchema = require('./tempPlayer')
 
 
 /** @constructor
