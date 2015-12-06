@@ -64,9 +64,6 @@ router.put('/:gameid', function (req, res, next) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
                     //var p = new Player();
                     game.players.push(player);
-                    console.log(player.team)
-                    console.log(game.team1)
-                    console.log(game.team2)
 
                     if (player.team === game.team1) {
                         game.players1.push(player)
@@ -96,6 +93,13 @@ router.put('/:gameid', function (req, res, next) {
             if (data.started) {
                 game.started = data.started;
             }
+            if (data.team1score) {
+                game.team1score = data.team1score
+            }
+            if (data.team2score) {
+                game.team2score = data.team2score
+            }
+
             game.save(onModelSave(res));
         } else {
             //game does not exist create it

@@ -295,6 +295,8 @@
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
+                                        <paper-item>{{game.team1}}
+                                        </paper-item>
                                         <template is="dom-repeat" items="{{game.players1}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}
@@ -323,7 +325,7 @@
                                             </paper-button>
                                         </div>
 
-                                    <ez-canvas id="canv" selected="" hit="boh">
+                                    <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}">
                                     </ez-canvas>
                                         <paper-button on-click="_endGame">end game</paper-button>
 
@@ -331,6 +333,8 @@
                                 <nav class="main-nav-float main-nav">
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
+                                        <paper-item>{{game.team2}}
+                                        </paper-item>
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
@@ -430,12 +434,14 @@
                 _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
+                    this.$.canv.team = "team1"
                     socket.emit("change", this.$.canv.selected);
                 },
 
                 _setSelected2: function (event, detail) {
                     this.$.canv.selected = this.$.team2.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
+                    this.$.canv.team = "team2"
                     socket.emit("change", this.$.canv.selected);
                 },
 
