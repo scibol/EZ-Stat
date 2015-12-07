@@ -1,44 +1,52 @@
-var socketIo = require('socket.io')
+var socketIo = require('socket.io');
 
-var eventBus = require('./pubsub')
+var eventBus = require('./pubsub');
 
 module.exports = function(httpServer) {
-	var io = socketIo(httpServer)
+	var io = socketIo(httpServer);
 
 	// Socket.io server
 	io.on('connect', function(socket){
-		// console.log('Connected')
+		 console.log('Connected');
 
 		socket.on('disconnect', function(){
-			// console.log('Disconnected')
-		})
+			 console.log('Disconnected')
+		});
 
 		socket.on('error', function(err){
 			console.log("Error: " + err)
 		})
-	})
+	});
+
+	eventBus.on('game.created', function(event){
+		io.emit('change-game', event);
+	});
+
+	eventBus.on('player.changed', function(event){
+		io.emit('change-player', event);
+	});
 
 	eventBus.on('track.deleted', function(event){
 		io.emit('change-track', event)
-	})
+	});
 
 	eventBus.on('track.updated', function(event){
 		io.emit('change-track', event)
-	})
+	});
 
 	eventBus.on('album.deleted', function(event){
 		io.emit('change-album', event)
-	})
+	});
 
 	eventBus.on('album.updated', function(event){
 		io.emit('change-album', event)
-	})
+	});
 
 	eventBus.on('artist.deleted', function(event){
 		io.emit('change-artist', event)
-	})
+	});
 
 	eventBus.on('artist.updated', function(event){
 		io.emit('change-artist', event)
 	})
-}
+};
