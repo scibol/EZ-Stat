@@ -78,6 +78,9 @@ router.put('/:gameid', function (req, res, next) {
                     game.save(onModelSave(res));
                 });
             }
+            if (data.name) {
+                game.name = data.name;
+            }
             if (data.team1) {
                 game.team1 = data.team1;
             }

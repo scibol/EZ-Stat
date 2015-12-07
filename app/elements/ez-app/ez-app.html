@@ -48,7 +48,7 @@
 
         <style include="shared-styles">
             :host {
-                @apply(--layout-vertical);
+            @apply(- -layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -107,6 +107,11 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-around;
+            }
+
+            #gameName {
+                --paper-input-container-color: #2A2C2B;
+                --primary-text-color: #2A2C2B;
             }
 
             #upperBar {
@@ -228,10 +233,10 @@
         <!--header-->
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
-                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game._id}}">
+                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game.name}}">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
-                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
+                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game.name}}">
                             </ez-menu-item>
 
                         </template>
@@ -281,6 +286,8 @@
                                     <ez-team1 game="{{game}}" editable></ez-team1>
                                 </nav>
                                 <div class="content flex main-content fill-width">
+                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus" on-blur="_loseFocus"
+                                                 value="{{game.name}}"></paper-input>
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
@@ -307,7 +314,8 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                    <ez-stat-counter id="buttonCounter" editable disabled selected="" game={{game}}></ez-stat-counter>
+                                        <ez-stat-counter id="buttonCounter" editable disabled selected=""
+                                                         game={{game}}></ez-stat-counter>
 
                                     </div>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
@@ -402,6 +410,18 @@
                     }
                 },
 
+                _onFocus: function() {
+
+                },
+
+                _loseFocus: function() {
+                    this.$.setGame.body = JSON.stringify({
+                        "name": this.$.gameName.value
+                    });
+                    this.$.setGame.generateRequest();
+                    this.$.getGames.generateRequest();
+                },
+
                 _createGame: function (event, detail) {
                     this.$.newGame.body = JSON.stringify({
                         "date": Date.now(),
@@ -427,9 +447,9 @@
                     this.$.setGame.generateRequest();
                 },
 
-                _setTeam: function() {
+                _setTeam: function () {
                     this.$.setTeam.body = JSON.stringify({
-                        "team1" : this.$.teamname1.value
+                        "team1": this.$.teamname1.value
                     })
                     this.$.setTeam.generateRequest()
                 },
@@ -455,7 +475,7 @@
                 },
 
                 _activateButtons: function (event, detail) {
-                    if (this.game.finished == 0){
+                    if (this.game.finished == 0) {
                         this.$.btnHit.disabled = false;
                         this.$.btnMiss.disabled = false;
                         this.$.buttonCounter.disabled = false;
