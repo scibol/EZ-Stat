@@ -1,8 +1,8 @@
 var socket = io.connect();
 
-//socket.on("change-game", function(data) {
-//    drawHit()
-//});
+socket.on("change-game", function(data) {
+    //drawHit()
+});
 
 
 socket.on("change-player", function(data) {
@@ -23,3 +23,4 @@ socket.on('update-secondary', function(data){
         updateFouls(data)
     }
 });
+

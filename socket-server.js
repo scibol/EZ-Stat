@@ -26,11 +26,12 @@ module.exports = function (httpServer) {
     });
 
     eventBus.on('game.created', function (event) {
-        //var room = window.location.href.split("/games/")[1];
         io.to(room).emit('change-game', event);
     });
 
     eventBus.on('change.room', function (event) {
+        var room = event.url;
+        var data = event.data;
         io.emit('change-room', event);
     });
 
