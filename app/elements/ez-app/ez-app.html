@@ -36,6 +36,7 @@
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
+<script type="text/javascript" src="../../js/Chart.js"></script>
 
 <dom-module id="ez-app">
     <template>
@@ -178,6 +179,10 @@
 
             #btnStats {
                 float: right;
+            }
+
+            #statSection {
+                width: 60vw;
             }
 
         </style>
@@ -329,8 +334,12 @@
                                         
                                         Normal text
                                     </div>
-                                    <div property="1">
-                                        Stats
+                                    <div property="1" id="statSection">
+                                        <template is="dom-repeat" items="{{game.players}}" as="player">
+                                            <div>First name: <span>{{player.firstName}}</span></div>
+                                            <div>Last name: <span>{{player.lastName}}</span></div>
+                                            <canvas class="myChart" width="200" height="200"></canvas>
+                                        </template>
                                     </div>
                                     <div property="2">
                                         Edit
@@ -485,6 +494,29 @@
                     var pages = this.$.my_iron_pages;
                     console.log(pages.selectedItem);
                     pages.selectNext();
+
+                    var data = [
+                        {
+                            value: 300,
+                            color: "#F7464A", 
+                        },
+                        {
+                            value: 50,
+                            color: "#46BFBD",
+                        }
+                    ];  
+
+                    console.log("Selecting the element : ");
+                    console.log(this.$.statSection.querySelector("canvas"));
+                    var statSection = this.$.statSection;
+                    var children = statSection.children;
+                    console.log(children);
+                    for(var i = 0; i < children.length; i++){
+                        if(children[i].nodeName == "CANVAS"){
+                            var ctx = children[i].getContext("2d");
+                            var myPieChart = new Chart(ctx).Pie(data);
+                        }
+                    }
                 }
             });
         })
