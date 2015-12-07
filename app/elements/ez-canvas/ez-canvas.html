@@ -30,10 +30,11 @@
                 timeout="1000">
         </iron-ajax>
 
+
         <iron-ajax
                 id="updateScore"
-                auto
                 url="/games/[[gameid]]"
+                content-type="application/json"
                 handle-as="json"
                 method="PUT"
         ></iron-ajax>
@@ -57,7 +58,7 @@
         ></iron-ajax>
 
         <p id="selHit" style="display:none">[[hit]]</p>
-        <!--<span>{{team1score}}-{{team2score}}</span>-->
+        <span>{{team1score}}-{{team2score}}</span>
         <span id="score1">0 </span>-
         <span id="score2">0</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
@@ -115,8 +116,6 @@
                 drawScore: function () {
                     this.team1score = this.$.getTeam1Score.lastResponse.team1score;
                     this.team2score = this.$.getTeam1Score.lastResponse.team2score;
-                    console.log(this.team1score)
-
                 },
 
                 changedPlayer: function () {
@@ -149,6 +148,7 @@
                 attached: function (draw) {
                     var score1 = this.$.score1
                     var score2 = this.$.score2
+                    var drawCanvScore = this.$.getTeam1Score;
                     var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
                     var teamAjax = this.$.updateScore;
@@ -219,8 +219,8 @@
                                     teamAjax.body = JSON.stringify({
                                         "team1score" : scoreToUpdate
                                     });
-                                    console.log("1")
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
                                 }
                                 else if (window.team == "team2") {
                                     var scoreToUpdate = Number(score2.innerHTML)
@@ -229,8 +229,9 @@
                                     teamAjax.body = JSON.stringify({
                                         "team2score" : scoreToUpdate
                                     });
-                                    console.log("2")
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
+
                                 }
                                 drawHit(e)
                             }
@@ -253,12 +254,12 @@
                                     var scoreToUpdate = Number(score1.innerHTML)
                                     scoreToUpdate += 2
                                     score1.innerHTML = scoreToUpdate
-                                    console.log(scoreToUpdate)
                                     teamAjax.body = JSON.stringify({
                                         "team1score" : scoreToUpdate
                                     });
-                                    console.log("3")
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
+
                                 }
                                 else if (window.team == "team2") {
                                     var scoreToUpdate = Number(score2.innerHTML)
@@ -267,8 +268,9 @@
                                     teamAjax.body = JSON.stringify({
                                         "team2score" : scoreToUpdate
                                     });
-                                    console.log("4")
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
+
                                 }
                                 drawHit(e)
                             }
@@ -294,8 +296,9 @@
                                     teamAjax.body = JSON.stringify({
                                         "team1score" : scoreToUpdate
                                     });
-                                    console.log("5")
+
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
                                 }
                                 else if (window.team == "team2") {
                                     var scoreToUpdate = Number(score2.innerHTML)
@@ -304,11 +307,10 @@
                                     teamAjax.body = JSON.stringify({
                                         "team2score" : scoreToUpdate
                                     });
-                                    console.log("6")
                                     teamAjax.generateRequest();
+                                    drawCanvScore.generateRequest();
                                 }
                                 drawHit(e)
-
                             }
                             else {
                                 drawMiss(e)
