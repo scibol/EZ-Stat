@@ -74,6 +74,38 @@ router.put('/:playerid', function (req, res, next) {
                 player.freeShots = data.freeShots;
                 player.save(onModelSave(res));
             }
+            if (data.succesfulPasses || data.succesfulPasses == 0) {
+                player.succesfulPasses = data.succesfulPasses;
+                player.save(onModelSave(res));
+            }
+            if (data.failedPasses || data.failedPasses == 0) {
+                player.failedPasses = data.failedPasses;
+                player.save(onModelSave(res));
+            }
+            if (data.lostBalls || data.lostBalls == 0) {
+                player.lostBalls = data.lostBalls;
+                player.save(onModelSave(res));
+            }
+            if (data.recoveredBalls || data.recoveredBalls == 0) {
+                player.recoveredBalls = data.recoveredBalls;
+                player.save(onModelSave(res));
+            }
+            if (data.freeshotsScored || data.freeshotsScored == 0) {
+                player.freeshotsScored = data.freeshotsScored;
+                player.save(onModelSave(res));
+            }
+            if (data.freeshotsMissed || data.freeshotsMissed == 0) {
+                player.freeshotsMissed = data.freeshotsMissed;
+                player.save(onModelSave(res));
+            }
+            if (data.technicalFouls || data.technicalFouls == 0) {
+                player.technicalFouls = data.technicalFouls;
+                player.save(onModelSave(res));
+            }
+            if (data.unsportsmanshipFouls || data.unsportsmanshipFouls == 0) {
+                player.unsportsmanshipFouls = data.unsportsmanshipFouls;
+                player.save(onModelSave(res));
+            }
             if (data.fouls || data.fouls == 0) {
                 player.fouls = data.fouls;
                 player.save(onModelSave(res));
