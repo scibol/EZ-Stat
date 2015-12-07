@@ -293,10 +293,10 @@
                         <div started="1">
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
+                                    <paper-item>{{game.team1}}
+                                    </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
-                                        <paper-item>{{game.team1}}
-                                        </paper-item>
                                         <template is="dom-repeat" items="{{game.players1}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}
@@ -336,10 +336,11 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
+                                    <paper-item>{{game.team2}}
+                                    </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
-                                        <paper-item>{{game.team2}}
-                                        </paper-item>
+
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
