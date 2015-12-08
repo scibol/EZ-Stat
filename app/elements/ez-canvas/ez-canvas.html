@@ -119,6 +119,7 @@
                     this.resetShots()
                 },
 
+
                 resetShots: function () {
                     if (window.shotsObj == undefined) {
                         window.shotsObj = {}
@@ -147,6 +148,8 @@
                     var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
                     var teamAjax = this.$.updateScore;
+                    window.score = this.$.updateScore;
+
                     var canvas = this.$.myCanvas;
                     var field = measures();
                     if (window.stage == undefined) {
@@ -206,6 +209,7 @@
                                 var scoreToUpdate = Number(score1.innerHTML)
                                 scoreToUpdate += 3
                                 score1.innerHTML = scoreToUpdate
+                                console.log(scoreToUpdate)
                                 teamAjax.body = JSON.stringify({
                                     "team1score": scoreToUpdate
                                 });
@@ -399,6 +403,12 @@
             };
             return field;
         }
+
+        function updateScore() {
+//            window.score.generateRequest()
+        }
     </script>
+
+
 
 </dom-module>
