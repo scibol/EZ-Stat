@@ -41,7 +41,6 @@
 
         <iron-ajax
                 id="getTeam1Score"
-                auto
                 url="/games/[[gameid]]"
                 handle-as="json"
                 on-response="drawScore"
@@ -79,10 +78,6 @@
                     },
                     hit: {
                         type: String,
-                        notify: true
-                    },
-                    shotsShapes: {
-                        type: Array,
                         notify: true
                     },
                     team: {
@@ -145,7 +140,7 @@
                 },
 
 
-                attached: function (draw) {
+                attached: function () {
                     var score1 = this.$.score1
                     var score2 = this.$.score2
                     var drawCanvScore = this.$.getTeam1Score;
@@ -158,172 +153,166 @@
                         window.stage = new createjs.Stage(canvas);
                     }
 
-                    if (draw != "draw") {
-                        var rect = new createjs.Shape();
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
-                        // line
-                        rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                        drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                        drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
-                        // left side trey
-                        rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                        arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
+                    var rect = new createjs.Shape();
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
+                    // line
+                    rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
+                    // left side trey
+                    rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
 
-                        // right side trey
-                        rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                        arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+                    // right side trey
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
 
+                    var rectangleGraphics = new createjs.Graphics();
+                    rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height);
+                    var rectangleShape = new createjs.Shape(rectangleGraphics);
 
-                        var rectangleGraphics = new createjs.Graphics();
-                        rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height);
-                        var rectangleShape = new createjs.Shape(rectangleGraphics);
+                    var twoPointsLeft = new createjs.Graphics();
+                    twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
+                    lt(0, field.height - field.treyFromBorder);
+                    var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
 
-                        var twoPointsLeft = new createjs.Graphics();
-                        twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
-                        arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-                        lt(0, field.height - field.treyFromBorder);
-                        var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
+                    var twoPointsRight = new createjs.Graphics();
+                    twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
+                    lt(field.width, field.height - field.treyFromBorder).
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+                    var twoPointsRightShape = new createjs.Shape(twoPointsRight);
 
-                        var twoPointsRight = new createjs.Graphics();
-                        twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
-                        lt(field.width, field.height - field.treyFromBorder).
-                        arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
-                        var twoPointsRightShape = new createjs.Shape(twoPointsRight);
-
-                        stage.addChild(rectangleShape);
-                        stage.addChild(twoPointsLeftShape);
-                        stage.addChild(twoPointsRightShape);
-                        stage.addChild(rect);
-                        stage.update();
-
-                    }
+                    stage.addChild(rectangleShape);
+                    stage.addChild(twoPointsLeftShape);
+                    stage.addChild(twoPointsRightShape);
+                    stage.addChild(rect);
+                    stage.update();
 
 
-                    if (draw !== "draw") {
-                        rectangleShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                if (window.team == "team1") {
-                                    var scoreToUpdate = Number(score1.innerHTML)
-                                    scoreToUpdate += 3
-                                    score1.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team1score" : scoreToUpdate
-                                    });
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
-                                }
-                                else if (window.team == "team2") {
-                                    var scoreToUpdate = Number(score2.innerHTML)
-                                    scoreToUpdate += 3
-                                    score2.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team2score" : scoreToUpdate
-                                    });
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
-
-                                }
-                                drawHit(e)
+                    rectangleShape.on("click", function (e) {
+                        var success = (playerHit.innerHTML == "hit")
+                        if (success) {
+                            if (window.team == "team1") {
+                                var scoreToUpdate = Number(score1.innerHTML)
+                                scoreToUpdate += 3
+                                score1.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team1score": scoreToUpdate
+                                });
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
                             }
-                            else {
-                                drawMiss(e)
+                            else if (window.team == "team2") {
+                                var scoreToUpdate = Number(score2.innerHTML)
+                                scoreToUpdate += 3
+                                score2.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team2score": scoreToUpdate
+                                });
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
+
                             }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": false
-                            });
-                            ironAjax.generateRequest();
+                            drawHit(e)
+                        }
+                        else {
+                            drawMiss(e)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": false
                         });
+                        ironAjax.generateRequest();
+                    });
 
-                        twoPointsLeftShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                if (window.team == "team1") {
-                                    var scoreToUpdate = Number(score1.innerHTML)
-                                    scoreToUpdate += 2
-                                    score1.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team1score" : scoreToUpdate
-                                    });
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
+                    twoPointsLeftShape.on("click", function (e) {
+                        var success = (playerHit.innerHTML == "hit")
+                        if (success) {
+                            if (window.team == "team1") {
+                                var scoreToUpdate = Number(score1.innerHTML)
+                                scoreToUpdate += 2
+                                score1.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team1score": scoreToUpdate
+                                });
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
 
-                                }
-                                else if (window.team == "team2") {
-                                    var scoreToUpdate = Number(score2.innerHTML)
-                                    scoreToUpdate += 2
-                                    score2.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team2score" : scoreToUpdate
-                                    });
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
-
-                                }
-                                drawHit(e)
                             }
-                            else {
-                                drawMiss(e)
-                            }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": true
-                            });
-                            ironAjax.generateRequest();
+                            else if (window.team == "team2") {
+                                var scoreToUpdate = Number(score2.innerHTML)
+                                scoreToUpdate += 2
+                                score2.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team2score": scoreToUpdate
+                                });
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
 
+                            }
+                            drawHit(e)
+                        }
+                        else {
+                            drawMiss(e)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": true
                         });
-                        twoPointsRightShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                if (window.team == "team1") {
-                                    var scoreToUpdate = Number(score1.innerHTML)
-                                    scoreToUpdate += 2
-                                    score1.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team1score" : scoreToUpdate
-                                    });
+                        ironAjax.generateRequest();
 
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
-                                }
-                                else if (window.team == "team2") {
-                                    var scoreToUpdate = Number(score2.innerHTML)
-                                    scoreToUpdate += 2
-                                    score2.innerHTML = scoreToUpdate
-                                    teamAjax.body = JSON.stringify({
-                                        "team2score" : scoreToUpdate
-                                    });
-                                    teamAjax.generateRequest();
-                                    drawCanvScore.generateRequest();
-                                }
-                                drawHit(e)
+                    });
+                    twoPointsRightShape.on("click", function (e) {
+                        var success = (playerHit.innerHTML == "hit")
+                        if (success) {
+                            if (window.team == "team1") {
+                                var scoreToUpdate = Number(score1.innerHTML)
+                                scoreToUpdate += 2
+                                score1.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team1score": scoreToUpdate
+                                });
+
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
                             }
-                            else {
-                                drawMiss(e)
+                            else if (window.team == "team2") {
+                                var scoreToUpdate = Number(score2.innerHTML)
+                                scoreToUpdate += 2
+                                score2.innerHTML = scoreToUpdate
+                                teamAjax.body = JSON.stringify({
+                                    "team2score": scoreToUpdate
+                                });
+                                teamAjax.generateRequest();
+                                drawCanvScore.generateRequest();
                             }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": true
-                            });
-                            ironAjax.generateRequest();
+                            drawHit(e)
+                        }
+                        else {
+                            drawMiss(e)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": true
                         });
-                    }
+                        ironAjax.generateRequest();
+                    });
                 }
 
 
@@ -360,6 +349,10 @@
 
                 }
             }
+        }
+
+        function updateScore(data) {
+            //
         }
 
         function drawMiss(e) {

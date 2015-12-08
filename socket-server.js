@@ -16,33 +16,32 @@ module.exports = function (httpServer) {
         socket.on('error', function (err) {
             console.log("Error: " + err)
         });
-
-        socket.on("change", function (data) {
-            socket.rooms = [];
+        socket.on("change", function(data){
+            if(socket.rooms.length > 1) {
+                socket.leave(socket.rooms[1]);
+            }
             socket.join(data);
-            console.log(data);
+
         });
 
     });
 
-    eventBus.on('game.created', function (event) {
+    eventBus.on('game.created', function(event){
         io.to(room).emit('change-game', event);
     });
 
-    eventBus.on('change.room', function (event) {
-        var room = event.url;
-        var data = event.data;
+    eventBus.on('change.room', function(event){
         io.emit('change-room', event);
     });
 
-
-    eventBus.on('player.changed', function (event) {
+    eventBus.on('player.changed', function(event){
         var room = event.url;
-        var data = event.data;
-        if (!(data.pos_x)) {
-            io.to(room).emit('update-secondary', data)
+        if (event.team1score != undefined || event.team2score != undefined) {
+            io.emit('update-game-score', event)
         }
-        else {
+        if (event.data) {
+            var data = event.data;
+            console.log(event)
             io.to(room).emit('change-player', data);
         }
     });

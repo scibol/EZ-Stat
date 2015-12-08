@@ -1,7 +1,8 @@
 var socket = io.connect();
 
-socket.on("change-game", function(data) {
-    //drawHit()
+socket.on("update-game-score", function(data) {
+    console.log(data)
+    updateScore(data)
 });
 
 
