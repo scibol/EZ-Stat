@@ -7,21 +7,15 @@ socket.on("update-game-score", function(data) {
 
 
 socket.on("change-player", function(data) {
+
+    console.log(socket);
+    var ezApp = document.querySelector("ez-app");
+    var stats = ezApp.$.buttonCounter;
+    stats.$.getPlayer.generateRequest();
     drawHitAndMiss(data.success, data.pos_x, data.pos_y)
 });
 
-socket.on('update-secondary', function(data){
-    if (data.assists || data.assists == 0) {
-        updateAssists(data)
-    }
-    if (data.passes || data.passes == 0) {
-        updatePasses(data)
-    }
-    if (data.freeShots || data.freeShots == 0) {
-        updateFreeShots(data)
-    }
-    if (data.fouls || data.fouls == 0) {
-        updateFouls(data)
-    }
+socket.on("change-state", function(data) {
+    var ezApp = document.querySelector("ez-app");
+    ezApp.$.getGame.generateRequest();
 });
-

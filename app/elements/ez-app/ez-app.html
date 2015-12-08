@@ -48,7 +48,7 @@
 
         <style include="shared-styles">
             :host {
-                @apply(--layout-vertical);
+            @apply(- -layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -107,6 +107,11 @@
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-around;
+            }
+
+            #gameName {
+                --paper-input-container-color: #2A2C2B;
+                --primary-text-color: #2A2C2B;
             }
 
             #upperBar {
@@ -228,10 +233,10 @@
         <!--header-->
         <paper-header-panel class="flex">
             <paper-toolbar class="header">
-                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game._id}}">
+                <paper-dropdown-menu id="drop" label="choose game..." placeholder="{{game.name}}">
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
-                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game._id}}">
+                            <ez-menu-item editable href$="/games/{{game._id}}" value="{{game.name}}">
                             </ez-menu-item>
 
                         </template>
@@ -281,6 +286,8 @@
                                     <ez-team1 game="{{game}}" editable></ez-team1>
                                 </nav>
                                 <div class="content flex main-content fill-width">
+                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus" on-blur="_loseFocus"
+                                                 value="{{game.name}}"></paper-input>
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
@@ -291,8 +298,10 @@
 
                         <!--game started-->
                         <div started="1">
-                                <div class="horizontal layout flex wrapper">
+                            <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
+                                    <paper-item>{{game.team1}}
+                                    </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
                                         <paper-item>{{game.team1}}
@@ -307,34 +316,40 @@
 
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
-                                        <ez-stat-counter id="buttonCounter"editable selected="" game={{game}}></ez-stat-counter>
-                                        <!--<ez-stat-counter name="assists" id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>-->
-                                        <!--<ez-stat-counter name="passes" editable selected="" value="{{game.passes}}" game="{{game}}"></ez-stat-counter>-->
-                                    <!--</div>-->
-                                    <!--<div class="makeFlex">-->
-                                        <!--<ez-stat-counter name="fouls" editable value="{{game.fouls}}" game="{{game}}"></ez-stat-counter>-->
-                                        <!--<ez-stat-counter name="free shots" editable value="{{game.freeShots}}" game="{{game}}"></ez-stat-counter>-->
-                                    </div>
+                                        <ez-stat-counter id="buttonCounter" editable disabled selected=""
+                                                         game={{game}}></ez-stat-counter>
 
-                                        <div id="upperBar"> 
-                                            <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
-                                                Hit
-                                            </paper-button>
-                                            <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
-                                                Miss
-                                            </paper-button>
+                                    </div>
+                                    <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
+                                        <div finished="0">
+
+                                            <div id="upperBar"> 
+                                                <paper-button toggles="true" id="btnHit" disabled="true"
+                                                              on-click="_setSuccess">
+                                                    Hit
+                                                </paper-button>
+                                                <paper-button toggles="true" id="btnMiss" disabled="true"
+                                                              on-click="_setFail">
+                                                    Miss
+                                                </paper-button>
+                                            </div>
                                         </div>
+                                    </iron-pages>
 
                                     <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}">
                                     </ez-canvas>
-                                        <paper-button on-click="_endGame">end game</paper-button>
+                                    <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
+                                        <div finished="0">
+                                            <paper-button on-click="_endGame">end game</paper-button>
+                                        </div>
+                                    </iron-pages>
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
+                                    <paper-item>{{game.team2}}
+                                    </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
-                                        <paper-item>{{game.team2}}
-                                        </paper-item>
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
@@ -346,7 +361,7 @@
 
                         <!--&lt;!&ndash;game finished&ndash;&gt;-->
                         <!--<div state="2">-->
-                            <!--done-->
+                        <!--done-->
                         <!--</div>-->
 
                     </iron-pages>
@@ -385,10 +400,27 @@
                         type: Object,
                         notify: true
                     },
+                    game: {
+                        type: Object,
+                        notify: true
+                    },
+
                     userid: {
                         type: String,
                         value: '563fd9661d1e084ac3e1b6b2'
                     }
+                },
+
+                _onFocus: function() {
+
+                },
+
+                _loseFocus: function() {
+                    this.$.setGame.body = JSON.stringify({
+                        "name": this.$.gameName.value
+                    });
+                    this.$.setGame.generateRequest();
+                    this.$.getGames.generateRequest();
                 },
 
                 _createGame: function (event, detail) {
@@ -416,9 +448,9 @@
                     this.$.setGame.generateRequest();
                 },
 
-                _setTeam: function() {
+                _setTeam: function () {
                     this.$.setTeam.body = JSON.stringify({
-                        "team1" : this.$.teamname1.value
+                        "team1": this.$.teamname1.value
                     })
                     this.$.setTeam.generateRequest()
                 },
@@ -446,8 +478,11 @@
                 },
 
                 _activateButtons: function (event, detail) {
-                    this.$.btnHit.disabled = false;
-                    this.$.btnMiss.disabled = false;
+                    if (this.game.finished == 0) {
+                        this.$.btnHit.disabled = false;
+                        this.$.btnMiss.disabled = false;
+                        this.$.buttonCounter.disabled = false;
+                    }
                 },
 
                 _startGame: function (event, detail) {
@@ -456,6 +491,8 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
+                    console.log("in1")
+                    socket.emit("state.changed", this.$.canv.selected);
                 },
 
                 _endGame: function (event, detail) {
@@ -464,6 +501,7 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
+                    this.$.buttonCounter.disabled = true;
                 },
 
                 _setFail: function (event, detail) {
@@ -471,15 +509,15 @@
 
                 },
 
-                _finished: function(val) {
+                _finished: function (val) {
                     return val === "1";
                 },
 
-                _notFinished: function(val) {
+                _notFinished: function (val) {
+                    console.log(val === "0")
                     return val === "0";
                 },
 
-//                TODO home button doesn't reset game placeholder
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
                     page.redirect("/")
@@ -495,8 +533,6 @@
             });
         })
         ();
-
-
     </script>
 
 </dom-module>

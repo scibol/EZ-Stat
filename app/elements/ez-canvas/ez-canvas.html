@@ -127,13 +127,13 @@
                     for (var players in window.shotsObj) {
                         if (players != window.player) {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = false
+                                window.shotsObj[players][shot].visible = false;
                                 window.stage.update()
                             }
                         }
                         else {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = true
+                                window.shotsObj[players][shot].visible = true;
                                 window.stage.update()
                             }
                         }
@@ -155,7 +155,6 @@
                     if (window.stage == undefined) {
                         window.stage = new createjs.Stage(canvas);
                     }
-
                     var rect = new createjs.Shape();
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
                     // line

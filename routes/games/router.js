@@ -22,9 +22,6 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 router.get('/', function (req, res, next) {
     Game.find({}, fieldsFilter).lean().exec(function (err, games) {
         if (err) return next(err);
-        // games.forEach(function(game){
-        //   addLinks(game);
-        // });
         res.json(games);
     });
 });
@@ -48,7 +45,6 @@ router.get('/:gameid', function (req, res, next) {
             });
             return;
         }
-        addLinks(game);
         res.json(game);
     });
 });
@@ -70,9 +66,11 @@ router.put('/:gameid', function (req, res, next) {
                     if (player.team === game.team2) {
                         game.players2.push(player)
                     }
-                    //game.player.push(player);
                     game.save(onModelSave(res));
                 });
+            }
+            if (data.name) {
+                game.name = data.name;
             }
             if (data.team1) {
                 game.team1 = data.team1;
@@ -88,9 +86,11 @@ router.put('/:gameid', function (req, res, next) {
             }
             if (data.started) {
                 game.started = data.started;
+                pubsub.emit("state.changed",{});
             }
-            if (data.started) {
-                game.started = data.started;
+            if (data.finished) {
+                game.finished = data.finished;
+                pubsub.emit("state.changed",{});
             }
             if (data.team1score) {
                 game.team1score = data.team1score;
@@ -147,30 +147,16 @@ function onModelSave(res, status, sendItAsResponse) {
                 return next(err);
             }
         }
-        pubsub.emit('game.updated', {})
+        pubsub.emit('game.updated', {});
         if (sendItAsResponse) {
             var obj = saved.toObject();
             delete obj.password;
             delete obj.__v;
-            addLinks(obj);
             return res.status(statusCode).json(obj);
         } else {
             return res.status(statusCode).end();
         }
     }
-}
-
-function addLinks(game) {
-    game.links = [
-        // {
-        //   "rel" : "self",
-        //   "href" : config.url + "/games/" + game._id
-        // },
-        // {
-        //   "rel" : "artist",
-        //   "href" : config.url + "/artists/" + game.artist
-        // }
-    ];
 }
 
 /** router for /games */
