@@ -22,9 +22,6 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 router.get('/', function (req, res, next) {
     Game.find({}, fieldsFilter).lean().exec(function (err, games) {
         if (err) return next(err);
-        // games.forEach(function(game){
-        //   addLinks(game);
-        // });
         res.json(games);
     });
 });
@@ -48,7 +45,6 @@ router.get('/:gameid', function (req, res, next) {
             });
             return;
         }
-        addLinks(game);
         res.json(game);
     });
 });
@@ -56,7 +52,6 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
-    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
@@ -64,9 +59,6 @@ router.put('/:gameid', function (req, res, next) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
                     //var p = new Player();
                     game.players.push(player);
-                    console.log(player.team)
-                    console.log(game.team1)
-                    console.log(game.team2)
 
                     if (player.team === game.team1) {
                         game.players1.push(player)
@@ -74,7 +66,6 @@ router.put('/:gameid', function (req, res, next) {
                     if (player.team === game.team2) {
                         game.players2.push(player)
                     }
-                    //game.player.push(player);
                     game.save(onModelSave(res));
                 });
             }
@@ -95,9 +86,11 @@ router.put('/:gameid', function (req, res, next) {
             }
             if (data.started) {
                 game.started = data.started;
+                pubsub.emit("state.changed",{});
             }
             if (data.finished) {
                 game.finished = data.finished;
+                pubsub.emit("state.changed",{});
             }
             game.save(onModelSave(res));
         } else {
@@ -146,30 +139,16 @@ function onModelSave(res, status, sendItAsResponse) {
                 return next(err);
             }
         }
-        pubsub.emit('game.updated', {})
+        pubsub.emit('game.updated', {});
         if (sendItAsResponse) {
             var obj = saved.toObject();
             delete obj.password;
             delete obj.__v;
-            addLinks(obj);
             return res.status(statusCode).json(obj);
         } else {
             return res.status(statusCode).end();
         }
     }
-}
-
-function addLinks(game) {
-    game.links = [
-        // {
-        //   "rel" : "self",
-        //   "href" : config.url + "/games/" + game._id
-        // },
-        // {
-        //   "rel" : "artist",
-        //   "href" : config.url + "/artists/" + game.artist
-        // }
-    ];
 }
 
 /** router for /games */

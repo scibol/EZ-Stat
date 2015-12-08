@@ -22,10 +22,6 @@ router.get('/', function (req, res, next) {
 
     Player.find({}, fieldsFilter).lean().exec(function (err, players) {
         if (err) return next(err);
-        players.forEach(function (player) {
-            addLinks(player);
-        });
-        res.json(players);
     });
 });
 
@@ -47,7 +43,6 @@ router.get('/:playerid', function (req, res, next) {
             });
             return;
         }
-        addLinks(player);
         res.json(player);
     });
 });
@@ -59,7 +54,7 @@ router.put('/:playerid', function (req, res, next) {
         if (err) return next(err);
         if (player) {
             if (data.pos_x) {
-                player.shots.push(data)
+                player.shots.push(data);
                 player.save(onModelSave(res));
             }
             if (data.assists || data.assists == 0) {
@@ -169,25 +164,11 @@ function onModelSave(res, status, sendItAsResponse) {
             var obj = saved.toObject();
             delete obj.password;
             delete obj.__v;
-            addLinks(obj);
             return res.status(statusCode).json(obj);
         } else {
             return res.status(statusCode).end();
         }
     }
-}
-
-function addLinks(player) {
-    player.links = [
-        // {
-        //   "rel" : "self",
-        //   "href" : config.url + "/players/" + player._id
-        // },
-        // {
-        //   "rel" : "artist",
-        //   "href" : config.url + "/artists/" + player.artist
-        // }
-    ];
 }
 
 /** router for /players */

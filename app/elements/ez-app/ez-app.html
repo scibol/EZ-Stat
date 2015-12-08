@@ -488,6 +488,8 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
+                    console.log("in1")
+                    socket.emit("state.changed", this.$.canv.selected);
                 },
 
                 _endGame: function (event, detail) {
@@ -529,6 +531,9 @@
         })
         ();
 
+        function test() {
+
+        }
     </script>
 
 </dom-module>
