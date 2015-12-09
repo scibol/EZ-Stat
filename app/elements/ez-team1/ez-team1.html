@@ -122,7 +122,7 @@
         <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
                      value="{{game.team1}}"></paper-input>
         <paper-listbox selectedItem>
-        </paper-listbox>
+        <!--</paper-listbox>-->
 
         <div class="teamDiv">
                 <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
@@ -133,7 +133,8 @@
                     {{player.lastName}}
                 </paper-item>
             </template>
-            <div id="textVal">Player...</div>
+        </paper-listbox>
+        <div id="textVal">Player...</div>
             <paper-input id="editInput" placeholder="Player..."></paper-input>
             <template is="dom-if" if="{{editable}}">
                 <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
