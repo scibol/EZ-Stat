@@ -55,9 +55,29 @@ router.put('/:gameid', function (req, res, next) {
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
+            console.log(typeof data.firstName)
+            var test = Number(data.firstName)
+            console.log(typeof test)
+            console.log(test)
             if (data.firstName) {
-                Player.findOne(data, fieldsFilter, function (err, player) {
-                    //var p = new Player();
+                if(data.lastName !== "") {
+                    Player.findOne(data, fieldsFilter, function (err, player) {
+                        //var p = new Player();
+                        game.players.push(player);
+
+                        if (player.team === game.team1) {
+                            game.players1.push(player)
+                        }
+                        if (player.team === game.team2) {
+                            game.players2.push(player)
+                        }
+                        game.save(onModelSave(res));
+                    });
+                    return;
+                }
+                else {
+                    var player = new Player(data);
+                    console.log(player)
                     game.players.push(player);
 
                     if (player.team === game.team1) {
@@ -67,7 +87,8 @@ router.put('/:gameid', function (req, res, next) {
                         game.players2.push(player)
                     }
                     game.save(onModelSave(res));
-                });
+                    return;
+                }
             }
             if (data.name) {
                 game.name = data.name;

@@ -191,7 +191,7 @@
                     this.$$('#editInput').style.display = "none";
                     var first = this.$.editInput.value.split(" ")[0];
                     var last = this.$.editInput.value.split(" ")[1];
-                    console.log(isNumber(first));
+                    console.log(isNumber(first) && !last);
                     if (first && last) {
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
@@ -209,14 +209,15 @@
                     }
 
 //                    TODO if name is number, put it as fake
-//                    else if (isNumber(first) && !last) {
-//                        this.$.setGame.body = JSON.stringify({
-//                            "firstName": first,
-//                            "lastName": "",
-//                            "team": "bho"
-//                        });
-//                        this.$.setGame.generateRequest();
-//                    }
+                    else if (isNumber(first) && !last) {
+                        console.log("in")
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": "",
+                            "team": this.$.test.value
+                        });
+                        this.$.setGame.generateRequest();
+                    }
                 },
 
                 _makeGet: function () {

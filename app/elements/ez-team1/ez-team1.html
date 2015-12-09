@@ -215,14 +215,14 @@
                     }
 
 //                    TODO if name is number, put it as fake
-//                    else if (isNumber(first) && !last) {
-//                        this.$.setGame.body = JSON.stringify({
-//                            "firstName": first,
-//                            "lastName": "",
-//                            "team": "bho"
-//                        });
-//                        this.$.setGame.generateRequest();
-//                    }
+                    else if (isNumber(first) && !last) {
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": "",
+                            "team": this.$.test.value
+                        });
+                        this.$.setGame.generateRequest();
+                    }
                 },
 
                 _makeGet: function () {

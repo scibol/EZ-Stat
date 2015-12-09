@@ -23,7 +23,7 @@ var CoordinateSchema = require('./Coordinate');
 var PlayerSchema = new mongoose.Schema(
     {
         firstName: {type: String, required: true},
-        lastName: {type: String, required: true},
+        lastName: {type: String, default:""},
         number: {type: String, default: ""},
         position: {type: String, default: ""},
         team: {type: String, default: ""},
