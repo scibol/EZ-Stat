@@ -45,7 +45,6 @@ router.get('/:gameid', function (req, res, next) {
             });
             return;
         }
-        console.log(game)
         res.json(game);
     });
 });
@@ -53,15 +52,12 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
-    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-                    //var p = new Player();
                     game.players.push(player);
-
                     if (player.team === game.team1) {
                         game.players1.push(player)
                     }

@@ -33,7 +33,7 @@
 
 
         <iron-ajax
-                id="updateScore"
+                id="putScore"
                 url="/games/[[gameid]]"
                 content-type="application/json"
                 handle-as="json"
@@ -45,7 +45,8 @@
                 auto
                 url="/games/[[gameid]]"
                 handle-as="json"
-                last-response="{{team1score}}"
+                on-response="drawScore"
+                last-response="{{score}}"
         ></iron-ajax>
 
         <iron-ajax
@@ -95,6 +96,10 @@
                     team2score: {
                         type: Number,
                         notify: true,
+                    },
+                    score: {
+                        type: Object,
+                        notify: true
                     }
                 },
 
@@ -134,33 +139,30 @@
                     }
                 },
 
-                updateScore: function (x) {
-                    this.$.getTeamScore.generateRequest();
-                    if (this.team1score == undefined) {
-                        this.team1score = 0;
+                drawScore: function () {
+                    if (this.team1score == undefined || this.team1score <= this.score.team1score) {
+                        this.team1score = this.score.team1score;
                     }
-                    if (this.team2score == undefined) {
-                        this.team2score = 0;
+                    if (this.team2score == undefined || this.team2score <= this.score.team2score) {
+                        this.team2score = this.score.team2score;
                     }
-                    if (this.team1score != undefined) {
-                        this.team1score = this.$.getTeamScore.lastResponse.team1score
-                    }
-                    if (this.team2score != undefined) {
-                        this.team2score = this.$.getTeamScore.lastResponse.team2score
-                    }
+                },
 
-                    var teamAjax = this.$.updateScore;
+
+                updateScore: function (x) {
+                    console.log(this.team1score)
+                    var teamAjax = this.$.putScore;
                     var team = this.team;
                     if (team == "team1") {
                         this.team1score += x;
                         teamAjax.body = JSON.stringify({
-                            "team1score" : this.team1score
+                            "team1score": this.team1score
                         });
                     }
                     if (team == "team2") {
                         this.team2score += x;
                         teamAjax.body = JSON.stringify({
-                            "team2score" : this.team2score
+                            "team2score": this.team2score
                         });
                     }
                     teamAjax.generateRequest();
@@ -168,6 +170,7 @@
 
                 attached: function () {
                     var thisObj = this;
+                    var getScore = this.$.getTeamScore;
                     var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
                     var canvas = this.$.myCanvas;
@@ -223,6 +226,7 @@
                     rectangleShape.on("click", function (e) {
                         var success = (thisObj.hit == "hit")
                         if (success) {
+                            getScore.generateRequest()
                             thisObj.updateScore(3)
                             drawHit(e)
                         }
@@ -239,8 +243,10 @@
                     });
 
                     twoPointsLeftShape.on("click", function (e) {
-                        var success = (playerHit.innerHTML == "hit")
+                        console.log("DIO")
+                        var success = (thisObj.hit == "hit")
                         if (success) {
+                            getScore.generateRequest()
                             thisObj.updateScore(2)
                             drawHit(e)
                         }
@@ -257,8 +263,9 @@
 
                     });
                     twoPointsRightShape.on("click", function (e) {
-                        var success = (playerHit.innerHTML == "hit")
+                        var success = (thisObj.hit == "hit")
                         if (success) {
+                            getScore.generateRequest()
                             thisObj.updateScore(2)
                             drawHit(e)
                         }

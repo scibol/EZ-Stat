@@ -304,8 +304,6 @@
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
-                                        <paper-item>{{game.team1}}
-                                        </paper-item>
                                         <template is="dom-repeat" items="{{game.players1}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}}
                                                 {{player.lastName}}

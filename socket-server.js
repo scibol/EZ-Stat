@@ -44,14 +44,11 @@ module.exports = function(httpServer) {
 	eventBus.on('player.changed', function(event){
 		var room = event.url;
 		var data = event.data;
-		console.log("test")
-		console.log(room);
+		io.emit('update-score', room)
 		io.to(room).emit('change-player', data);
 	});
 
 	eventBus.on('state.changed', function(event){
-		console.log("test")
-		console.log(event)
 		io.emit('change-state', {});
 	});
 };
