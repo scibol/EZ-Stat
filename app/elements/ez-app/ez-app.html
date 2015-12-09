@@ -194,6 +194,61 @@
                 width: 60vw;
             }
 
+            .statsHeader {
+                width: 100%;
+                left: auto;
+                right: auto;
+            }
+
+            .headerRow {
+                height: 50px;
+                width: 100%;
+            }
+
+            .headerElement {
+                width: 20%;
+                margin: auto;
+            }
+
+            .caption {
+                display: block;
+                width: 100%;
+                background: #64e0ef;
+                height: 55px;
+                padding-left: 10px;
+                color: #fff;
+                font-size: 20px;
+                line-height: 55px;
+                text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+                box-sizing: border-box;
+            }
+
+            .row {
+                display: table-row;
+            }
+            
+            .header-row {
+                background: #8b8b8b;
+                color: #fff;
+            }
+
+            .cell {
+                display: table-cell;
+                
+                padding: 6px; 
+                border-bottom: 1px solid #e5e5e5;
+                text-align: center;
+            }
+
+            #table {
+                display: table;
+                
+                width: 100%; 
+                background: #fff;
+                margin: 0;
+                box-sizing: border-box;
+
+             }
         </style>
         <iron-ajax
                 id="getPlayers"
@@ -312,7 +367,6 @@
                                     </paper-listbox>
                                 </nav>
 
-<<<<<<< HEAD
                                 <iron-pages id='my_iron_pages' attr-for-selected="property" selected="0">
                                     
                                     <div property="0">
@@ -345,16 +399,20 @@
                                         Normal text
                                     </div>
                                     <div property="1" id="statSection">
-                                        <template is="dom-repeat" items="{{game.players}}" as="player">
-                                            <div>First name: <span>{{player.firstName}}</span></div>
-                                            <div>Last name: <span>{{player.lastName}}</span></div>
-                                            <canvas class="myChart" width="200" height="200"></canvas>
-                                        </template>
+                                        <div class="caption">Players statistics</div>
+                                        <div id='table'>
+                                        <div class="header-row row">
+                                            <span class="cell cell-primary">Name</span>
+                                            <span class="cell">Points</span>
+                                            <span class="cell">FG%</span>
+                                            <span class="cell">3FG%</span>
+                                        </div>
+                                        </div>
+                                        <div class="caption">Team statistics</div>
                                     </div>
                                     <div property="2">
                                         Edit
                                     </div>
-=======
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
                                         <ez-stat-counter id="assistCount" editable selected="" value="{{game.assists}}" game="{{game}}"></ez-stat-counter>
@@ -379,7 +437,6 @@
 
                                     </ez-canvas>
                                     <paper-button on-click="_endGame">end game</paper-button>
->>>>>>> master
 
                                 </iron-pages>
                                 <nav class="main-nav-float main-nav">
@@ -528,43 +585,126 @@
                 },
 
                 _switchToStats: function(){
-                    console.log("Switching to stats!");
-                    var pages = this.$.my_iron_pages;
-                    console.log(pages.selectedItem);
-                    pages.selectNext();
 
-                    var data = [
-                        {
-                            value: 300,
-                            color: "#F7464A", 
-                        },
-                        {
-                            value: 50,
-                            color: "#46BFBD",
+                    var _countShoots = function(shots) {
+                        var tot2Points = 0;
+                        var hit2Points = 0;
+                        var tot3Points = 0;
+                        var hit3Points = 0;
+                        for(var i = 0; i < shots.length; i++) {
+                            if(shots[i].two_points){
+                                if(shots[i].success) hit2Points++;
+                                tot2Points++;
+                            } else {
+                                if(shots[i].success) hit3Points++;
+                                tot3Points++;
+                            }
                         }
-                    ];  
-
-                    console.log("Selecting the element : ");
-                    console.log(this.$.statSection.querySelector("canvas"));
-                    var statSection = this.$.statSection;
-                    var children = statSection.children;
-                    console.log(children);
-                    for(var i = 0; i < children.length; i++){
-                        if(children[i].nodeName == "CANVAS"){
-                            var ctx = children[i].getContext("2d");
-                            var myPieChart = new Chart(ctx).Pie(data);
+                        return {
+                            tot2Points: tot2Points,
+                            hit2Points: hit2Points,
+                            tot3Points: tot3Points,
+                            hit3Points: hit3Points,
                         }
                     }
+
+                    var _listPlayers = function(here){
+                        var pages = here.my_iron_pages;
+                        pages.selectNext();
+
+                        var gamePlayers = here.getGame.lastResponse.players;
+                        var statSection = here.table;
+                        var data = [];
+
+                        for(var i = 0; i < gamePlayers.length; i++){
+                            var rawData = _countShoots(gamePlayers[i].shots);
+                            data.push([{value: rawData.hit2Points, color: "#F7464A"},
+                                {value: rawData.tot2Points-rawData.hit2Points, color: "#46BFBD"}]); 
+
+                            var playerContainer = document.createElement("div");
+                            playerContainer.setAttribute("class", "row");
+
+                            var firstNameTag = document.createElement("span");
+                            firstNameTag.innerHTML = gamePlayers[i].firstName + " " + gamePlayers[i].lastName;
+                            firstNameTag.setAttribute("class","cell");
+
+                            var pointsTag = document.createElement("span");
+                            console.log(rawData);
+                            pointsTag.innerHTML = rawData.hit2Points * 2 + rawData.hit3Points * 3;
+                            pointsTag.setAttribute("class","cell");
+
+                            var fieldPercentage = document.createElement("span");
+                            if(rawData.tot2Points === 0) fieldPercentage.innerHTML = 0;
+                            else fieldPercentage.innerHTML = (rawData.hit2Points / rawData.tot2Points) * 100;
+                            fieldPercentage.setAttribute("class","cell");
+
+                            var field3Percentage = document.createElement("span");
+                            if(rawData.tot3Points === 0) field3Percentage.innerHTML = 0;
+                            else field3Percentage.innerHTML = (rawData.hit3Points / rawData.tot3Points) * 100;
+                            field3Percentage.setAttribute("class","cell");
+
+                            statSection.appendChild(playerContainer);
+                            playerContainer.appendChild(firstNameTag);
+                            playerContainer.appendChild(pointsTag);
+                            playerContainer.appendChild(fieldPercentage);
+                            playerContainer.appendChild(field3Percentage);
+                        }
+
+                        var children = statSection.children;
+                        var counter = 0;
+                        for(var i = 0; i < children.length; i++){
+                            if(children[i].nodeName == "CANVAS"){
+                                console.log(children[i]);
+                                console.log(data[counter]);
+                                var ctx = children[i].getContext("2d");
+                                var myPieChart = new Chart(ctx).Pie(data[counter]);
+                                counter++;
+                            }
+                        }
+                    }
+
+                    _listPlayers(this.$);
+                    var statSection = this.$.statSection;
+                    var canvasTag = document.createElement("canvas");
+                    canvasTag.setAttribute("id", "canvasAttemptedShots");
+
+                    var description = document.createElement("div");
+                    description.innerHTML = "Attemped shots for team";
+
+                    var team1Shots = [];
+                    var team1 = this.$.getGame.lastResponse.team1;
+                    for(var i = 0; i < team1.length; i++){
+                        team1Shots.push(team1[i].shots);
+                    }
+                    var attempted1Shots = _countShoots(team1Shots);
+
+                    var team2Shots = [];
+                    var team2 = this.$.getGame.lastResponse.team1;
+                    for(var i = 0; i < team2.length; i++){
+                        team2Shots.push(team2[i].shots);
+                    }
+                    var attempted2Shots = _countShoots(team2Shots);
+
+                    statSection.appendChild(description);
+                    statSection.appendChild(canvasTag);
+                    var tempData = [{
+                        value: attempted1Shots.tot2Points + 15,
+                        color: "#FF0000",
+                        label: "Team 1"
+                    },{
+                        value: attempted2Shots.tot2Points + 5,
+                        color: "#00FF00",
+                        label: "Team 2"
+                    }]
+                    // console.log("data[0]", tempData);
+                    var ctx = canvasTag.getContext("2d");
+                    var myPieChart = new Chart(ctx).Pie(tempData);
                 }
+
+
             });
         })
         ();
-        function bho2() {
-            console.log(this)
-            console.log(document)
-            console.log(this.$.drop)
-
-        }
 
     </script>
 
