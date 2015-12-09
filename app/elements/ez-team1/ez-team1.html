@@ -122,12 +122,14 @@
         <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
                      value="{{game.team1}}"></paper-input>
         <paper-listbox selectedItem>
-            <div class="teamDiv">
+        </paper-listbox>
+
+        <div class="teamDiv">
                 <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
             </div>
 
             <template is="dom-repeat" items="{{game.players1}}" as="player">
-                <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                <paper-item id="{{player._id}}">{{player.firstName}}
                     {{player.lastName}}
                 </paper-item>
             </template>
@@ -136,7 +138,7 @@
             <template is="dom-if" if="{{editable}}">
                 <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
             </template>
-        </paper-listbox>
+
     </template>
 
     <script>
@@ -214,7 +216,6 @@
                         this.$.setGame.generateRequest();
                     }
 
-//                    TODO if name is number, put it as fake
                     else if (isNumber(first) && !last) {
                         this.$.setGame.body = JSON.stringify({
                             "firstName": first,
