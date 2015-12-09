@@ -21,6 +21,7 @@
             }
 
         </style>
+
         <iron-ajax
                 id="shot"
                 url="/players/[[selected]]"
@@ -40,10 +41,10 @@
         ></iron-ajax>
 
         <iron-ajax
-                id="getTeam1Score"
+                id="getTeamScore"
+                auto
                 url="/games/[[gameid]]"
                 handle-as="json"
-                on-response="drawScore"
                 last-response="{{team1score}}"
         ></iron-ajax>
 
@@ -58,8 +59,6 @@
 
         <p id="selHit" style="display:none">[[hit]]</p>
         <span>{{team1score}}-{{team2score}}</span>
-        <span id="score1" style="display:none">0 </span>
-        <span id="score2" style="display:none">0</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -90,12 +89,12 @@
                         notify: true
                     },
                     team1score: {
-                        type: String,
+                        type: Number,
                         notify: true,
                     },
                     team2score: {
-                        type: String,
-                        notify: true
+                        type: Number,
+                        notify: true,
                     }
                 },
 
@@ -108,13 +107,8 @@
                     }
                 },
 
-                drawScore: function () {
-                    this.team1score = this.$.getTeam1Score.lastResponse.team1score;
-                    this.team2score = this.$.getTeam1Score.lastResponse.team2score;
-                },
 
                 changedPlayer: function () {
-                    window.team = this.team;
                     window.player = this.selected;
                     this.resetShots()
                 },
@@ -140,24 +134,50 @@
                     }
                 },
 
+                updateScore: function (x) {
+                    this.$.getTeamScore.generateRequest();
+                    if (this.team1score == undefined) {
+                        this.team1score = 0;
+                    }
+                    if (this.team2score == undefined) {
+                        this.team2score = 0;
+                    }
+                    if (this.team1score != undefined) {
+                        this.team1score = this.$.getTeamScore.lastResponse.team1score
+                    }
+                    if (this.team2score != undefined) {
+                        this.team2score = this.$.getTeamScore.lastResponse.team2score
+                    }
+
+                    var teamAjax = this.$.updateScore;
+                    var team = this.team;
+                    if (team == "team1") {
+                        this.team1score += x;
+                        teamAjax.body = JSON.stringify({
+                            "team1score" : this.team1score
+                        });
+                    }
+                    if (team == "team2") {
+                        this.team2score += x;
+                        teamAjax.body = JSON.stringify({
+                            "team2score" : this.team2score
+                        });
+                    }
+                    teamAjax.generateRequest();
+                },
 
                 attached: function () {
-                    var score1 = this.$.score1
-                    var score2 = this.$.score2
-                    var drawCanvScore = this.$.getTeam1Score;
+                    var thisObj = this;
                     var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
-                    var teamAjax = this.$.updateScore;
-                    window.score = this.$.updateScore;
-
                     var canvas = this.$.myCanvas;
                     var field = measures();
                     if (window.stage == undefined) {
                         window.stage = new createjs.Stage(canvas);
                     }
                     var rect = new createjs.Shape();
+
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
-                    // line
                     rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
@@ -171,7 +191,6 @@
                     rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
                     arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
-
                     // right side trey
                     rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
                     rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
@@ -202,30 +221,9 @@
 
 
                     rectangleShape.on("click", function (e) {
-                        var success = (playerHit.innerHTML == "hit")
+                        var success = (thisObj.hit == "hit")
                         if (success) {
-                            if (window.team == "team1") {
-                                var scoreToUpdate = Number(score1.innerHTML)
-                                scoreToUpdate += 3
-                                score1.innerHTML = scoreToUpdate
-                                console.log(scoreToUpdate)
-                                teamAjax.body = JSON.stringify({
-                                    "team1score": scoreToUpdate
-                                });
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-                            }
-                            else if (window.team == "team2") {
-                                var scoreToUpdate = Number(score2.innerHTML)
-                                scoreToUpdate += 3
-                                score2.innerHTML = scoreToUpdate
-                                teamAjax.body = JSON.stringify({
-                                    "team2score": scoreToUpdate
-                                });
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-
-                            }
+                            thisObj.updateScore(3)
                             drawHit(e)
                         }
                         else {
@@ -243,28 +241,7 @@
                     twoPointsLeftShape.on("click", function (e) {
                         var success = (playerHit.innerHTML == "hit")
                         if (success) {
-                            if (window.team == "team1") {
-                                var scoreToUpdate = Number(score1.innerHTML)
-                                scoreToUpdate += 2
-                                score1.innerHTML = scoreToUpdate
-                                teamAjax.body = JSON.stringify({
-                                    "team1score": scoreToUpdate
-                                });
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-
-                            }
-                            else if (window.team == "team2") {
-                                var scoreToUpdate = Number(score2.innerHTML)
-                                scoreToUpdate += 2
-                                score2.innerHTML = scoreToUpdate
-                                teamAjax.body = JSON.stringify({
-                                    "team2score": scoreToUpdate
-                                });
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-
-                            }
+                            thisObj.updateScore(2)
                             drawHit(e)
                         }
                         else {
@@ -282,27 +259,7 @@
                     twoPointsRightShape.on("click", function (e) {
                         var success = (playerHit.innerHTML == "hit")
                         if (success) {
-                            if (window.team == "team1") {
-                                var scoreToUpdate = Number(score1.innerHTML)
-                                scoreToUpdate += 2
-                                score1.innerHTML = scoreToUpdate
-                                teamAjax.body = JSON.stringify({
-                                    "team1score": scoreToUpdate
-                                });
-
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-                            }
-                            else if (window.team == "team2") {
-                                var scoreToUpdate = Number(score2.innerHTML)
-                                scoreToUpdate += 2
-                                score2.innerHTML = scoreToUpdate
-                                teamAjax.body = JSON.stringify({
-                                    "team2score": scoreToUpdate
-                                });
-                                teamAjax.generateRequest();
-                                drawCanvScore.generateRequest();
-                            }
+                            thisObj.updateScore(2)
                             drawHit(e)
                         }
                         else {
@@ -321,7 +278,8 @@
 
             })
             ;
-        })();
+        })
+        ();
 
         function drawHitAndMiss(success, x, y) {
             var field = measures()
@@ -354,9 +312,6 @@
             }
         }
 
-        function updateScore(data) {
-            //
-        }
 
         function drawMiss(e) {
             var x = e.stageX;
@@ -403,11 +358,7 @@
             return field;
         }
 
-        function updateScore() {
-//            window.score.generateRequest()
-        }
     </script>
-
 
 
 </dom-module>

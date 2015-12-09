@@ -45,6 +45,7 @@ router.get('/:gameid', function (req, res, next) {
             });
             return;
         }
+        console.log(game)
         res.json(game);
     });
 });
@@ -52,6 +53,7 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
+    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
@@ -107,7 +109,7 @@ router.put('/:gameid', function (req, res, next) {
             newGame.save(onModelSave(res, 201, true));
         }
     });
-    pubsub.emit("player.changed", {"team1score":data.team1score, "team2score" : data.team2score, "url":req.params.gameid});
+    //pubsub.emit("player.changed", {"team1score":data.team1score, "team2score" : data.team2score, "url":req.params.gameid});
 });
 
 //remove a game

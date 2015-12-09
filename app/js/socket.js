@@ -1,17 +1,15 @@
 var socket = io.connect();
 
-socket.on("update-game-score", function(data) {
-    console.log(data)
-    updateScore(data)
-});
 
 
 socket.on("change-player", function(data) {
 
-    console.log(socket);
+    //console.log(socket);
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
     stats.$.getPlayer.generateRequest();
+    //var score = ezApp.$.canv;
+    //canv.$.getTeam1Score.generateRequest()
     drawHitAndMiss(data.success, data.pos_x, data.pos_y)
 });
 
