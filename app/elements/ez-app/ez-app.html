@@ -334,7 +334,7 @@
                                         </div>
                                     </iron-pages>
 
-                                    <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}">
+                                    <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}" editable>
                                     </ez-canvas>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                         <div finished="0">
@@ -476,6 +476,7 @@
                         this.$.btnHit.disabled = false;
                         this.$.btnMiss.disabled = false;
                         this.$.buttonCounter.disabled = false;
+                        this.$.canv.editable = false;
                     }
                 },
 
@@ -496,6 +497,7 @@
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
                     this.$.buttonCounter.disabled = true;
+                    this.$.canv.editable = true;
                 },
 
                 _setFail: function (event, detail) {
