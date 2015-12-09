@@ -106,13 +106,13 @@
                 debounce-duration="3000">
         </iron-ajax>
 
-        <iron-ajax
-                id="getGame"
-                auto
-                url="/games/[[game._id]]"
-                handle-as="json"
-                last-response="{{game}}"
-                debounce-duration="300"></iron-ajax>
+        <!--<iron-ajax-->
+                <!--id="getGame"-->
+                <!--auto-->
+                <!--url="/games/[[game._id]]"-->
+                <!--handle-as="json"-->
+                <!--last-response="{{game}}"-->
+                <!--debounce-duration="300"></iron-ajax>-->
 
 
         <paper-listbox selectedItem>
@@ -222,7 +222,8 @@
                 },
 
                 _makeGet: function () {
-                    this.$.getGame.generateRequest();
+                    var ezApp = document.querySelector("ez-app");
+                    ezApp.$.getGame.generateRequest();
                 }
 
             });
