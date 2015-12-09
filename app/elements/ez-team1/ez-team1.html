@@ -19,17 +19,23 @@
                 -webkit-transition: background 0.3s, box-shadow 0.3s;
                 -moz-transition: background 0.3s, box-shadow 0.3s;
                 transition: background 0.3s, box-shadow 0.3s;
-            --paper-input-container-input:{
-                 color:inherit;
-             };
+
+            -
+            -paper-input-container-input: {
+                color: inherit;
             }
 
-            :host(:hover){
-                background: rgba(0,0,0,0.2);
-                box-shadow: inset 0 -1px rgba(0,0,0,0);
-            };
+            ;
+            }
 
-            #textVal{
+            :host(:hover) {
+                background: rgba(0, 0, 0, 0.2);
+                box-shadow: inset 0 -1px rgba(0, 0, 0, 0);
+            }
+
+            ;
+
+            #textVal {
                 padding-left: 1em;
                 padding-top: 1.15em;
                 display: inline-block;
@@ -43,7 +49,7 @@
                 white-space: nowrap;
             }
 
-            iron-icon{
+            iron-icon {
                 padding: 0 20px;
             }
 
@@ -58,32 +64,31 @@
             }
 
             #saveTeam[disabled] {
-                color: rgba(255,255,255,0.1);
+                color: rgba(255, 255, 255, 0.1);
             }
 
-
-            .editBtn{
+            .editBtn {
                 visibility: visible;
                 /*position:absolute;*/
                 /*top: 14px;*/
                 /*right: 10px;*/
-                z-index:10;
+                z-index: 10;
                 /*white-space: initial;*/
                 line-height: 1;
-                color: rgba(255,255,255,0.4);
+                color: rgba(255, 255, 255, 0.4);
             }
 
-            .editBtn:hover{
-                color:inherit;
+            .editBtn:hover {
+                color: inherit;
             }
 
-            :host(:hover) .editBtn{
+            :host(:hover) .editBtn {
                 visibility: visible;
             }
 
-            #editInput{
-                display:none;
-                line-height:1;
+            #editInput {
+                display: none;
+                line-height: 1;
                 padding-left: 12px;
             }
         </style>
@@ -117,20 +122,21 @@
 
         <paper-listbox selectedItem>
             <div class="teamDiv">
-            <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus" value="{{game.team1}}"></paper-input>
+                <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
+                             value="{{game.team1}}"></paper-input>
                 <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
             </div>
 
-        <template is="dom-repeat" items="{{game.players1}}" as="player">
-            <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
-                {{player.lastName}}
-            </paper-item>
-        </template>
+            <template is="dom-repeat" items="{{game.players1}}" as="player">
+                <paper-item id="{{player._id}}">{{player.number}} | {{player.firstName}}
+                    {{player.lastName}}
+                </paper-item>
+            </template>
             <div id="textVal">Player...</div>
-        <paper-input id="editInput" placeholder="Player..."></paper-input>
-        <template is="dom-if" if="{{editable}}">
-            <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
-        </template>
+            <paper-input id="editInput" placeholder="Player..."></paper-input>
+            <template is="dom-if" if="{{editable}}">
+                <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
+            </template>
         </paper-listbox>
     </template>
 
@@ -141,7 +147,8 @@
             Polymer({
                 is: 'ez-team1',
 
-                //<!-- build:remove -->
+                //
+                <!-- build:remove -->
                 listeners: {
 //                    "blur": "_onBlur"
                 },
@@ -150,45 +157,52 @@
                     href: String,
                     team: String,
                     icon: String,
-                    game: Object,
-                    editable:{
+                    game: {
+                        type: Object,
+                        notify: true
+                    },
+                    editable: {
                         type: Boolean,
                         default: false,
-                        reflectToAttribute:true
+                        reflectToAttribute: true
                     }
                 },
 
-                _onFocus: function() {
+                _onFocus: function () {
 //                    this.$.saveTeam.icon = "icons:save";
 //                    this.$.saveTeam.disabled = false;
 
                 },
 
-                _loseFocus: function() {
+                _loseFocus: function () {
 //                    this.$.saveTeam.icon = "icons:create";
 //                    this.$.saveTeam.disabled = true;
+
                     console.log(this.$.test.value)
                     this.$.setGame.body = JSON.stringify({
                         "team1": this.$.test.value
                     });
+                    console.log(window.location.href);
+                    console.log(this.game)
+                    console.log(this.$.setGame.url)
                     this.$.setGame.generateRequest();
                 },
 
 
-                _editTapped: function(event, detail){
-                    if(!this.editable) return;
-                    if(event.target.active){
+                _editTapped: function (event, detail) {
+                    if (!this.editable) return;
+                    if (event.target.active) {
                         this.$.textVal.style.display = "none";
                         this.$$('#editInput').style.display = "inline-block";
                         event.target.icon = "icons:save";
-                    }else{
+                    } else {
                         this._onBlur();
                         event.target.icon = "icons:add";
                     }
                 },
 
-                _onBlur: function(){
-                    if(!this.editable) return;
+                _onBlur: function () {
+                    if (!this.editable) return;
                     this.$.textVal.style.display = "inline-block";
                     this.$$('#editInput').style.display = "none";
                     var first = this.$.editInput.value.split(" ")[0];
