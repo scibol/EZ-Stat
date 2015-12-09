@@ -119,11 +119,10 @@
                 <!--last-response="{{game}}"-->
                 <!--debounce-duration="300"></iron-ajax>-->
 
-
+        <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
+                     value="{{game.team1}}"></paper-input>
         <paper-listbox selectedItem>
             <div class="teamDiv">
-                <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
-                             value="{{game.team1}}"></paper-input>
                 <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
             </div>
 
@@ -169,22 +168,13 @@
                 },
 
                 _onFocus: function () {
-//                    this.$.saveTeam.icon = "icons:save";
-//                    this.$.saveTeam.disabled = false;
 
                 },
 
                 _loseFocus: function () {
-//                    this.$.saveTeam.icon = "icons:create";
-//                    this.$.saveTeam.disabled = true;
-
-                    console.log(this.$.test.value)
                     this.$.setGame.body = JSON.stringify({
                         "team1": this.$.test.value
                     });
-                    console.log(window.location.href);
-                    console.log(this.game)
-                    console.log(this.$.setGame.url)
                     this.$.setGame.generateRequest();
                 },
 

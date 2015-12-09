@@ -114,11 +114,9 @@
                 <!--last-response="{{game}}"-->
                 <!--debounce-duration="300"></iron-ajax>-->
 
-
+        <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus" value="{{game.team2}}"></paper-input>
         <paper-listbox selectedItem>
-            <div class="teamDiv">
-                <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus" value="{{game.team2}}"></paper-input>
-                <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
+            <div class="teamDiv"><!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
             </div>
 
             <template is="dom-repeat" items="{{game.players2}}" as="player">
