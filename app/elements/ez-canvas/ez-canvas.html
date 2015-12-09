@@ -40,12 +40,7 @@
                 last-response="{{shots}}"
                 ></iron-ajax>
 
-        <!--<p id="selPlayer" class="player" style="display:none">[[selected]]</p>-->
-        <p id="selPlayer" class="player">[[selected]]</p>
-        <!--<p id="hitPlayer" style="display:none">[[hit]]</p>-->
-        <p id="selHit">[[hit]]</p>
-
-        <p id="selShot">{{shots}}</p>
+        <p id="selHit" style="display:none">[[hit]]</p>
 
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
@@ -77,7 +72,6 @@
                     if (this.$.getShots.lastResponse != undefined) {
                         var response = this.$.getShots.lastResponse.shots;
                         for (var shot in response) {
-                            console.log(response[shot].success, response[shot].pos_x, response[shot].pos_y)
                             drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y);
                         }
                     }
@@ -98,20 +92,18 @@
                     for (var players in window.shotsObj) {
                         if (players != window.player) {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = false
+                                window.shotsObj[players][shot].visible = false;
                                 window.stage.update()
                             }
                         }
                         else {
                             for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = true
+                                window.shotsObj[players][shot].visible = true;
                                 window.stage.update()
                             }
                         }
                     }
                 },
-
-
 
 
                 attached: function (draw) {
@@ -169,7 +161,6 @@
                         stage.addChild(twoPointsRightShape);
                         stage.addChild(rect);
                         stage.update();
-
                     }
 
 

@@ -81,7 +81,6 @@
         <!--</template>-->
         <!-- /build -->
     </template>
-
     <script>
         (function () {
             'use strict';
@@ -130,9 +129,9 @@
 
                 _onClick: function(event, detail){
                     event.preventDefault();
-                    var resource = event.currentTarget.href.split("3000")[1]
-
-                    page.show(resource)
+                    var resource = event.currentTarget.href.split("3000")[1];
+                    socket.emit("change", resource.split("/games/")[1]);
+                    page.show(resource);
                 }
                 //<!-- /build -->
             });

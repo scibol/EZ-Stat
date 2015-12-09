@@ -22,9 +22,6 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 router.get('/', function (req, res, next) {
     Game.find({}, fieldsFilter).lean().exec(function (err, games) {
         if (err) return next(err);
-        // games.forEach(function(game){
-        //   addLinks(game);
-        // });
         res.json(games);
     });
 });
@@ -33,7 +30,7 @@ router.get('/', function (req, res, next) {
 router.post('/', function (req, res, next) {
     var newGame = new Game(req.body);
     newGame.save(onModelSave(res, 201, true));
-    pubsub.emit("game.created",newGame);
+    //pubsub.emit("game.created",newGame);
 });
 
 //get a game
@@ -48,7 +45,6 @@ router.get('/:gameid', function (req, res, next) {
             });
             return;
         }
-        addLinks(game);
         res.json(game);
     });
 });
@@ -56,18 +52,31 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
-    console.log(data)
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
-
-                    console.log()
-                    var p = new Player();
+                    //var p = new Player();
                     game.players.push(player);
+
+                    if (player.team === game.team1) {
+                        game.players1.push(player)
+                    }
+                    if (player.team === game.team2) {
+                        game.players2.push(player)
+                    }
                     game.save(onModelSave(res));
                 });
+            }
+            if (data.name) {
+                game.name = data.name;
+            }
+            if (data.team1) {
+                game.team1 = data.team1;
+            }
+            if (data.team2) {
+                game.team2 = data.team2;
             }
             if (data.result) {
                 game.result = data.result;
@@ -75,8 +84,13 @@ router.put('/:gameid', function (req, res, next) {
             if (!isNaN(data.assists)) {
                 game.assists = data.assists;
             }
-            if (data.state) {
-                game.state = data.state;
+            if (data.started) {
+                game.started = data.started;
+                pubsub.emit("state.changed",{});
+            }
+            if (data.finished) {
+                game.finished = data.finished;
+                pubsub.emit("state.changed",{});
             }
             game.save(onModelSave(res));
         } else {
@@ -125,30 +139,16 @@ function onModelSave(res, status, sendItAsResponse) {
                 return next(err);
             }
         }
-        pubsub.emit('game.updated', {})
+        pubsub.emit('game.updated', {});
         if (sendItAsResponse) {
             var obj = saved.toObject();
             delete obj.password;
             delete obj.__v;
-            addLinks(obj);
             return res.status(statusCode).json(obj);
         } else {
             return res.status(statusCode).end();
         }
     }
-}
-
-function addLinks(game) {
-    game.links = [
-        // {
-        //   "rel" : "self",
-        //   "href" : config.url + "/games/" + game._id
-        // },
-        // {
-        //   "rel" : "artist",
-        //   "href" : config.url + "/artists/" + game.artist
-        // }
-    ];
 }
 
 /** router for /games */

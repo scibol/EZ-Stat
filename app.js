@@ -25,5 +25,6 @@ app.use('/', routers.root);
 app.use('/players', routers.players);
 app.use('/games', routers.games);
 app.use('/users', routers.users);
+app.use('/temp_players', routers.temp_players)
 
 module.exports = app;
