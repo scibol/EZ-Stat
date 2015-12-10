@@ -58,7 +58,6 @@
                 last-response="{{shots}}"
         ></iron-ajax>
 
-        <p id="selHit" style="display:none">[[hit]]</p>
         <span>{{team1score}}-{{team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
@@ -92,10 +91,12 @@
                     team1score: {
                         type: Number,
                         notify: true,
+                        default: 0
                     },
                     team2score: {
                         type: Number,
                         notify: true,
+                        default: 0
                     },
                     score: {
                         type: Object,
@@ -156,7 +157,6 @@
 
                 updateScore: function (x) {
                     if (!(this.editable)) {
-                        console.log(this.team1score)
                         var teamAjax = this.$.putScore;
                         var team = this.team;
                         if (team == "team1") {
@@ -178,13 +178,12 @@
                 attached: function () {
                     var thisObj = this;
                     var getScore = this.$.getTeamScore;
-                    var playerHit = this.$.selHit;
                     var ironAjax = this.$.shot;
                     var canvas = this.$.myCanvas;
                     var field = measures();
                     if (window.stage == undefined) {
                         window.stage = new createjs.Stage(canvas);
-                    }
+
                     var rect = new createjs.Shape();
 
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
@@ -231,6 +230,7 @@
 
 
                     rectangleShape.on("click", function (e) {
+                        console.log(thisObj.hit)
                         if (!(thisObj.editable)) {
                         var success = (thisObj.hit == "hit")
                         if (success) {

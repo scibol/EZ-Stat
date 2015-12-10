@@ -301,7 +301,7 @@
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
 
-                                    <paper-item>{{game.team1}}
+                                    <paper-item on-click="_setSelectedTeam">{{game.team1}}
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
@@ -456,6 +456,10 @@
 
                 _setSuccess: function (event, detail) {
                     this.$.canv.hit = "hit";
+                },
+
+                _setSelectedTeam: function() {
+                    this.$.canv.selected = "team1"
                 },
 
                 _setSelected1: function (event, detail) {
