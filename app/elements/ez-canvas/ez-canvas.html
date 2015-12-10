@@ -21,6 +21,7 @@
             }
 
         </style>
+
         <iron-ajax
                 id="shot"
                 url="/players/[[selected]]"
@@ -30,6 +31,39 @@
                 timeout="1000">
         </iron-ajax>
 
+        <iron-ajax
+                id="getAllPlayers"
+                auto
+                url="/players"
+                handle-as="json"
+                last-response="{{players}}">
+        </iron-ajax>
+
+        <iron-ajax
+                id="updateTeamPlayer"
+                url="/games/[[gameid]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                timeout="1000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="putScore"
+                url="/games/[[gameid]]"
+                content-type="application/json"
+                handle-as="json"
+                method="PUT"
+        ></iron-ajax>
+
+        <iron-ajax
+                id="getTeamScore"
+                auto
+                url="/games/[[gameid]]"
+                handle-as="json"
+                on-response="drawScore"
+                last-response="{{score}}"
+        ></iron-ajax>
 
         <iron-ajax
                 id="getShots"
@@ -38,10 +72,9 @@
                 handle-as="json"
                 on-response="getAllShots"
                 last-response="{{shots}}"
-                ></iron-ajax>
+        ></iron-ajax>
 
-        <p id="selHit" style="display:none">[[hit]]</p>
-
+        <span>{{team1score}}-{{team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -62,9 +95,50 @@
                         type: String,
                         notify: true
                     },
-                    shotsShapes: {
-                        type: Array,
+                    team: {
+                        type: String,
+                        notify: true,
+                        observer: "changedPlayer"
+                    },
+                    gameid: {
+                        type: String,
                         notify: true
+                    },
+                    team1score: {
+                        type: Number,
+                        notify: true,
+                        default: 0
+                    },
+                    team2score: {
+                        type: Number,
+                        notify: true,
+                        default: 0
+                    },
+                    team1name: {
+                        type: String,
+                        notify: true
+                    },
+                    team2name:{
+                        type: String,
+                        notify: true
+                    },
+
+                    score: {
+                        type: Object,
+                        notify: true
+                    },
+                    stage: {
+                        type: Object,
+                        notify: true
+                    },
+                    shotsObj: {
+                        type: Object,
+                        notify: true
+                    },
+                    editable: {
+                        type: Boolean,
+                        default: true,
+                        reflectToAttribute: true
                     }
                 },
 
@@ -72,215 +146,276 @@
                     if (this.$.getShots.lastResponse != undefined) {
                         var response = this.$.getShots.lastResponse.shots;
                         for (var shot in response) {
-                            drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y);
+                            drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y, this.stage, this.selected, this.shotsObj);
                         }
                     }
                 },
 
 
                 changedPlayer: function () {
-                    window.player = this.selected;
 
-                    this.resetShots()
-//                    this.attached("draw")
+                this.resetShots()
+                this.$.getAllPlayers.generateRequest();
+                var players = this.$.getAllPlayers.lastResponse;
+                var boh = this.$.getTeamScore.lastResponse;
+                    if (boh != undefined) {
+                        console.log(boh.players1)
+                    }
+                var shots = this.$.getShots.lastResponse
+                console.log(boh)
+
+//                    if (this.selected == "team1"){
+//                        var team1Players = this.$.getTeamScore.lastResponse.players1;
+//                        for (var player in team1Players) {
+//                            console.log(team1Players[player])
+//                            for (var shot in team1Players[player]) {
+////                                console.log(team1Players[player][shot])
+//                                drawHitAndMiss(team1Players[player][shot].success, team1Players[player][shot].pos_x, team1Players[player][shot].pos_y, this.stage, this.selected, this.shotsObj);
+//                            }
+//                        }
+//                    }
                 },
 
+
                 resetShots: function () {
-                    if (window.shotsObj == undefined) {
-                        window.shotsObj = {}
+                    if (this.shotsObj == undefined) {
+                        this.shotsObj = {}
                     }
-                    for (var players in window.shotsObj) {
-                        if (players != window.player) {
-                            for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = false;
-                                window.stage.update()
+                    for (var players in this.shotsObj) {
+                        if (players != this.selected) {
+                            for (var shot in this.shotsObj[players]) {
+                                this.shotsObj[players][shot].visible = false;
+                                this.stage.update()
                             }
                         }
                         else {
-                            for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = true;
-                                window.stage.update()
+                            for (var shot in this.shotsObj[players]) {
+                                this.shotsObj[players][shot].visible = true;
+                                this.stage.update()
                             }
                         }
                     }
                 },
 
+                drawScore: function () {
+                    if (this.team1score == undefined || this.team1score <= this.score.team1score) {
+                        this.team1score = this.score.team1score;
+                    }
+                    if (this.team2score == undefined || this.team2score <= this.score.team2score) {
+                        this.team2score = this.score.team2score;
+                    }
+                },
 
-                attached: function (draw) {
-                    var playerHit = this.$.selHit;
+
+                updateScore: function (x) {
+                    if (!(this.editable)) {
+                        var teamAjax = this.$.putScore;
+                        var team = this.team;
+                        if (team == "team1") {
+                            this.team1score += x;
+                            teamAjax.body = JSON.stringify({
+                                "team1score": this.team1score
+                            });
+                        }
+                        if (team == "team2") {
+                            this.team2score += x;
+                            teamAjax.body = JSON.stringify({
+                                "team2score": this.team2score
+                            });
+                        }
+                        teamAjax.generateRequest();
+                    }
+                },
+
+
+                attached: function () {
+                    var thisObj = this;
+                    var getScore = this.$.getTeamScore;
+                    var updatePlayers = this.$.putScore
                     var ironAjax = this.$.shot;
                     var canvas = this.$.myCanvas;
                     var field = measures();
-                    if (window.stage == undefined) {
-                        window.stage = new createjs.Stage(canvas);
-                    }
+                    this.stage = new createjs.Stage(canvas);
+                    var rect = new createjs.Shape();
 
-                    if (draw != "draw") {
-                        var rect = new createjs.Shape();
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
-                        // line
-                        rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                                drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                                drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
-                        // left side trey
-                        rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                                arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
+                    rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
+                    // left side trey
+                    rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
+                    // right side trey
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
+                    rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
 
-                        // right side trey
-                        rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
-                        rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
-                                arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+                    var rectangleGraphics = new createjs.Graphics();
+                    rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height);
+                    var rectangleShape = new createjs.Shape(rectangleGraphics);
 
+                    var twoPointsLeft = new createjs.Graphics();
+                    twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
+                    arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
+                    lt(0, field.height - field.treyFromBorder);
+                    var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
 
-                        var rectangleGraphics = new createjs.Graphics();
-                        rectangleGraphics.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0").mt(0, 0).lt(field.width, 0).lt(field.width, field.height).lt(0, field.height);
-                        var rectangleShape = new createjs.Shape(rectangleGraphics);
+                    var twoPointsRight = new createjs.Graphics();
+                    twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
+                    lt(field.width, field.height - field.treyFromBorder).
+                    arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
+                    var twoPointsRightShape = new createjs.Shape(twoPointsRight);
 
-                        var twoPointsLeft = new createjs.Graphics();
-                        twoPointsLeft.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder).
-                                arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688).
-                                lt(0, field.height - field.treyFromBorder);
-                        var twoPointsLeftShape = new createjs.Shape(twoPointsLeft);
-
-                        var twoPointsRight = new createjs.Graphics();
-                        twoPointsRight.setStrokeStyle(2).beginFill('rgba(0,0,0,0.1)').beginStroke("rgba(0,0,0,0)").mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder).
-                                lt(field.width, field.height - field.treyFromBorder).
-                                arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
-                        var twoPointsRightShape = new createjs.Shape(twoPointsRight);
-
-                        stage.addChild(rectangleShape);
-                        stage.addChild(twoPointsLeftShape);
-                        stage.addChild(twoPointsRightShape);
-                        stage.addChild(rect);
-                        stage.update();
-                    }
+                    this.stage.addChild(rectangleShape);
+                    this.stage.addChild(twoPointsLeftShape);
+                    this.stage.addChild(twoPointsRightShape);
+                    this.stage.addChild(rect);
+                    this.stage.update();
 
 
-
-                    if (draw !== "draw") {
-                        rectangleShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                drawHit(e)
-                            }
-                            else {
-                                drawMiss(e)
-                            }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": false
-                            });
-                            ironAjax.generateRequest();
+                    rectangleShape.on("click", function (e) {
+                        if (!(thisObj.editable)) {
+                        var success = (thisObj.hit == "hit")
+                        if (success) {
+                            getScore.generateRequest()
+                            thisObj.updateScore(3)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        else {
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": false
                         });
-
-                        twoPointsLeftShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                drawHit(e)
-                            }
-                            else {
-                                drawMiss(e)
-                            }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": true
-                            });
-                            ironAjax.generateRequest();
-
+                        ironAjax.generateRequest();
+                        updatePlayers.body = JSON.stringify({
+                            "id" : thisObj.selected,
+                            "team" : thisObj.team,
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": false
                         });
-                        twoPointsRightShape.on("click", function (e) {
-                            var success = (playerHit.innerHTML == "hit")
-                            if (success) {
-                                drawHit(e)
-                            }
-                            else {
-                                drawMiss(e)
-                            }
-                            ironAjax.body = JSON.stringify({
-                                "pos_x": String(e.stageX / field.width),
-                                "pos_y": String(e.stageY / field.height),
-                                "success": success,
-                                "two_points": true
-                            });
-                            ironAjax.generateRequest();
+                        updatePlayers.generateRequest();
+                    }});
+
+                    twoPointsLeftShape.on("click", function (e) {
+                        if (!(thisObj.editable)) {
+                            var success = (thisObj.hit == "hit")
+                        if (success) {
+                            getScore.generateRequest()
+                            thisObj.updateScore(2)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        else {
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": true
                         });
-                    }
+                        ironAjax.generateRequest();
+
+                    }});
+                    twoPointsRightShape.on("click", function (e) {
+                        if (!(thisObj.editable)) {
+                            var success = (thisObj.hit == "hit")
+                        if (success) {
+                            getScore.generateRequest()
+                            thisObj.updateScore(2)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        else {
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
+                        }
+                        ironAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": true
+                        });
+                        ironAjax.generateRequest();
+                    }});
                 }
 
 
             })
             ;
-        })();
+        })
+        ();
 
-        function drawHitAndMiss(success,x,y) {
-            var field = measures()
+        function drawHitAndMiss(success, x, y, stage, player, shotsObj) {
+                var field = measures()
             if (success != undefined && x != undefined && y != undefined) {
-                x = Number(x) * field.width
-                y = Number(y) * field.height
+                x = Number(x) * field.width;
+                y = Number(y) * field.height;
                 if (success) {
                     var missGraphics = new createjs.Graphics();
                     missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
                     var missShape = new createjs.Shape(missGraphics)
-                    window.stage.addChild(missShape)
-                    window.stage.update()
-                    if (window.player != "" && window.shotsObj[player] == undefined) {
-                        window.shotsObj[player] = []
+                    stage.addChild(missShape);
+                    stage.update();
+                    if (player != "" && shotsObj[player] == undefined) {
+                        shotsObj[player] = []
                     }
-                    window.shotsObj[window.player].push(missShape)
+                    shotsObj[player].push(missShape)
                 }
                 else {
                     var hitGraphics = new createjs.Graphics();
                     hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                     var hitShape = new createjs.Shape(hitGraphics)
-                    window.stage.addChild(hitShape)
-                    window.stage.update()
-                    if (window.player != "" && window.shotsObj[player] == undefined) {
-                        window.shotsObj[player] = []
+                    stage.addChild(hitShape)
+                    stage.update();
+                    if (player != "" && shotsObj[player] == undefined) {
+                        shotsObj[player] = []
                     }
-                    window.shotsObj[window.player].push(hitShape)
-
+                    shotsObj[player].push(hitShape)
                 }
             }
         }
 
-        function drawMiss(e) {
-            var x = e.stageX;
-            var y = e.stageY;
-            var hitGraphics = new createjs.Graphics();
-            hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
-            var hitShape = new createjs.Shape(hitGraphics)
-            if (window.player != "" && window.shotsObj[player] == undefined) {
-                window.shotsObj[player] = []
-            }
-            window.shotsObj[window.player].push(hitShape)
-            stage.addChild(hitShape)
-            stage.update()
+
+        function drawMiss(e, stage, player, shotsObj) {
+                var x = e.stageX;
+                var y = e.stageY;
+                var hitGraphics = new createjs.Graphics();
+                hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
+                var hitShape = new createjs.Shape(hitGraphics)
+                if (player != "" && shotsObj[player] == undefined) {
+                    shotsObj[player] = []
+                }
+                shotsObj[player].push(hitShape)
+                stage.addChild(hitShape)
+                stage.update()
+
         }
 
-        function drawHit(e) {
-            var x = e.stageX;
-            var y = e.stageY;
-            var missGraphics = new createjs.Graphics();
-            missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
-            var missShape = new createjs.Shape(missGraphics)
-            if (window.player != "" && window.shotsObj[player] == undefined) {
-                window.shotsObj[player] = []
-            }
-            window.shotsObj[window.player].push(missShape)
-            stage.addChild(missShape)
-            stage.update()
+        function drawHit(e, stage, player, shotsObj) {
+                var x = e.stageX;
+                var y = e.stageY;
+                var missGraphics = new createjs.Graphics();
+                missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
+                var missShape = new createjs.Shape(missGraphics);
+                if (player != "" && shotsObj[player] == undefined) {
+                    shotsObj[player] = []
+                }
+                shotsObj[player].push(missShape)
+                stage.addChild(missShape)
+                stage.update()
+
         }
 
         function measures() {
@@ -299,6 +434,8 @@
             };
             return field;
         }
+
     </script>
+
 
 </dom-module>

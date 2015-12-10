@@ -274,7 +274,7 @@
                     href: String,
                     value: String,
                     game: Object,
-                    selected: {type: String, notify: true, observer: "changedPlayer"},
+                    selected: {type: String, notify: true},
                     editable: {
                         type: Boolean,
                         default: false,
@@ -286,9 +286,8 @@
                         reflectToAttribute: true
                     }
                 },
-
-                changedPlayer: function () {
-                    this.$.selectPlayer.innerHTML
+                attached: function() {
+                  window.fouls = this.$.getFouls.innerHTML
                 },
 
                 _addAssist: function (evt) {
@@ -297,6 +296,7 @@
                     this.$.setField.body = JSON.stringify({
                         "assists": newValue
                     });
+
                     this.$.setField.generateRequest();
                 },
 
@@ -309,6 +309,7 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("change-secondary");
                 },
                 _addSuccesfulPasses: function (evt) {
                     var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) + 1;
@@ -433,6 +434,7 @@
                     this.$.setField.body = JSON.stringify({
                         "fouls": newValue
                     });
+
                     this.$.setField.generateRequest();
                 },
 
@@ -443,8 +445,10 @@
                         this.$.setField.body = JSON.stringify({
                             "fouls": newValue
                         });
+
                         this.$.setField.generateRequest();
                     }
+
                 },
                 _addTechnicalFouls: function (evt) {
                     var newValue = parseInt(this.$.getTechnicalFouls.innerHTML) + 1;
@@ -452,6 +456,7 @@
                     this.$.setField.body = JSON.stringify({
                         "technicalFouls": newValue
                     });
+
                     this.$.setField.generateRequest();
                 },
 
@@ -464,6 +469,8 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("change-secondary");
+
                 },
                 _addUnsportsmanshipFouls: function (evt) {
                     var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) + 1;
@@ -471,6 +478,7 @@
                     this.$.setField.body = JSON.stringify({
                         "unsportsmanshipFouls": newValue
                     });
+
                     this.$.setField.generateRequest();
                 },
 
@@ -481,13 +489,26 @@
                         this.$.setField.body = JSON.stringify({
                             "unsportsmanshipFouls": newValue
                         });
+
                         this.$.setField.generateRequest();
                     }
                 },
             });
-
-
         })();
+
+        function updateFouls(data) {
+            console.log(data)
+        }
+        function updateFreeShots(data) {
+            console.log(data)
+        }
+        function updateAssists(data) {
+            console.log(data)
+        }
+        function updatePasses(data) {
+            console.log(data)
+        }
+        ;
     </script>
 
 </dom-module>

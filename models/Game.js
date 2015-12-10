@@ -12,7 +12,6 @@
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 var PlayerSchema = require('./Player');
-var tempPlayerSchema = require('./tempPlayer')
 
 
 /** @constructor
@@ -24,6 +23,8 @@ var GameSchema = new mongoose.Schema(
 	players: {type: [PlayerSchema], default: []},
     name: {type: String, default: "New Game"},
 	date: { type: Date, default: Date.now},
+	team1score : { type: Number, default : 0},
+    team2score : { type: Number, default : 0},
 	result : { type: Boolean, default : false},
     started: {type: String, default: "0"},
     finished: {type: String, default: "0"},
@@ -31,9 +32,7 @@ var GameSchema = new mongoose.Schema(
     players2: {type: [PlayerSchema], default: []},
     team1: {type: String, default:''},
     team2: {type: String, default:''}
-}
-
-);
+});
 
 
 //register model

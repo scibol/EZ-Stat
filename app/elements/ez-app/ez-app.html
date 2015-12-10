@@ -301,7 +301,7 @@
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
 
-                                    <paper-item>{{game.team1}}
+                                    <paper-item on-click="_setSelectedTeam">{{game.team1}}
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
@@ -335,7 +335,7 @@
                                         </div>
                                     </iron-pages>
 
-                                    <ez-canvas id="canv" selected="" hit="boh">
+                                    <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}" editable>
                                     </ez-canvas>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                         <div finished="0">
@@ -349,7 +349,6 @@
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
-
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
                                             <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
                                             </paper-item>
@@ -405,10 +404,6 @@
                         notify: true
                     },
 
-                    userid: {
-                        type: String,
-                        value: '563fd9661d1e084ac3e1b6b2'
-                    }
                 },
 
                 _onFocus: function() {
@@ -463,15 +458,21 @@
                     this.$.canv.hit = "hit";
                 },
 
+                _setSelectedTeam: function() {
+                    this.$.canv.selected = "team1"
+                },
+
                 _setSelected1: function (event, detail) {
                     this.$.canv.selected = this.$.team1.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
+                    this.$.canv.team = "team1"
                     socket.emit("change", this.$.canv.selected);
                 },
 
                 _setSelected2: function (event, detail) {
                     this.$.canv.selected = this.$.team2.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
+                    this.$.canv.team = "team2"
                     socket.emit("change", this.$.canv.selected);
                 },
 
@@ -480,6 +481,7 @@
                         this.$.btnHit.disabled = false;
                         this.$.btnMiss.disabled = false;
                         this.$.buttonCounter.disabled = false;
+                        this.$.canv.editable = false;
                     }
                 },
 
@@ -500,6 +502,8 @@
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
                     this.$.buttonCounter.disabled = true;
+                    this.$.canv.editable = true;
+                    socket.emit("state.changed", this.$.canv.selected);
                 },
 
                 _setFail: function (event, detail) {
@@ -531,10 +535,6 @@
             });
         })
         ();
-
-        function test() {
-
-        }
     </script>
 
 </dom-module>
