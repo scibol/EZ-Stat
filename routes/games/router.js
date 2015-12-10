@@ -57,7 +57,9 @@ router.put('/:gameid', function (req, res, next) {
         if (game) {
             if (data.firstName) {
                 Player.findOne(data, fieldsFilter, function (err, player) {
+                    //var p = new Player();
                     game.players.push(player);
+
                     if (player.team === game.team1) {
                         game.players1.push(player)
                     }

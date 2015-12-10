@@ -7,8 +7,9 @@ socket.on("change-player", function(data) {
     //console.log(socket);
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
+    var canvas = ezApp.$.canv;
     stats.$.getPlayer.generateRequest();
-    drawHitAndMiss(data.success, data.pos_x, data.pos_y)
+    drawHitAndMiss(data.success, data.pos_x, data.pos_y, canvas.stage, canvas.selected, canvas.shotsObj)
 });
 
 socket.on("update-score", function(url) {

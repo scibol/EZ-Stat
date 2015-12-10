@@ -31,6 +31,14 @@
                 timeout="1000">
         </iron-ajax>
 
+        <iron-ajax
+                id="updateTeamPlayer"
+                url="/games/[[gameid]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                timeout="1000">
+        </iron-ajax>
 
         <iron-ajax
                 id="putScore"
@@ -102,6 +110,14 @@
                         type: Object,
                         notify: true
                     },
+                    stage: {
+                        type: Object,
+                        notify: true
+                    },
+                    shotsObj: {
+                        type: Object,
+                        notify: true
+                    },
                     editable: {
                         type: Boolean,
                         default: true,
@@ -113,33 +129,42 @@
                     if (this.$.getShots.lastResponse != undefined) {
                         var response = this.$.getShots.lastResponse.shots;
                         for (var shot in response) {
-                            drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y);
+                            drawHitAndMiss(response[shot].success, response[shot].pos_x, response[shot].pos_y, this.stage, this.selected, this.shotsObj);
                         }
                     }
                 },
 
 
                 changedPlayer: function () {
-                    window.player = this.selected;
                     this.resetShots()
+                    if (this.selected == "team1"){
+                        var team1Players = this.$.getTeamScore.lastResponse.players1;
+                        for (var player in team1Players) {
+                            console.log(team1Players[player])
+                            for (var shot in team1Players[player]) {
+//                                console.log(team1Players[player][shot])
+                                drawHitAndMiss(team1Players[player][shot].success, team1Players[player][shot].pos_x, team1Players[player][shot].pos_y, this.stage, this.selected, this.shotsObj);
+                            }
+                        }
+                    }
                 },
 
 
                 resetShots: function () {
-                    if (window.shotsObj == undefined) {
-                        window.shotsObj = {}
+                    if (this.shotsObj == undefined) {
+                        this.shotsObj = {}
                     }
-                    for (var players in window.shotsObj) {
-                        if (players != window.player) {
-                            for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = false;
-                                window.stage.update()
+                    for (var players in this.shotsObj) {
+                        if (players != this.selected) {
+                            for (var shot in this.shotsObj[players]) {
+                                this.shotsObj[players][shot].visible = false;
+                                this.stage.update()
                             }
                         }
                         else {
-                            for (var shot in window.shotsObj[players]) {
-                                window.shotsObj[players][shot].visible = true;
-                                window.stage.update()
+                            for (var shot in this.shotsObj[players]) {
+                                this.shotsObj[players][shot].visible = true;
+                                this.stage.update()
                             }
                         }
                     }
@@ -179,10 +204,10 @@
                     var thisObj = this;
                     var getScore = this.$.getTeamScore;
                     var ironAjax = this.$.shot;
+                    var teamPlayerAjax = this.$.updateTeamPlayer;
                     var canvas = this.$.myCanvas;
                     var field = measures();
-                    if (window.stage == undefined) {
-                        window.stage = new createjs.Stage(canvas);
+                    this.stage = new createjs.Stage(canvas);
 
                     var rect = new createjs.Shape();
 
@@ -222,24 +247,23 @@
                     arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
                     var twoPointsRightShape = new createjs.Shape(twoPointsRight);
 
-                    stage.addChild(rectangleShape);
-                    stage.addChild(twoPointsLeftShape);
-                    stage.addChild(twoPointsRightShape);
-                    stage.addChild(rect);
-                    stage.update();
+                    this.stage.addChild(rectangleShape);
+                    this.stage.addChild(twoPointsLeftShape);
+                    this.stage.addChild(twoPointsRightShape);
+                    this.stage.addChild(rect);
+                    this.stage.update();
 
 
                     rectangleShape.on("click", function (e) {
-                        console.log(thisObj.hit)
                         if (!(thisObj.editable)) {
                         var success = (thisObj.hit == "hit")
                         if (success) {
                             getScore.generateRequest()
                             thisObj.updateScore(3)
-                            drawHit(e, thisObj)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         else {
-                            drawMiss(e, thisObj)
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         ironAjax.body = JSON.stringify({
                             "pos_x": String(e.stageX / field.width),
@@ -248,6 +272,13 @@
                             "two_points": false
                         });
                         ironAjax.generateRequest();
+                        teamPlayerAjax.body = JSON.stringify({
+                            "pos_x": String(e.stageX / field.width),
+                            "pos_y": String(e.stageY / field.height),
+                            "success": success,
+                            "two_points": false
+                        });
+                            teamPlayerAjax.generateRequest();
                     }})
                     ;
 
@@ -257,10 +288,10 @@
                         if (success) {
                             getScore.generateRequest()
                             thisObj.updateScore(2)
-                            drawHit(e, thisObj)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         else {
-                            drawMiss(e, thisObj)
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         ironAjax.body = JSON.stringify({
                             "pos_x": String(e.stageX / field.width),
@@ -277,10 +308,10 @@
                         if (success) {
                             getScore.generateRequest()
                             thisObj.updateScore(2)
-                            drawHit(e, thisObj)
+                            drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         else {
-                            drawMiss(e, thisObj)
+                            drawMiss(e, this.stage, thisObj.selected, thisObj.shotsObj)
                         }
                         ironAjax.body = JSON.stringify({
                             "pos_x": String(e.stageX / field.width),
@@ -298,63 +329,65 @@
         })
         ();
 
-        function drawHitAndMiss(success, x, y) {
+        function drawHitAndMiss(success, x, y, stage, player, shotsObj) {
             var field = measures()
             if (success != undefined && x != undefined && y != undefined) {
-                x = Number(x) * field.width
-                y = Number(y) * field.height
+                x = Number(x) * field.width;
+                y = Number(y) * field.height;
                 if (success) {
                     var missGraphics = new createjs.Graphics();
                     missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
                     var missShape = new createjs.Shape(missGraphics)
-                    window.stage.addChild(missShape)
-                    window.stage.update()
-                    if (window.player != "" && window.shotsObj[player] == undefined) {
-                        window.shotsObj[player] = []
+                    stage.addChild(missShape);
+                    stage.update();
+                    if (player != "" && shotsObj[player] == undefined) {
+                        shotsObj[player] = []
                     }
-                    window.shotsObj[window.player].push(missShape)
+                    shotsObj[player].push(missShape)
                 }
                 else {
                     var hitGraphics = new createjs.Graphics();
                     hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                     var hitShape = new createjs.Shape(hitGraphics)
-                    window.stage.addChild(hitShape)
-                    window.stage.update()
-                    if (window.player != "" && window.shotsObj[player] == undefined) {
-                        window.shotsObj[player] = []
+                    stage.addChild(hitShape)
+                    stage.update();
+                    if (player != "" && shotsObj[player] == undefined) {
+                        shotsObj[player] = []
                     }
-                    window.shotsObj[window.player].push(hitShape)
+                    shotsObj[player].push(hitShape)
 
                 }
             }
         }
 
 
-        function drawMiss(e, thisObj) {
+        function drawMiss(e, stage, player, shotsObj) {
                 var x = e.stageX;
                 var y = e.stageY;
                 var hitGraphics = new createjs.Graphics();
                 hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                 var hitShape = new createjs.Shape(hitGraphics)
-                if (window.player != "" && window.shotsObj[player] == undefined) {
-                    window.shotsObj[player] = []
+                if (player != "" && shotsObj[player] == undefined) {
+                    shotsObj[player] = []
                 }
-                window.shotsObj[window.player].push(hitShape)
+                shotsObj[player].push(hitShape)
                 stage.addChild(hitShape)
                 stage.update()
 
         }
 
-        function drawHit(e, thisObj) {
+        function drawHit(e, stage, player, shotsObj) {
                 var x = e.stageX;
                 var y = e.stageY;
                 var missGraphics = new createjs.Graphics();
                 missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
-                var missShape = new createjs.Shape(missGraphics)
-                if (window.player != "" && window.shotsObj[player] == undefined) {
-                    window.shotsObj[player] = []
+                var missShape = new createjs.Shape(missGraphics);
+                console.log(player)
+                console.log(shotsObj)
+                if (player != "" && shotsObj[player] == undefined) {
+                    shotsObj[player] = []
                 }
-                window.shotsObj[window.player].push(missShape)
+                shotsObj[player].push(missShape)
                 stage.addChild(missShape)
                 stage.update()
 
