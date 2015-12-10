@@ -1,0 +1,239 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<!-- build:remove -->
+<link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/iron-icon/iron-icon.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+<!-- /build -->
+
+<dom-module id="ez-team2">
+    <template>
+
+        <!-- build:remove -->
+
+        <style>
+            :host {
+                display: block;
+                /*position:relative;*/
+                -webkit-transition: background 0.3s, box-shadow 0.3s;
+                -moz-transition: background 0.3s, box-shadow 0.3s;
+                transition: background 0.3s, box-shadow 0.3s;
+            --paper-input-container-input:{
+                 color:inherit;
+             };
+            }
+
+            :host(:hover){
+                background: rgba(0,0,0,0.2);
+                box-shadow: inset 0 -1px rgba(0,0,0,0);
+            };
+
+            #textVal{
+                padding-left: 1em;
+                padding-top: 1.15em;
+                display: inline-block;
+                outline: none;
+                text-decoration: none;
+                /*box-shadow: inset 0 -1px rgba(0,0,0,0.2);*/
+                /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
+                font-size: 17px;
+                color: inherit;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            iron-icon{
+                padding: 0 20px;
+            }
+
+            .teamDiv {
+                /*display: inline-block;*/
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            #test, #saveTeam {
+                display: inline-block;
+            }
+
+            #saveTeam[disabled] {
+                color: rgba(255,255,255,0.1);
+            }
+
+
+            .editBtn{
+                visibility: visible;
+                /*position:absolute;*/
+                /*top: 14px;*/
+                /*right: 10px;*/
+                z-index:10;
+                /*white-space: initial;*/
+                line-height: 1;
+                color: rgba(255,255,255,0.4);
+            }
+
+            .editBtn:hover{
+                color:inherit;
+            }
+
+            :host(:hover) .editBtn{
+                visibility: visible;
+            }
+
+            #editInput{
+                display:none;
+                line-height:1;
+                padding-left: 12px;
+            }
+        </style>
+        <iron-ajax
+                id="setGame"
+                url="/games/[[game._id]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                on-response="_makeGet"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="createPlayer"
+                url="/players"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <!--<iron-ajax-->
+                <!--id="getGame"-->
+                <!--auto-->
+                <!--url="/games/[[game._id]]"-->
+                <!--handle-as="json"-->
+                <!--last-response="{{game}}"-->
+                <!--debounce-duration="300"></iron-ajax>-->
+
+        <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus" value="{{game.team2}}"></paper-input>
+        <paper-listbox selectedItem>
+
+        <div class="teamDiv"><!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
+            </div>
+
+            <template is="dom-repeat" items="{{game.players2}}" as="player">
+                <paper-item id="{{player._id}}">{{player.firstName}}
+                    {{player.lastName}}
+                </paper-item>
+            </template>
+        </paper-listbox>
+
+        <div id="textVal">Player...</div>
+            <paper-input id="editInput" placeholder="Player..."></paper-input>
+            <template is="dom-if" if="{{editable}}">
+                <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
+            </template>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-team2',
+
+                //<!-- build:remove -->
+                listeners: {
+//                    "blur": "_onBlur"
+                },
+
+                properties: {
+                    href: String,
+                    team: String,
+                    icon: String,
+                    game: Object,
+                    editable:{
+                        type: Boolean,
+                        default: false,
+                        reflectToAttribute:true
+                    }
+                },
+
+                _onFocus: function() {
+//                    this.$.saveTeam.icon = "icons:save";
+//                    this.$.saveTeam.disabled = false;
+
+                },
+
+                _loseFocus: function() {
+//                    this.$.saveTeam.icon = "icons:create";
+//                    this.$.saveTeam.disabled = true;
+                    console.log(this.$.test.value)
+                    this.$.setGame.body = JSON.stringify({
+                        "team2": this.$.test.value
+                    });
+                    this.$.setGame.generateRequest();
+                },
+
+
+                _editTapped: function(event, detail){
+                    if(!this.editable) return;
+                    if (event.target.icon == "icons:add") {
+                        this.$.textVal.style.display = "none";
+                        this.$$('#editInput').style.display = "inline-block";
+                        event.target.icon = "icons:save";
+                    }else{
+                        this._onBlur();
+                        event.target.icon = "icons:add";
+                    }
+                },
+
+                _onBlur: function(){
+                    if(!this.editable) return;
+                    this.$.textVal.style.display = "inline-block";
+                    this.$$('#editInput').style.display = "none";
+                    var first = this.$.editInput.value.split(" ")[0];
+                    var last = this.$.editInput.value.split(" ")[1];
+                    console.log(isNumber(first) && !last);
+                    if (first && last) {
+                        this.$.createPlayer.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": this.$.test.value
+                        });
+                        console.log(this.$.test)
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": this.$.test.value
+                        });
+                        this.$.createPlayer.generateRequest();
+                        this.$.setGame.generateRequest();
+                    }
+
+//                    TODO if name is number, put it as fake
+                    else if (isNumber(first) && !last) {
+                        console.log("in")
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": "",
+                            "team": this.$.test.value
+                        });
+                        this.$.setGame.generateRequest();
+                    }
+                },
+
+                _makeGet: function () {
+                    var ezApp = document.querySelector("ez-app");
+                    ezApp.$.getGame.generateRequest();
+                }
+
+            });
+            function isNumber(n) {
+                return !isNaN(parseFloat(n)) && isFinite(n);
+            }
+
+
+        })();
+    </script>
+
+</dom-module>

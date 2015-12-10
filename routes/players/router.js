@@ -22,17 +22,12 @@ router.get('/', function (req, res, next) {
 
     Player.find({}, fieldsFilter).lean().exec(function (err, players) {
         if (err) return next(err);
-        players.forEach(function (player) {
-            addLinks(player);
-        });
-        res.json(players);
     });
 });
 
 //create new player
 router.post('/', function (req, res, next) {
     var newPlayer = new Player(req.body);
-    console.log(newPlayer);
     newPlayer.save(onModelSave(res, 201, true));
 });
 
@@ -48,7 +43,6 @@ router.get('/:playerid', function (req, res, next) {
             });
             return;
         }
-        addLinks(player);
         res.json(player);
     });
 });
@@ -56,21 +50,62 @@ router.get('/:playerid', function (req, res, next) {
 //update a player
 router.put('/:playerid', function (req, res, next) {
     var data = req.body;
-    console.log("maho")
-    console.log(req.body);
     Player.findById(req.params.playerid, fieldsFilter, function (err, player) {
         if (err) return next(err);
         if (player) {
             if (data.pos_x) {
-                player.shots.push(data)
+                player.shots.push(data);
                 player.save(onModelSave(res));
             }
-            console.log()
-            if (data.assists) {
-                console.log("de")
+            if (data.assists || data.assists == 0) {
                 player.assists = data.assists;
                 player.save(onModelSave(res));
             }
+            if (data.passes || data.passes == 0) {
+                player.passes = data.passes;
+                player.save(onModelSave(res));
+            }
+            if (data.freeShots || data.freeShots == 0) {
+                player.freeShots = data.freeShots;
+                player.save(onModelSave(res));
+            }
+            if (data.succesfulPasses || data.succesfulPasses == 0) {
+                player.succesfulPasses = data.succesfulPasses;
+                player.save(onModelSave(res));
+            }
+            if (data.failedPasses || data.failedPasses == 0) {
+                player.failedPasses = data.failedPasses;
+                player.save(onModelSave(res));
+            }
+            if (data.lostBalls || data.lostBalls == 0) {
+                player.lostBalls = data.lostBalls;
+                player.save(onModelSave(res));
+            }
+            if (data.recoveredBalls || data.recoveredBalls == 0) {
+                player.recoveredBalls = data.recoveredBalls;
+                player.save(onModelSave(res));
+            }
+            if (data.freeshotsScored || data.freeshotsScored == 0) {
+                player.freeshotsScored = data.freeshotsScored;
+                player.save(onModelSave(res));
+            }
+            if (data.freeshotsMissed || data.freeshotsMissed == 0) {
+                player.freeshotsMissed = data.freeshotsMissed;
+                player.save(onModelSave(res));
+            }
+            if (data.technicalFouls || data.technicalFouls == 0) {
+                player.technicalFouls = data.technicalFouls;
+                player.save(onModelSave(res));
+            }
+            if (data.unsportsmanshipFouls || data.unsportsmanshipFouls == 0) {
+                player.unsportsmanshipFouls = data.unsportsmanshipFouls;
+                player.save(onModelSave(res));
+            }
+            if (data.fouls || data.fouls == 0) {
+                player.fouls = data.fouls;
+                player.save(onModelSave(res));
+            }
+
             //player.firstName =  player.firstName || data.firstName;
             //player.secondName = player.secondName || data.secondName;
             //player.number = player.number || data.number;
@@ -83,7 +118,7 @@ router.put('/:playerid', function (req, res, next) {
             newPlayer._id = ObjectId(req.params.playerid);
             newPlayer.save(onModelSave(res, 201, true));
         }
-        pubsub.emit("player.changed", data)
+        pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
     });
 });
 
@@ -129,25 +164,11 @@ function onModelSave(res, status, sendItAsResponse) {
             var obj = saved.toObject();
             delete obj.password;
             delete obj.__v;
-            addLinks(obj);
             return res.status(statusCode).json(obj);
         } else {
             return res.status(statusCode).end();
         }
     }
-}
-
-function addLinks(player) {
-    player.links = [
-        // {
-        //   "rel" : "self",
-        //   "href" : config.url + "/players/" + player._id
-        // },
-        // {
-        //   "rel" : "artist",
-        //   "href" : config.url + "/artists/" + player.artist
-        // }
-    ];
 }
 
 /** router for /players */

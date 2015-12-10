@@ -13,9 +13,6 @@
     <script>
         window.Polymer = window.Polymer || {};
         window.Polymer.dom = 'shadow';
-        function bho() {
-            console.log("asdasd")
-        }
     </script>
 
     <!-- CSS -->
@@ -34,6 +31,13 @@
 
 </head>
 <body>
-<ez-app></ez-app>
+<ez-app id="ez" style="display:none;"></ez-app>
 </body>
+<script>
+    window.addEventListener('WebComponentsReady', function(e) {
+        console.log("triggered")
+        var ezApp = document.querySelector("#ez");
+        ezApp.style.display = "block";
+    })
+</script>
 </html>

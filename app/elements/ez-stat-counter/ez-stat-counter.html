@@ -33,7 +33,13 @@
 
             .button {
                 transition: all 0.2s;
+                min-width: 0;
+                /*width:  1em;*/
+                margin: 0;
+            }
 
+            .button[disabled] {
+                background-color: rgba(0, 0, 0, 0);
             }
 
             .button:hover {
@@ -42,7 +48,13 @@
 
             .inline-container {
                 display: flex;
+                justify-content: space-between;
+                width: 50vw;
             }
+
+            /*.stats-container {*/
+            /*display:*/
+            /*}*/
 
 
         </style>
@@ -65,7 +77,7 @@
         <paper-item>
 
             <iron-ajax
-                    id="setAssist"
+                    id="setField"
                     url="/players/[[selected]]"
                     handle-as="json"
                     content-type="application/json"
@@ -75,17 +87,175 @@
 
             <p id="selectPlayer" style="display: none">[[selected]]</p>
             <!--<p id="selectPlayer">[[selected]]</p>-->
-            <paper-item-body two-line>
-                <div class="inline-container">
-                    <paper-button id="minus" class="button" on-click="_subtract">-</paper-button>
-                    <div class="text">
-                        <div>{{player.assists}}</div>
-                        <div class="secondary">Assists</div>
+            <div class="stats-container">
+                <paper-item-body>
+                    <div class="inline-container">
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractAssist">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getAssists">{{player.assists}}</div>
+                            <div class="secondary">Assists</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addAssist">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractSuccesfulPasses">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getSuccesfulPasses">{{player.succesfulPasses}}</div>
+                            <div class="secondary">Succesful Passes</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addSuccesfulPasses">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractFailedPasses">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getFailedPasses">{{player.failedPasses}}</div>
+                            <div class="secondary">Failed Passes</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFailedPasses">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractLostBalls">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getLostBalls">{{player.lostBalls}}</div>
+                            <div class="secondary">Lost Balls</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addLostBalls">+
+                            </paper-button>
+                        </template>
                     </div>
-                    <paper-button id="plus" class="button" on-click="_add">+</paper-button>
-                </div>
-            </paper-item-body>
+                </paper-item-body>
+
+                <paper-item-body>
+                    <div class="inline-container">
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractRecoveredBalls">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getRecoveredBalls">{{player.recoveredBalls}}</div>
+                            <div class="secondary">Recovered Balls</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addRecoveredBalls">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractFreeshotsScored">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getFreeshotsScored">{{player.freeshotsScored}}</div>
+                            <div class="secondary">Freeshots Scored</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addFreeshotsScored">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractFreeshotsMissed">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getFreeshotsMissed">{{player.freeshotsMissed}}</div>
+                            <div class="secondary">Freeshots Missed</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addFreeshotsMissed">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractFouls">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getFouls">{{player.fouls}}</div>
+                            <div class="secondary">Fouls</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFouls">+
+                            </paper-button>
+                        </template>
+                    </div>
+                </paper-item-body>
+
+                <paper-item-body>
+                    <div class="inline-container">
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractTechnicalFouls">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getTechnicalFouls">{{player.technicalFouls}}</div>
+                            <div class="secondary">Technical Fouls</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addTechnicalFouls">+
+                            </paper-button>
+                        </template>
+
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="minus" class="button"
+                                          on-click="_subtractUnsportsmanshipFouls">
+                                -
+                            </paper-button>
+                        </template>
+                        <div class="text">
+                            <div id="getUnsportsmanshipFouls">{{player.unsportsmanshipFouls}}</div>
+                            <div class="secondary">Unsportsmanship Fouls</div>
+                        </div>
+                        <template is="dom-if" if="{{editable}}">
+                            <paper-button disabled="{{disabled}}" id="plus" class="button"
+                                          on-click="_addUnsportsmanshipFouls">+
+                            </paper-button>
+                        </template>
+                    </div>
+                </paper-item-body>
+            </div>
         </paper-item>
+        </div>
     </template>
 
     <script>
@@ -97,48 +267,223 @@
 
                 //
                 <!-- build:remove -->
-                listeners: {
-                },
+                listeners: {},
 
                 properties: {
+                    name: String,
                     href: String,
                     value: String,
                     game: Object,
-                    selected: {type : String, notify : true, observer : "changedPlayer"},
+                    selected: {type: String, notify: true, observer: "changedPlayer"},
                     editable: {
                         type: Boolean,
                         default: false,
                         reflectToAttribute: true
+                    },
+                    disabled: {
+                        type: Boolean,
+                        default: true,
+                        reflectToAttribute: true
                     }
                 },
 
-                changedPlayer : function () {
+                changedPlayer: function () {
                     this.$.selectPlayer.innerHTML
                 },
 
-                _add: function(evt) {
-//                    this.$.selectPlayer.innerHTML;
-                    console.log(this.value);
-                    var newValue = parseInt(this.value) + 1;
-                    this.value = newValue;
-                    console.log(newValue);
-                    this.$.setAssist.body = JSON.stringify({
+                _addAssist: function (evt) {
+                    var newValue = parseInt(this.$.getAssists.innerHTML) + 1;
+                    this.$.getAssists.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
                         "assists": newValue
                     });
-                    this.$.setAssist.generateRequest();
+                    this.$.setField.generateRequest();
                 },
 
-                _subtract: function(evt) {
-//                    this.$.selectPlayer.innerHTML;
-                    var newValue = parseInt(this.value) - 1;
+                _subtractAssist: function (evt) {
+                    var newValue = parseInt(this.$.getAssists.innerHTML) - 1;
                     if (newValue >= 0) {
-                        this.value = newValue;
-                        this.$.setAssist.body = JSON.stringify({
+                        this.$.getAssists.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
                             "assists": newValue
                         });
-                        this.$.setAssist.generateRequest();
+                        this.$.setField.generateRequest();
                     }
-                }
+                },
+                _addSuccesfulPasses: function (evt) {
+                    var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) + 1;
+                    this.$.getSuccesfulPasses.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "succesfulPasses": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractSuccesfulPasses: function (evt) {
+                    var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getSuccesfulPasses.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "succesfulPasses": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+                _addFailedPasses: function (evt) {
+                    var newValue = parseInt(this.$.getFailedPasses.innerHTML) + 1;
+                    this.$.getFailedPasses.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "failedPasses": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractFailedPasses: function (evt) {
+                    var newValue = parseInt(this.$.getFailedPasses.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFailedPasses.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "failedPasses": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+                _addLostBalls: function (evt) {
+                    var newValue = parseInt(this.$.getLostBalls.innerHTML) + 1;
+                    this.$.getLostBalls.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "lostBalls": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractLostBalls: function (evt) {
+                    var newValue = parseInt(this.$.getLostBalls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getLostBalls.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "lostBalls": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+
+                _addRecoveredBalls: function (evt) {
+                    var newValue = parseInt(this.$.getRecoveredBalls.innerHTML) + 1;
+                    this.$.getRecoveredBalls.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "recoveredBalls": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractRecoveredBalls: function (evt) {
+                    var newValue = parseInt(this.$.getRecoveredBalls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getRecoveredBalls.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "recoveredBalls": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+
+                _addFreeshotsScored: function (evt) {
+                    var newValue = parseInt(this.$.getFreeshotsScored.innerHTML) + 1;
+                    this.$.getFreeshotsScored.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "freeshotsScored": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractFreeshotsScored: function (evt) {
+                    var newValue = parseInt(this.$.getFreeshotsScored.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFreeshotsScored.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "freeshotsScored": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+
+                _addFreeshotsMissed: function (evt) {
+                    var newValue = parseInt(this.$.getFreeshotsMissed.innerHTML) + 1;
+                    this.$.getFreeshotsMissed.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "freeshotsMissed": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractFreeshotsMissed: function (evt) {
+                    var newValue = parseInt(this.$.getFreeshotsMissed.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFreeshotsMissed.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "freeshotsMissed": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+                _addFouls: function (evt) {
+                    var newValue = parseInt(this.$.getFouls.innerHTML) + 1;
+                    this.$.getFouls.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "fouls": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractFouls: function (evt) {
+                    var newValue = parseInt(this.$.getFouls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getFouls.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "fouls": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+                _addTechnicalFouls: function (evt) {
+                    var newValue = parseInt(this.$.getTechnicalFouls.innerHTML) + 1;
+                    this.$.getTechnicalFouls.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "technicalFouls": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractTechnicalFouls: function (evt) {
+                    var newValue = parseInt(this.$.getTechnicalFouls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getTechnicalFouls.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "technicalFouls": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
+                _addUnsportsmanshipFouls: function (evt) {
+                    var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) + 1;
+                    this.$.getUnsportsmanshipFouls.innerHTML = newValue;
+                    this.$.setField.body = JSON.stringify({
+                        "unsportsmanshipFouls": newValue
+                    });
+                    this.$.setField.generateRequest();
+                },
+
+                _subtractUnsportsmanshipFouls: function (evt) {
+                    var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) - 1;
+                    if (newValue >= 0) {
+                        this.$.getUnsportsmanshipFouls.innerHTML = newValue;
+                        this.$.setField.body = JSON.stringify({
+                            "unsportsmanshipFouls": newValue
+                        });
+                        this.$.setField.generateRequest();
+                    }
+                },
             });
 
 
