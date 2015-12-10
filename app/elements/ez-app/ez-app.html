@@ -503,6 +503,7 @@
                     this.$.getGame.generateRequest();
                     this.$.buttonCounter.disabled = true;
                     this.$.canv.editable = true;
+                    socket.emit("state.changed", this.$.canv.selected);
                 },
 
                 _setFail: function (event, detail) {

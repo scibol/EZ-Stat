@@ -32,6 +32,14 @@
         </iron-ajax>
 
         <iron-ajax
+                id="getAllPlayers"
+                auto
+                url="/players"
+                handle-as="json"
+                last-response="{{players}}">
+        </iron-ajax>
+
+        <iron-ajax
                 id="updateTeamPlayer"
                 url="/games/[[gameid]]"
                 handle-as="json"
@@ -106,6 +114,15 @@
                         notify: true,
                         default: 0
                     },
+                    team1name: {
+                        type: String,
+                        notify: true
+                    },
+                    team2name:{
+                        type: String,
+                        notify: true
+                    },
+
                     score: {
                         type: Object,
                         notify: true
@@ -136,17 +153,27 @@
 
 
                 changedPlayer: function () {
-                    this.resetShots()
-                    if (this.selected == "team1"){
-                        var team1Players = this.$.getTeamScore.lastResponse.players1;
-                        for (var player in team1Players) {
-                            console.log(team1Players[player])
-                            for (var shot in team1Players[player]) {
-//                                console.log(team1Players[player][shot])
-                                drawHitAndMiss(team1Players[player][shot].success, team1Players[player][shot].pos_x, team1Players[player][shot].pos_y, this.stage, this.selected, this.shotsObj);
-                            }
-                        }
+
+                this.resetShots()
+                this.$.getAllPlayers.generateRequest();
+                var players = this.$.getAllPlayers.lastResponse;
+                var boh = this.$.getTeamScore.lastResponse;
+                    if (boh != undefined) {
+                        console.log(boh.players1)
                     }
+                var shots = this.$.getShots.lastResponse
+                console.log(boh)
+
+//                    if (this.selected == "team1"){
+//                        var team1Players = this.$.getTeamScore.lastResponse.players1;
+//                        for (var player in team1Players) {
+//                            console.log(team1Players[player])
+//                            for (var shot in team1Players[player]) {
+////                                console.log(team1Players[player][shot])
+//                                drawHitAndMiss(team1Players[player][shot].success, team1Players[player][shot].pos_x, team1Players[player][shot].pos_y, this.stage, this.selected, this.shotsObj);
+//                            }
+//                        }
+//                    }
                 },
 
 
@@ -200,15 +227,15 @@
                     }
                 },
 
+
                 attached: function () {
                     var thisObj = this;
                     var getScore = this.$.getTeamScore;
+                    var updatePlayers = this.$.putScore
                     var ironAjax = this.$.shot;
-                    var teamPlayerAjax = this.$.updateTeamPlayer;
                     var canvas = this.$.myCanvas;
                     var field = measures();
                     this.stage = new createjs.Stage(canvas);
-
                     var rect = new createjs.Shape();
 
                     rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
@@ -272,15 +299,16 @@
                             "two_points": false
                         });
                         ironAjax.generateRequest();
-                        teamPlayerAjax.body = JSON.stringify({
+                        updatePlayers.body = JSON.stringify({
+                            "id" : thisObj.selected,
+                            "team" : thisObj.team,
                             "pos_x": String(e.stageX / field.width),
                             "pos_y": String(e.stageY / field.height),
                             "success": success,
                             "two_points": false
                         });
-                            teamPlayerAjax.generateRequest();
-                    }})
-                    ;
+                        updatePlayers.generateRequest();
+                    }});
 
                     twoPointsLeftShape.on("click", function (e) {
                         if (!(thisObj.editable)) {
@@ -330,7 +358,7 @@
         ();
 
         function drawHitAndMiss(success, x, y, stage, player, shotsObj) {
-            var field = measures()
+                var field = measures()
             if (success != undefined && x != undefined && y != undefined) {
                 x = Number(x) * field.width;
                 y = Number(y) * field.height;
@@ -355,7 +383,6 @@
                         shotsObj[player] = []
                     }
                     shotsObj[player].push(hitShape)
-
                 }
             }
         }
@@ -382,8 +409,6 @@
                 var missGraphics = new createjs.Graphics();
                 missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
                 var missShape = new createjs.Shape(missGraphics);
-                console.log(player)
-                console.log(shotsObj)
                 if (player != "" && shotsObj[player] == undefined) {
                     shotsObj[player] = []
                 }

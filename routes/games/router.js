@@ -55,12 +55,30 @@ router.put('/:gameid', function (req, res, next) {
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
-            console.log(typeof data.firstName)
-            var test = Number(data.firstName)
-            console.log(typeof test)
-            console.log(test)
+            if (data.id) {
+                    if (data.team == "team1") {
+                        for (var gamer in game.players1) {
+                            if (game.players1[gamer]._id == data.id) {
+                                delete data.team
+                                game.players1[gamer].shots.push(data)
+                                game.save(onModelSave(res));
+                            }
+                        }
+                    }
+                    else if (data.team == "team2") {
+                        for (var gamer in game.players2) {
+                            if (game.players2[gamer]._id == data.id) {
+                                delete data._id
+                                delete data.team
+                                game.players2[gamer].shots.push(data)
+                                game.save(onModelSave(res));
+
+                            }
+                        }
+                    }
+            }
             if (data.firstName) {
-                if(data.lastName !== "") {
+                if (data.lastName !== "") {
                     Player.findOne(data, fieldsFilter, function (err, player) {
                         //var p = new Player();
                         game.players.push(player);
@@ -77,7 +95,6 @@ router.put('/:gameid', function (req, res, next) {
                 }
                 else {
                     var player = new Player(data);
-                    console.log(player)
                     game.players.push(player);
 
                     if (player.team === game.team1) {
@@ -107,11 +124,11 @@ router.put('/:gameid', function (req, res, next) {
             }
             if (data.started) {
                 game.started = data.started;
-                pubsub.emit("state.changed",{});
+                pubsub.emit("state.changed", {});
             }
             if (data.finished) {
                 game.finished = data.finished;
-                pubsub.emit("state.changed",{});
+                pubsub.emit("state.changed", {});
             }
             if (data.team1score) {
                 game.team1score = data.team1score;

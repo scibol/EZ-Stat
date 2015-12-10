@@ -19,10 +19,12 @@ router.all('/', middleware.supportedMethods('GET, POST, OPTIONS'));
 
 //list players
 router.get('/', function (req, res, next) {
-
     Player.find({}, fieldsFilter).lean().exec(function (err, players) {
         if (err) return next(err);
+        res.json(players);
+
     });
+
 });
 
 //create new player
@@ -105,12 +107,6 @@ router.put('/:playerid', function (req, res, next) {
                 player.fouls = data.fouls;
                 player.save(onModelSave(res));
             }
-
-            //player.firstName =  player.firstName || data.firstName;
-            //player.secondName = player.secondName || data.secondName;
-            //player.number = player.number || data.number;
-            //player.position = player.position || data.position;
-            //player.team = player.team || data.team;
         }
         else {
             //player does not exist create it
