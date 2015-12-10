@@ -183,8 +183,7 @@
 
 
                 _editTapped: function (event, detail) {
-                    if (!this.editable) return;
-                    if (event.target.active) {
+                    if (event.target.icon == "icons:add") {
                         this.$.textVal.style.display = "none";
                         this.$$('#editInput').style.display = "inline-block";
                         event.target.icon = "icons:save";
