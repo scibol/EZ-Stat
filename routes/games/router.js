@@ -113,6 +113,13 @@ router.put('/:gameid', function (req, res, next) {
                 game.finished = data.finished;
                 pubsub.emit("state.changed",{});
             }
+            if (data.team1score) {
+                game.team1score = data.team1score;
+            }
+            if (data.team2score) {
+                game.team2score = data.team2score;
+            }
+
             game.save(onModelSave(res));
         } else {
             //game does not exist create it
@@ -121,6 +128,7 @@ router.put('/:gameid', function (req, res, next) {
             newGame.save(onModelSave(res, 201, true));
         }
     });
+    //pubsub.emit("player.changed", {"team1score":data.team1score, "team2score" : data.team2score, "url":req.params.gameid});
 });
 
 //remove a game
