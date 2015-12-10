@@ -22,6 +22,8 @@ router.get('/', function (req, res, next) {
 
     Player.find({}, fieldsFilter).lean().exec(function (err, players) {
         if (err) return next(err);
+        res.json(players);
+
     });
 });
 
