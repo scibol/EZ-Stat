@@ -1,20 +1,18 @@
 var socket = io.connect();
 
 
+socket.on("change-player", function (data) {
 
-socket.on("change-player", function(data) {
-
-    //console.log(socket);
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
     var canvas = ezApp.$.canv;
     //
-     stats.$.getPlayer.generateRequest();
+    stats.$.getPlayer.generateRequest();
     //
     drawHitAndMiss(data.success, data.pos_x, data.pos_y, canvas.stage, canvas.selected, canvas.shotsObj)
 });
 
-socket.on("update-score", function(url) {
+socket.on("update-score", function (url) {
     var ezApp = document.querySelector("ez-app");
     var players = ezApp.game.players
     for (var player in players) {
@@ -29,16 +27,33 @@ socket.on("update-score", function(url) {
     }
 });
 
-socket.on("change-state", function(data) {
+socket.on("change-state", function (data) {
     var ezApp = document.querySelector("ez-app");
     ezApp.$.getGame.generateRequest();
+
 });
 
-socket.on("player-update-stat", function(data){
+socket.on("update-score", function (event) {
+    var ezApp = document.querySelector("ez-app");
+    var canvas = ezApp.$.canv;
+    var players = ezApp.game.players;
+    for (var player in players) {
+        if (players[player]._id == event.id) {
+            if (event.data.type == "team1score") {
+                canvas.$.team1score.innerHTML = event.data.value
+            }
+            else if (event.data.type == "team2score") {
+                canvas.$.team2score.innerHTML = event.data.value
+            }
+        }
+    }
+});
+
+
+socket.on("player-update-stat", function (data) {
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
-
-    switch(data.type) {
+    switch (data.type) {
         case "assist":
             stats.$.getAssists.innerHTML = data.value
             break;
@@ -72,5 +87,4 @@ socket.on("player-update-stat", function(data){
         default:
             break;
     }
-    //stats.$.getPlayer.generateRequest();
 })

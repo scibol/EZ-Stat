@@ -24,6 +24,10 @@ module.exports = function(httpServer) {
 			socket.join(data);
 
 		});
+		socket.on("update-score", function(event) {
+			socket.broadcast.emit("update-score", event)
+		});
+
 		socket.on("player-update-stat", function(event) {
 			socket.broadcast.to(event.id).emit("player-update-stat", event.data);
 		});

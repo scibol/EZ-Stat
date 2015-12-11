@@ -1,5 +1,4 @@
 <link rel="import" href="../../components/polymer/polymer.html">
-
 <!-- build:remove -->
 <link rel="import" href="../../components/iron-menu-behavior/iron-menu-behavior.html">
 <script src="easeljs-0.8.1.min.js"></script>
@@ -30,14 +29,6 @@
                 method="PUT">
         </iron-ajax>
 
-        <!--<iron-ajax-->
-                <!--id="getAllPlayers"-->
-                <!--auto-->
-                <!--url="/players"-->
-                <!--handle-as="json"-->
-                <!--last-response="{{players}}">-->
-        <!--</iron-ajax>-->
-
         <iron-ajax
                 id="updateTeamPlayer"
                 url="/games/[[gameid]]"
@@ -60,8 +51,7 @@
                 auto
                 url="/games/[[gameid]]"
                 handle-as="json"
-                on-response="drawScore"
-                last-response="{{score}}"
+                last-response="{{game}}"
         ></iron-ajax>
 
         <iron-ajax
@@ -73,7 +63,7 @@
                 last-response="{{shots}}"
         ></iron-ajax>
 
-        <span>{{score.team1score}}-{{score.team2score}}</span>
+        <span id="team1score">{{game.team1score}}</span>-</span><span id="team2score">{{game.team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -103,27 +93,12 @@
                                 type: String,
                                 notify: true
                             },
-                            team1score: {
-                                type: Number,
-                                notify: true,
-                                default: 0
-                            },
-                            team2score: {
-                                type: Number,
-                                notify: true,
-                                default: 0
-                            },
                             team1name: {
                                 type: String,
                                 notify: true
                             },
                             team2name: {
                                 type: String,
-                                notify: true
-                            },
-
-                            score: {
-                                type: Object,
                                 notify: true
                             },
                             stage: {
@@ -152,15 +127,12 @@
 
 
                         changedPlayer: function () {
-
                             this.resetShots()
-
                         },
 
-                        _updateSocket:function (){
-                            socket.emit("player-changed", {id : this.selected})
-                        },
-
+//                        _updateSocket:function (){
+//                            socket.emit("score-changed", {id : this.selected})
+//                        },
 
 
                         resetShots: function () {
@@ -225,46 +197,49 @@
                         }
                         ,
 
-                        drawScore: function () {
-                            var score1 = this.$.getTeamScore.lastResponse.team1score;
-                            var score2 = this.$.getTeamScore.lastResponse.team1score;
-                            this.score.team1score = score1;
-                            this.score.team2score = score2;
-                        },
-
-
                         updateScore: function (x) {
-                            this.$.getTeamScore.generateRequest()
-                            var score1 = this.$.getTeamScore.lastResponse.team1score;
-                            var score2 = this.$.getTeamScore.lastResponse.team2score;
-                            this.score.team1score = score1;
-                            this.score.team2score = score2;
-
+                        var newVal;
                             if (!(this.editable)) {
                                 var teamAjax = this.$.putScore;
                                 var team = this.team;
                                 if (team == "team1") {
-                                    this.score.team1score += x;
+                                    newVal = parseInt(this.$.team1score.innerHTML) + x
+                                    this.$.team1score.innerHTML = newVal
                                     teamAjax.body = JSON.stringify({
-                                        "team1score": this.score.team1score
+                                        "team1score": newVal
                                     });
+                                    socket.emit("update-score", {
+                                        id : this.selected,
+                                        data: {
+                                            type: 'team1score',
+                                            value: newVal
+                                        }
+                                    })
                                 }
-                                if (team == "team2") {
-                                    this.score.team2score += x;
+                                else if (team == "team2") {
+                                    newVal = parseInt(this.$.team2score.innerHTML) + x;
+                                    this.$.team2score.innerHTML = newVal;
                                     teamAjax.body = JSON.stringify({
-                                        "team2score": this.score.team2score
+                                        "team2score": newVal
                                     });
+                                    socket.emit("update-score", {
+                                        id : this.selected,
+                                        data: {
+                                            type: 'team2score',
+                                            value: newVal
+                                        }
+                                    })
                                 }
                                 teamAjax.generateRequest();
-
                             }
+
                         }
+
                         ,
 
 
                         attached: function () {
                             var thisObj = this;
-                            var getScore = this.$.getTeamScore;
                             var updatePlayers = this.$.putScore
                             var ironAjax = this.$.shot;
                             var canvas = this.$.myCanvas;
@@ -319,7 +294,6 @@
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
-                                        getScore.generateRequest()
                                         thisObj.updateScore(3)
                                         drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                                     }
@@ -349,7 +323,6 @@
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
-                                        getScore.generateRequest()
                                         thisObj.updateScore(2)
                                         drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                                     }
@@ -379,7 +352,6 @@
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
-                                        getScore.generateRequest()
                                         thisObj.updateScore(2)
                                         drawHit(e, this.stage, thisObj.selected, thisObj.shotsObj)
                                     }
