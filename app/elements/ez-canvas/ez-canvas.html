@@ -74,7 +74,7 @@
                 last-response="{{shots}}"
         ></iron-ajax>
 
-        <span>{{team1score}}-{{team2score}}</span>
+        <span>{{score.team1score}}-{{score.team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -169,22 +169,22 @@
                             }
 
                             if (this.selected == "team1") {
-                                    for (var gamer in this.shotsObj) {
-                                        for (var shot in this.shotsObj[gamer]) {
-                                            this.shotsObj[gamer][shot].visible = false;
-                                            this.stage.update()
-                                        }
+                                for (var gamer in this.shotsObj) {
+                                    for (var shot in this.shotsObj[gamer]) {
+                                        this.shotsObj[gamer][shot].visible = false;
+                                        this.stage.update()
                                     }
-                                    for (var teamGamer in team1Players) {
-                                        for (var gamer in this.shotsObj) {
-                                            if (gamer == team1Players[teamGamer]._id) {
-                                                for (var shot in this.shotsObj[gamer]) {
-                                                    this.shotsObj[gamer][shot].visible = true;
-                                                    this.stage.update()
-                                                }
+                                }
+                                for (var teamGamer in team1Players) {
+                                    for (var gamer in this.shotsObj) {
+                                        if (gamer == team1Players[teamGamer]._id) {
+                                            for (var shot in this.shotsObj[gamer]) {
+                                                this.shotsObj[gamer][shot].visible = true;
+                                                this.stage.update()
                                             }
                                         }
                                     }
+                                }
                                 return
                             }
                             else if (this.selected == "team2") {
@@ -225,14 +225,12 @@
                         ,
 
                         drawScore: function () {
-                            if (this.team1score == undefined || this.team1score <= this.score.team1score) {
-                                this.team1score = this.score.team1score;
-                            }
-                            if (this.team2score == undefined || this.team2score <= this.score.team2score) {
-                                this.team2score = this.score.team2score;
-                            }
-                        }
-                        ,
+                            var score1 = this.$.getTeamScore.lastResponse.team1score;
+                            var score2 = this.$.getTeamScore.lastResponse.team1score;
+                            this.score.team1score = score1;
+                            this.score.team2score = score2;
+
+                        },
 
 
                         updateScore: function (x) {
@@ -240,15 +238,15 @@
                                 var teamAjax = this.$.putScore;
                                 var team = this.team;
                                 if (team == "team1") {
-                                    this.team1score += x;
+                                    this.score.team1score += x;
                                     teamAjax.body = JSON.stringify({
-                                        "team1score": this.team1score
+                                        "team1score": this.score.team1score
                                     });
                                 }
                                 if (team == "team2") {
-                                    this.team2score += x;
+                                    this.score.team2score += x;
                                     teamAjax.body = JSON.stringify({
-                                        "team2score": this.team2score
+                                        "team2score": this.score.team2score
                                     });
                                 }
                                 teamAjax.generateRequest();
