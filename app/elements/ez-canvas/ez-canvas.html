@@ -27,25 +27,23 @@
                 url="/players/[[selected]]"
                 handle-as="json"
                 content-type="application/json"
-                method="PUT"
-                timeout="1000">
+                method="PUT">
         </iron-ajax>
 
-        <iron-ajax
-                id="getAllPlayers"
-                auto
-                url="/players"
-                handle-as="json"
-                last-response="{{players}}">
-        </iron-ajax>
+        <!--<iron-ajax-->
+                <!--id="getAllPlayers"-->
+                <!--auto-->
+                <!--url="/players"-->
+                <!--handle-as="json"-->
+                <!--last-response="{{players}}">-->
+        <!--</iron-ajax>-->
 
         <iron-ajax
                 id="updateTeamPlayer"
                 url="/games/[[gameid]]"
                 handle-as="json"
                 content-type="application/json"
-                method="PUT"
-                timeout="1000">
+                method="PUT">
         </iron-ajax>
 
         <iron-ajax
@@ -54,6 +52,7 @@
                 content-type="application/json"
                 handle-as="json"
                 method="PUT"
+                on-response="_updateSocket"
         ></iron-ajax>
 
         <iron-ajax
@@ -153,16 +152,21 @@
 
 
                         changedPlayer: function () {
+
                             this.resetShots()
 
                         },
+
+                        _updateSocket:function (){
+                            socket.emit("player-changed", {id : this.selected})
+                        },
+
 
 
                         resetShots: function () {
                             if (this.shotsObj == undefined) {
                                 this.shotsObj = {}
                             }
-                            this.$.getTeamScore.generateRequest()
                             if (this.$.getTeamScore.lastResponse != undefined) {
                                 var team1Players = this.$.getTeamScore.lastResponse.players1;
                                 var team2Players = this.$.getTeamScore.lastResponse.players2;
@@ -172,7 +176,6 @@
                                 for (var gamer in this.shotsObj) {
                                     for (var shot in this.shotsObj[gamer]) {
                                         this.shotsObj[gamer][shot].visible = false;
-                                        this.stage.update()
                                     }
                                 }
                                 for (var teamGamer in team1Players) {
@@ -180,18 +183,17 @@
                                         if (gamer == team1Players[teamGamer]._id) {
                                             for (var shot in this.shotsObj[gamer]) {
                                                 this.shotsObj[gamer][shot].visible = true;
-                                                this.stage.update()
                                             }
                                         }
                                     }
                                 }
+                                this.stage.update()
                                 return
                             }
                             else if (this.selected == "team2") {
                                 for (var gamer in this.shotsObj) {
                                     for (var shot in this.shotsObj[gamer]) {
                                         this.shotsObj[gamer][shot].visible = false;
-                                        this.stage.update()
                                     }
                                 }
                                 for (var teamGamer in team2Players) {
@@ -199,11 +201,11 @@
                                         if (gamer == team2Players[teamGamer]._id) {
                                             for (var shot in this.shotsObj[gamer]) {
                                                 this.shotsObj[gamer][shot].visible = true;
-                                                this.stage.update()
                                             }
                                         }
                                     }
                                 }
+                                this.stage.update()
                                 return
                             }
 
@@ -211,15 +213,14 @@
                                 if (players != this.selected) {
                                     for (var shot in this.shotsObj[players]) {
                                         this.shotsObj[players][shot].visible = false;
-                                        this.stage.update()
                                     }
                                 }
                                 else {
                                     for (var shot in this.shotsObj[players]) {
                                         this.shotsObj[players][shot].visible = true;
-                                        this.stage.update()
                                     }
                                 }
+                                this.stage.update()
                             }
                         }
                         ,
@@ -229,11 +230,16 @@
                             var score2 = this.$.getTeamScore.lastResponse.team1score;
                             this.score.team1score = score1;
                             this.score.team2score = score2;
-
                         },
 
 
                         updateScore: function (x) {
+                            this.$.getTeamScore.generateRequest()
+                            var score1 = this.$.getTeamScore.lastResponse.team1score;
+                            var score2 = this.$.getTeamScore.lastResponse.team2score;
+                            this.score.team1score = score1;
+                            this.score.team2score = score2;
+
                             if (!(this.editable)) {
                                 var teamAjax = this.$.putScore;
                                 var team = this.team;
@@ -250,6 +256,7 @@
                                     });
                                 }
                                 teamAjax.generateRequest();
+
                             }
                         }
                         ,

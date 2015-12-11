@@ -68,23 +68,30 @@
         </iron-ajax>
 
         <iron-ajax
+                id="getGame"
+                auto
+                url="/games/[[game._id]]"
+                handle-as="json"
+                content-type="application/json">
+        </iron-ajax>
+
+        <iron-ajax
                 id="getPlayer"
                 auto
                 url="/players/[[selected]]"
                 handle-as="json"
                 last-response="{{player}}"
                 debounce-duration="300"></iron-ajax>
+
+        <iron-ajax
+                id="setField"
+                url="/players/[[selected]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                timeout="1000">
+        </iron-ajax>
         <paper-item>
-
-            <iron-ajax
-                    id="setField"
-                    url="/players/[[selected]]"
-                    handle-as="json"
-                    content-type="application/json"
-                    method="PUT"
-                    timeout="1000">
-            </iron-ajax>
-
             <p id="selectPlayer" style="display: none">[[selected]]</p>
             <!--<p id="selectPlayer">[[selected]]</p>-->
             <div class="stats-container">
@@ -286,9 +293,6 @@
                         reflectToAttribute: true
                     }
                 },
-                attached: function() {
-                  window.fouls = this.$.getFouls.innerHTML
-                },
 
                 _addAssist: function (evt) {
                     var newValue = parseInt(this.$.getAssists.innerHTML) + 1;
@@ -298,6 +302,14 @@
                     });
 
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'assist',
+                            value: newValue
+                        }
+
+                    })
                 },
 
                 _subtractAssist: function (evt) {
@@ -396,6 +408,33 @@
                         "freeshotsScored": newValue
                     });
                     this.$.setField.generateRequest();
+                    this.$.getGame.generateRequest();
+                    var players1 = this.$.getGame.lastResponse.players1;
+                    var players2 = this.$.getGame.lastResponse.players2;
+                    var team1score = this.$.getGame.lastResponse.team1score;
+                    var team2score = this.$.getGame.lastResponse.team2score;
+                    var team;
+                    for (var pl in players1) {
+                        if (this.selected == players1[pl]._id) {
+                            team = "team1";
+                        }
+                    }
+                    for (var pl in players2) {
+                        if (this.selected == players2[pl]._id) {
+                            team = "team2";
+                        }
+                    }
+                    if (team == "team1") {
+                        this.$.setGame.body = JSON.stringify({
+                            team1score: team1score += 1
+                        })
+                    }
+                    else if (team == "team2") {
+                        this.$.setGame.body = JSON.stringify({
+                            team2score: team2score += 1
+                        })
+                    }
+                    this.$.setGame.generateRequest();
                 },
 
                 _subtractFreeshotsScored: function (evt) {

@@ -117,7 +117,7 @@ router.put('/:playerid', function (req, res, next) {
             newPlayer._id = ObjectId(req.params.playerid);
             newPlayer.save(onModelSave(res, 201, true));
         }
-        pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
+        //pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
     });
 });
 

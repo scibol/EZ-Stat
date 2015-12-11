@@ -30,6 +30,12 @@ module.exports = function(httpServer) {
 
 		});
 
+		socket.on("player-update-stat", function(event) {
+			console.log("Ok")
+			//io.emit('update-score', event.id);
+			socket.broadcast.to(event.id).emit("player-update-stat", event.data);
+		});
+
 	});
 
 	eventBus.on('game.created', function(event){
