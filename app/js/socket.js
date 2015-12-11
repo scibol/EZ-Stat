@@ -42,6 +42,33 @@ socket.on("player-update-stat", function(data){
         case "assist":
             stats.$.getAssists.innerHTML = data.value
             break;
+        case "successfulPasses":
+            stats.$.getSuccesfulPasses.innerHTML = data.value
+            break;
+        case "failedPasses":
+            stats.$.getFailedPasses.innerHTML = data.value
+            break;
+        case "lostBalls":
+            stats.$.getLostBalls.innerHTML = data.value
+            break;
+        case "recoveredBalls":
+            stats.$.getRecoveredBalls.innerHTML = data.value
+            break;
+        case "freeShotsScored":
+            stats.$.getFreeshotsScored.innerHTML = data.value
+            break;
+        case "freeShotsMissed":
+            stats.$.getFreeshotsMissed.innerHTML = data.value
+            break;
+        case "fouls":
+            stats.$.getFouls.innerHTML = data.value
+            break;
+        case "technicalFouls":
+            stats.$.getTechnicalFouls.innerHTML = data.value
+            break;
+        case "unsportsmanshipFouls":
+            stats.$.getUnsportsmanshipFouls.innerHTML = data.value
+            break;
         default:
             break;
     }

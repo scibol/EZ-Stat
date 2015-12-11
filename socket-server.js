@@ -18,28 +18,19 @@ module.exports = function(httpServer) {
 		});
 
 		socket.on("change", function(data){
-			//for (var i = 0; i < socket.rooms.length - 1; i++) {
-			//	socket.leave(socket.rooms[i]);
-			//}
-			//socket.rooms = [];
 			if(socket.rooms.length > 1) {
 				socket.leave(socket.rooms[1]);
 			}
 			socket.join(data);
-			//console.log(socket.rooms)
 
 		});
-
 		socket.on("player-update-stat", function(event) {
-			console.log("Ok")
-			//io.emit('update-score', event.id);
 			socket.broadcast.to(event.id).emit("player-update-stat", event.data);
 		});
 
 	});
 
 	eventBus.on('game.created', function(event){
-		//var room = window.location.href.split("/games/")[1];
 		io.to(room).emit('change-game', event);
 	});
 

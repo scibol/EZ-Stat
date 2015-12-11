@@ -308,7 +308,6 @@
                             type: 'assist',
                             value: newValue
                         }
-
                     })
                 },
 
@@ -321,7 +320,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
-                    socket.emit("change-secondary");
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'assist',
+                            value: newValue
+                        }
+                    })
                 },
                 _addSuccesfulPasses: function (evt) {
                     var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) + 1;
@@ -330,6 +335,13 @@
                         "succesfulPasses": newValue
                     });
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'successfulPasses',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractSuccesfulPasses: function (evt) {
@@ -341,6 +353,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'successfulPasses',
+                            value: newValue
+                        }
+                    })
                 },
                 _addFailedPasses: function (evt) {
                     var newValue = parseInt(this.$.getFailedPasses.innerHTML) + 1;
@@ -349,6 +368,13 @@
                         "failedPasses": newValue
                     });
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'failedPasses',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractFailedPasses: function (evt) {
@@ -360,6 +386,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'failedPasses',
+                            value: newValue
+                        }
+                    })
                 },
                 _addLostBalls: function (evt) {
                     var newValue = parseInt(this.$.getLostBalls.innerHTML) + 1;
@@ -368,6 +401,13 @@
                         "lostBalls": newValue
                     });
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'lostBalls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractLostBalls: function (evt) {
@@ -379,6 +419,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'lostBalls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _addRecoveredBalls: function (evt) {
@@ -388,6 +435,13 @@
                         "recoveredBalls": newValue
                     });
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'recoveredBalls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractRecoveredBalls: function (evt) {
@@ -399,6 +453,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'recoveredBalls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _addFreeshotsScored: function (evt) {
@@ -435,6 +496,13 @@
                         })
                     }
                     this.$.setGame.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'freeShotsScored',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractFreeshotsScored: function (evt) {
@@ -446,6 +514,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'freeShotsScored',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _addFreeshotsMissed: function (evt) {
@@ -455,6 +530,13 @@
                         "freeshotsMissed": newValue
                     });
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'freeShotsMissed',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractFreeshotsMissed: function (evt) {
@@ -466,6 +548,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'freeShotsMissed',
+                            value: newValue
+                        }
+                    })
                 },
                 _addFouls: function (evt) {
                     var newValue = parseInt(this.$.getFouls.innerHTML) + 1;
@@ -473,8 +562,14 @@
                     this.$.setField.body = JSON.stringify({
                         "fouls": newValue
                     });
-
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'fouls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractFouls: function (evt) {
@@ -487,6 +582,13 @@
 
                         this.$.setField.generateRequest();
                     }
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'fouls',
+                            value: newValue
+                        }
+                    })
 
                 },
                 _addTechnicalFouls: function (evt) {
@@ -497,6 +599,13 @@
                     });
 
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'technicalFouls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractTechnicalFouls: function (evt) {
@@ -508,8 +617,13 @@
                         });
                         this.$.setField.generateRequest();
                     }
-                    socket.emit("change-secondary");
-
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'technicalFouls',
+                            value: newValue
+                        }
+                    })
                 },
                 _addUnsportsmanshipFouls: function (evt) {
                     var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) + 1;
@@ -519,6 +633,13 @@
                     });
 
                     this.$.setField.generateRequest();
+                    socket.emit("player-update-stat", {
+                        id : this.selected,
+                        data: {
+                            type: 'unsportsmanshipFouls',
+                            value: newValue
+                        }
+                    })
                 },
 
                 _subtractUnsportsmanshipFouls: function (evt) {
@@ -528,8 +649,14 @@
                         this.$.setField.body = JSON.stringify({
                             "unsportsmanshipFouls": newValue
                         });
-
                         this.$.setField.generateRequest();
+                        socket.emit("player-update-stat", {
+                            id : this.selected,
+                            data: {
+                                type: 'unsportsmanshipFouls',
+                                value: newValue
+                            }
+                        })
                     }
                 },
             });
