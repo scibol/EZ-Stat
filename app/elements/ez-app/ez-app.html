@@ -408,7 +408,7 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <paper-item>{{game.team2}}
+                                    <paper-item on-click="_setSelectedTeam2">{{game.team2}}
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
@@ -528,6 +528,10 @@
 
                 _setSelectedTeam: function () {
                     this.$.canv.selected = "team1"
+                },
+
+                _setSelectedTeam2: function() {
+                    this.$.canv.selected = "team2"
                 },
 
                 _setSelected1: function (event, detail) {

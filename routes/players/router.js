@@ -35,6 +35,9 @@ router.post('/', function (req, res, next) {
 
 //get a player
 router.get('/:playerid', function (req, res, next) {
+    if (req.params.playerid == "team1" || req.params.playerid == "team2") {
+        return
+    }
     Player.findById(req.params.playerid, fieldsFilter).lean().exec(function (err, player) {
         if (err) return next(err);
         if (!player) {
@@ -114,7 +117,7 @@ router.put('/:playerid', function (req, res, next) {
             newPlayer._id = ObjectId(req.params.playerid);
             newPlayer.save(onModelSave(res, 201, true));
         }
-        pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
+        //pubsub.emit("player.changed", {"data":data, "url":req.params.playerid});
     });
 });
 
