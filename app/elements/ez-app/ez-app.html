@@ -18,6 +18,8 @@
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/paper-spinner/paper-spinner.html">
+
 
 
 <link rel="import" href="../routing.html">
@@ -48,7 +50,7 @@
 
         <style include="shared-styles">
             :host {
-            @apply(- -layout-vertical);
+            @apply(--layout-vertical);
                 --paper-input-container-color: rgba(255, 255, 255, 0.8);
                 --secondary-text-color: rgba(255, 255, 255, 0.8);
                 --default-primary-color: #2A2C2B;
@@ -84,6 +86,17 @@
                 --paper-menu-background-color: red;
                 --primary-background-color: red;
                 background-color: red;
+            }
+
+            paper-item {
+            --paper-item-selected: {
+                    color: #ff1744;
+                 };
+                --paper-item-selected-weight: normal;
+            }
+
+            paper-listbox {
+                -
             }
 
             a:hover {
@@ -136,10 +149,6 @@
                 width: 60vw;
             }
 
-            /*paper-button[toggles] {*/
-            /*background-color: #000066;*/
-            /*}*/
-
             .main-nav {
                 width: 20vw;
                 /*height: 92vh;*/
@@ -156,6 +165,10 @@
                 position: absolute;
                 margin-top: 1em;
                 right: 1em;
+            }
+
+            .fx {
+                transition: all 0.2s;
             }
 
             .max-height {
@@ -286,7 +299,8 @@
                                     <ez-team1 game="{{game}}" editable></ez-team1>
                                 </nav>
                                 <div class="content flex main-content fill-width">
-                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus" on-blur="_loseFocus"
+                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus"
+                                                 on-blur="_loseFocus"
                                                  value="{{game.name}}"></paper-input>
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
@@ -323,11 +337,11 @@
                                         <div finished="0">
 
                                             <div id="upperBar"> 
-                                                <paper-button toggles="true" id="btnHit" disabled="true"
+                                                <paper-button id="btnHit" disabled="true" class="fx"
                                                               on-click="_setSuccess">
                                                     Hit
                                                 </paper-button>
-                                                <paper-button toggles="true" id="btnMiss" disabled="true"
+                                                <paper-button id="btnMiss" disabled="true" class="fx"
                                                               on-click="_setFail">
                                                     Miss
                                                 </paper-button>
@@ -406,11 +420,11 @@
 
                 },
 
-                _onFocus: function() {
+                _onFocus: function () {
 
                 },
 
-                _loseFocus: function() {
+                _loseFocus: function () {
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
@@ -455,10 +469,15 @@
                 },
 
                 _setSuccess: function (event, detail) {
-                    this.$.canv.hit = "hit";
+                    if (this.$.canv.hit != "hit") {
+                        console.log("era diverso")
+                        this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                        this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+                        this.$.canv.hit = "hit";
+                    }
                 },
 
-                _setSelectedTeam: function() {
+                _setSelectedTeam: function () {
                     this.$.canv.selected = "team1"
                 },
 
@@ -467,6 +486,7 @@
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
                     this.$.canv.team = "team1"
                     socket.emit("change", this.$.canv.selected);
+
                 },
 
                 _setSelected2: function (event, detail) {
@@ -474,6 +494,7 @@
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
                     this.$.canv.team = "team2"
                     socket.emit("change", this.$.canv.selected);
+
                 },
 
                 _activateButtons: function (event, detail) {
@@ -507,8 +528,12 @@
                 },
 
                 _setFail: function (event, detail) {
-                    this.$.canv.hit = "fail"
-
+                    if (this.$.canv.hit != "fail") {
+                        console.log("era diverso")
+                        this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+                        this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                        this.$.canv.hit = "fail"
+                    }
                 },
 
                 _finished: function (val) {

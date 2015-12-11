@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1.0">
@@ -24,6 +25,7 @@
 
     <!-- shared styles for all modules -->
     <link rel="import" href="styles/shared-styles.html">
+    <link rel="import" href="components/paper-spinner/paper-spinner.html">
     <style is="custom-style" include="shared-styles"></style>
 
 
@@ -31,6 +33,7 @@
 
 </head>
 <body>
+<paper-spinner id="spinner" alt="Loading contacts list" active></paper-spinner>
 <ez-app id="ez" style="display:none;"></ez-app>
 </body>
 <script>
@@ -38,6 +41,8 @@
         console.log("triggered")
         var ezApp = document.querySelector("#ez");
         ezApp.style.display = "block";
+        var spin = document.querySelector("#spinner");
+        spin.style.display = "none";
     })
 </script>
 </html>
