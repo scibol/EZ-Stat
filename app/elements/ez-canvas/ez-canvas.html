@@ -169,36 +169,36 @@
                             }
 
                             if (this.selected == "team1") {
-                                for (var teamGamer in team1Players) {
                                     for (var gamer in this.shotsObj) {
-                                        if (gamer != team1Players[teamGamer]._id) {
-                                            for (var shot in this.shotsObj[gamer]) {
-                                                this.shotsObj[gamer][shot].visible = false;
-                                                this.stage.update()
-                                            }
+                                        for (var shot in this.shotsObj[gamer]) {
+                                            this.shotsObj[gamer][shot].visible = false;
+                                            this.stage.update()
                                         }
-                                        else {
-                                            for (var shot in this.shotsObj[gamer]) {
-                                                this.shotsObj[gamer][shot].visible = true;
-                                                this.stage.update()
+                                    }
+                                    for (var teamGamer in team1Players) {
+                                        for (var gamer in this.shotsObj) {
+                                            if (gamer == team1Players[teamGamer]._id) {
+                                                for (var shot in this.shotsObj[gamer]) {
+                                                    this.shotsObj[gamer][shot].visible = true;
+                                                    this.stage.update()
+                                                }
                                             }
                                         }
                                     }
-                                }
                                 return
                             }
                             else if (this.selected == "team2") {
-                                for (var teamGamer2 in team2Players) {
-                                    for (var gamer2 in this.shotsObj) {
-                                        if (gamer2 != team2Players[teamGamer2]._id) {
-                                            for (var shot2 in this.shotsObj[gamer2]) {
-                                                this.shotsObj[gamer2][shot2].visible = false;
-                                                this.stage.update()
-                                            }
-                                        }
-                                        else {
-                                            for (var shot2 in this.shotsObj[gamer2]) {
-                                                this.shotsObj[gamer2][shot2].visible = true;
+                                for (var gamer in this.shotsObj) {
+                                    for (var shot in this.shotsObj[gamer]) {
+                                        this.shotsObj[gamer][shot].visible = false;
+                                        this.stage.update()
+                                    }
+                                }
+                                for (var teamGamer in team2Players) {
+                                    for (var gamer in this.shotsObj) {
+                                        if (gamer == team2Players[teamGamer]._id) {
+                                            for (var shot in this.shotsObj[gamer]) {
+                                                this.shotsObj[gamer][shot].visible = true;
                                                 this.stage.update()
                                             }
                                         }
