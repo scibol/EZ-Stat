@@ -18,6 +18,9 @@
 <link rel="import" href="../../components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../../components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../../components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../../components/neon-animation/animations/fade-out-animation.html">
 
 
 <link rel="import" href="../routing.html">
@@ -60,6 +63,24 @@
                 background-color: rgba(0, 0, 0, 0.1);
             }
 
+
+
+
+            /*@media all and (device-width: 768px) and (device-height: 1024px) and (orientation: portrait) {*/
+                /*.foo {*/
+                    /*height: 1024px;*/
+                /*}*/
+            /*}*/
+
+            /*/!***/
+             /** iPad with landscape orientation.*/
+             /**!/*/
+            /*@media all and (device-width: 768px) and (device-height: 1024px) and (orientation: landscape) {*/
+                /*.foo {*/
+                    /*height: 768px;*/
+                /*}*/
+            /*}*/
+
             /*Style of the paper-input*/
             paper-input.inputPapers {
                 /* Label and underline color when the input is not focused */
@@ -85,6 +106,13 @@
                 --primary-background-color: red;
                 background-color: red;
             }
+
+            paper-item {
+                --paper-item-selected-weight: normal;
+            }
+
+            /*paper-listbox {*/
+                /*-}*/
 
             a:hover {
                 text-underline: none;
@@ -136,10 +164,6 @@
                 width: 60vw;
             }
 
-            /*paper-button[toggles] {*/
-            /*background-color: #000066;*/
-            /*}*/
-
             .main-nav {
                 width: 20vw;
                 /*height: 92vh;*/
@@ -158,6 +182,14 @@
                 right: 1em;
             }
 
+            .end {
+                display: inline-block;
+            }
+
+            .fx {
+                transition: all 0.2s;
+            }
+
             .max-height {
                 max-height: 70vh;
                 overflow-y: scroll;
@@ -169,6 +201,22 @@
 
             .header {
                 box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+            }
+
+            #dialogContainer {
+                height: 15%;
+                width: 25%;
+                position: absolute;
+                margin-top: 10%;
+                margin-left: 37.5%;
+                background-color: white;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+                z-index:1000;
+                display: none;
+            }
+
+            .dialog {
+                padding-left: 2.5em;
             }
 
             @media (min-width: 841px) {
@@ -237,6 +285,7 @@
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
                             <ez-menu-item editable href$="/games/{{game._id}}" value="{{game.name}}">
+                            <ez-menu-item editable href$="/" value="{{game.name}}">
                             </ez-menu-item>
 
                         </template>
@@ -245,11 +294,29 @@
                 </paper-dropdown-menu>
                 <paper-button on-click="_createGame">create game</paper-button>
                 <div class="float-right">
+
+                    <div class="end">
+                    <iron-pages attr-for-selected="started" selected="{{game.started}}">
+                        <iron-pages started="1" attr-for-selected="finished" selected="{{game.finished}}">
+                            <div class="end" finished="0">
+                                <paper-button on-click="_displayDialog">end game</paper-button>
+                            </div>
+                        </iron-pages>
+                    </iron-pages>
+                    </div>
+
                     <paper-button on-click="_redirect">home</paper-button>
                     <paper-button on-click="">{{user}}user</paper-button>
                     <paper-button on-click="">signout</paper-button>
                 </div>
             </paper-toolbar>
+            <div id="dialogContainer" class="makeFlex">
+                <p>Are you sure?</p>
+                <paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation" entry-animation="fade-out-animation">
+                    <paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>
+                    <paper-button dialog-confirm on-click="_endGame">Accept</paper-button>
+                </paper-dialog>
+            </div>
 
 
             <!--iron pages for different views-->
@@ -286,7 +353,8 @@
                                     <ez-team1 game="{{game}}" editable></ez-team1>
                                 </nav>
                                 <div class="content flex main-content fill-width">
-                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus" on-blur="_loseFocus"
+                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus"
+                                                 on-blur="_loseFocus"
                                                  value="{{game.name}}"></paper-input>
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
@@ -323,13 +391,11 @@
                                         <div finished="0">
 
                                             <div id="upperBar"> 
-                                                <paper-button toggles="true" id="btnHit" disabled="true"
-                                                              on-click="_setSuccess">
-                                                    Hit
+                                                <paper-button id="btnHit" disabled="true" class="fx"
+                                                              on-click="_setSuccess">Hit
                                                 </paper-button>
-                                                <paper-button toggles="true" id="btnMiss" disabled="true"
-                                                              on-click="_setFail">
-                                                    Miss
+                                                <paper-button id="btnMiss" disabled="true" class="fx"
+                                                              on-click="_setFail">Miss
                                                 </paper-button>
                                             </div>
                                         </div>
@@ -338,9 +404,6 @@
                                     <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}" editable>
                                     </ez-canvas>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
-                                        <div finished="0">
-                                            <paper-button on-click="_endGame">end game</paper-button>
-                                        </div>
                                     </iron-pages>
 
                                 </div>
@@ -406,11 +469,11 @@
 
                 },
 
-                _onFocus: function() {
+                _onFocus: function () {
 
                 },
 
-                _loseFocus: function() {
+                _loseFocus: function () {
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
@@ -455,10 +518,15 @@
                 },
 
                 _setSuccess: function (event, detail) {
-                    this.$.canv.hit = "hit";
+                    if (this.$.canv.hit != "hit") {
+                        console.log("era diverso")
+                        this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                        this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+                        this.$.canv.hit = "hit";
+                    }
                 },
 
-                _setSelectedTeam: function() {
+                _setSelectedTeam: function () {
                     this.$.canv.selected = "team1"
                 },
 
@@ -471,6 +539,7 @@
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
                     this.$.canv.team = "team1"
                     socket.emit("change", this.$.canv.selected);
+
                 },
 
                 _setSelected2: function (event, detail) {
@@ -478,6 +547,7 @@
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
                     this.$.canv.team = "team2"
                     socket.emit("change", this.$.canv.selected);
+
                 },
 
                 _activateButtons: function (event, detail) {
@@ -495,11 +565,11 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
-                    console.log("in1")
                     socket.emit("state.changed", this.$.canv.selected);
                 },
 
                 _endGame: function (event, detail) {
+                    this.$.dialogContainer.style.display = "none";
                     this.$.setGame.body = JSON.stringify({
                         "finished": "1"
                     });
@@ -510,9 +580,21 @@
                     socket.emit("state.changed", this.$.canv.selected);
                 },
 
-                _setFail: function (event, detail) {
-                    this.$.canv.hit = "fail"
+                _displayDialog: function (event, detail) {
+                    this.$.dialogContainer.style.display = "inline-block";
+                },
 
+                _closeDialog: function (event, detail) {
+                    this.$.dialogContainer.style.display = "none";
+                },
+
+                _setFail: function (event, detail) {
+                    if (this.$.canv.hit != "fail") {
+                        console.log("era diverso");
+                        this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+                        this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+                        this.$.canv.hit = "fail"
+                    }
                 },
 
                 _finished: function (val) {
@@ -527,6 +609,11 @@
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
                     page.redirect("/")
+                },
+
+                _inProgress: function (started, finished) {
+                    console.log(started == "1" && finished == "0");
+                    return started == "1" && finished == "0";
                 },
 
                 ready: function () {
