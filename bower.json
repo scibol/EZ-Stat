@@ -17,7 +17,8 @@
     "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.1",
     "iron-icon": "PolymerElements/iron-icon#~1.0.7",
     "paper-listbox": "polymerelements/paper-listbox#~1.0.0",
-    "paper-spinner": "PolymerElements/paper-spinner#~1.1.0"
+    "paper-spinner": "PolymerElements/paper-spinner#~1.1.0",
+    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3"
   },
   "devDependencies": {
     "test-fixture": "PolymerElements/test-fixture#^1.0.0",

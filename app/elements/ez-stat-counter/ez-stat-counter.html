@@ -49,13 +49,17 @@
             }
 
             .inline-container {
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
                 display: flex;
                 justify-content: space-between;
-                width: 55vw;
+                max-width: 55vw !important;
+                /*overflow:hidden;*/
             }
 
             /*.stats-container {*/
-            /*display:*/
+                /*width: 10%;*/
             /*}*/
 
 
@@ -90,7 +94,7 @@
             <p id="selectPlayer" style="display: none">[[selected]]</p>
             <!--<p id="selectPlayer">[[selected]]</p>-->
             <div class="stats-container">
-                <paper-item-body>
+                <!--<paper-item-body>-->
                     <div class="inline-container">
                         <template is="dom-if" if="{{editable}}">
                             <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractAssist">
@@ -152,9 +156,9 @@
                             </paper-button>
                         </template>
                     </div>
-                </paper-item-body>
+                <!--</paper-item-body>-->
 
-                <paper-item-body>
+                <!--<paper-item-body>-->
                     <div class="inline-container">
                         <template is="dom-if" if="{{editable}}">
                             <paper-button disabled="{{disabled}}" id="minus" class="button"
@@ -218,9 +222,9 @@
                             </paper-button>
                         </template>
                     </div>
-                </paper-item-body>
+                <!--</paper-item-body>-->
 
-                <paper-item-body>
+                <!--<paper-item-body>-->
                     <div class="inline-container">
                         <template is="dom-if" if="{{editable}}">
                             <paper-button disabled="{{disabled}}" id="minus" class="button"
@@ -254,7 +258,7 @@
                             </paper-button>
                         </template>
                     </div>
-                </paper-item-body>
+                <!--</paper-item-body>-->
             </div>
         </paper-item>
         </div>
