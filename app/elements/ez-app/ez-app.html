@@ -111,6 +111,10 @@
                 --paper-item-selected-weight: normal;
             }
 
+            paper-button {
+                --paper-button-selected-weight: normal;
+            }
+
             /*paper-listbox {*/
                 /*-}*/
 
@@ -285,9 +289,8 @@
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
                             <ez-menu-item editable href$="/games/{{game._id}}" value="{{game.name}}">
-                            <ez-menu-item editable href$="/" value="{{game.name}}">
+                            <!--<ez-menu-item editable href$="/" value="{{game.name}}">-->
                             </ez-menu-item>
-
                         </template>
 
                     </paper-menu>
@@ -296,13 +299,15 @@
                 <div class="float-right">
 
                     <div class="end">
-                    <iron-pages attr-for-selected="started" selected="{{game.started}}">
-                        <iron-pages started="1" attr-for-selected="finished" selected="{{game.finished}}">
-                            <div class="end" finished="0">
-                                <paper-button on-click="_displayDialog">end game</paper-button>
-                            </div>
+                        <iron-pages attr-for-selected="data-route" selected="{{route}}">
+                            <iron-pages data-route="games" attr-for-selected="started" selected="{{game.started}}">
+                                <iron-pages started="1" attr-for-selected="finished" selected="{{game.finished}}">
+                                    <div class="end" finished="0">
+                                        <paper-button on-click="_displayDialog">end game</paper-button>
+                                    </div>
+                                </iron-pages>
+                            </iron-pages>
                         </iron-pages>
-                    </iron-pages>
                     </div>
 
                     <paper-button on-click="_redirect">home</paper-button>
@@ -608,7 +613,9 @@
 
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
-                    page.redirect("/")
+                    this.game = {};
+                    page.show("/");
+                    console.log(this.game.started)
                 },
 
                 _inProgress: function (started, finished) {

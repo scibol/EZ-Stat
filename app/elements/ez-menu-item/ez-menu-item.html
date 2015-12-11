@@ -22,13 +22,13 @@
             --paper-input-container-input:{
                  color:inherit;
                  font-size: inherit;
-             };
+             }
             }
 
             :host(:hover){
                 background: rgba(0,0,0,0.2);
                 box-shadow: inset 0 -1px rgba(0,0,0,0);
-            };
+            }
 
             a{
                 display: block;
@@ -64,7 +64,7 @@
 
             :host(:hover) #editBtn{
                 display: block;
-            };
+            }
 
             /*#editInput{*/
             /*display:none;*/
@@ -130,8 +130,13 @@
                 _onClick: function(event, detail){
                     event.preventDefault();
                     var resource = event.currentTarget.href.split("3000")[1];
-                    socket.emit("change", resource.split("/games/")[1]);
-                    page.show(resource);
+                    if (window.location.href.split("/games/")[1] !== resource.split("/games/")[1]) {
+                        socket.emit("change", resource.split("/games/")[1]);
+                        page.show(resource);
+                    }
+                    else {
+                        document.querySelector("ez-app").$.drop.close();
+                    }
                 }
                 //<!-- /build -->
             });

@@ -10,8 +10,6 @@
 <dom-module id="ez-stat-counter">
     <template>
 
-        <!-- build:remove -->
-
         <style>
             :host {
                 display: block;
@@ -28,16 +26,29 @@
 
             .secondary {
                 position: relative;
-                top: -0.8em;
-                font-size: 0.8em;
                 color: rgba(0, 0, 0, 0.6);
             }
 
             .button {
                 transition: all 0.2s;
                 min-width: 1.5em;
-                /*width:  1em;*/
                 margin: 0;
+            }
+
+            .statsButton {
+                background: rgba(0, 0, 0, 0);
+                transition: all 0.2s;
+                min-width: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+            .statsButton > * {
+                pointer-events:none;
+            }
+
+            paper-item {
+
             }
 
             .button[disabled] {
@@ -53,15 +64,10 @@
                 display: -moz-box;
                 display: -ms-flexbox;
                 display: flex;
+                flex-wrap: wrap;
                 justify-content: space-between;
                 max-width: 55vw !important;
-                /*overflow:hidden;*/
             }
-
-            /*.stats-container {*/
-                /*width: 10%;*/
-            /*}*/
-
 
         </style>
         <iron-ajax
@@ -97,177 +103,93 @@
                 method="PUT"
                 timeout="1000">
         </iron-ajax>
-        <paper-item>
-            <p id="selectPlayer" style="display: none">[[selected]]</p>
-            <!--<p id="selectPlayer">[[selected]]</p>-->
-            <div class="stats-container">
-                <!--<paper-item-body>-->
-                    <div class="inline-container">
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractAssist">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getAssists">{{player.assists}}</div>
-                            <div class="secondary">Assists</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addAssist">+
-                            </paper-button>
-                        </template>
 
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractSuccesfulPasses">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getSuccesfulPasses">{{player.succesfulPasses}}</div>
-                            <div class="secondary">Succesful Passes</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addSuccesfulPasses">+
-                            </paper-button>
-                        </template>
+        <p id="selectPlayer" style="display: none">[[selected]]</p>
+        <div class="stats-container">
+            <div class="inline-container">
 
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractFailedPasses">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getFailedPasses">{{player.failedPasses}}</div>
-                            <div class="secondary">Failed Passes</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFailedPasses">+
-                            </paper-button>
-                        </template>
-
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractLostBalls">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getLostBalls">{{player.lostBalls}}</div>
-                            <div class="secondary">Lost Balls</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addLostBalls">+
-                            </paper-button>
-                        </template>
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text noEvent">
+                        <div id="assists" class="noEvent">{{player.assists}}</div>
+                        <div class="secondary noEvent">Assists</div>
                     </div>
-                <!--</paper-item-body>-->
+                </paper-button>
 
-                <!--<paper-item-body>-->
-                    <div class="inline-container">
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractRecoveredBalls">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getRecoveredBalls">{{player.recoveredBalls}}</div>
-                            <div class="secondary">Recovered Balls</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addRecoveredBalls">+
-                            </paper-button>
-                        </template>
-
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractFreeshotsScored">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getFreeshotsScored">{{player.freeshotsScored}}</div>
-                            <div class="secondary">Freeshots Scored</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addFreeshotsScored">+
-                            </paper-button>
-                        </template>
-
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractFreeshotsMissed">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getFreeshotsMissed">{{player.freeshotsMissed}}</div>
-                            <div class="secondary">Freeshots Missed</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addFreeshotsMissed">+
-                            </paper-button>
-                        </template>
-
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button" on-click="_subtractFouls">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getFouls">{{player.fouls}}</div>
-                            <div class="secondary">Fouls</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button" on-click="_addFouls">+
-                            </paper-button>
-                        </template>
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="succesfulPasses">{{player.succesfulPasses}}</div>
+                        <div class="secondary">O Passes</div>
                     </div>
-                <!--</paper-item-body>-->
+                </paper-button>
 
-                <!--<paper-item-body>-->
-                    <div class="inline-container">
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractTechnicalFouls">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getTechnicalFouls">{{player.technicalFouls}}</div>
-                            <div class="secondary">Technical Fouls</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addTechnicalFouls">+
-                            </paper-button>
-                        </template>
-
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="minus" class="button"
-                                          on-click="_subtractUnsportsmanshipFouls">
-                                -
-                            </paper-button>
-                        </template>
-                        <div class="text">
-                            <div id="getUnsportsmanshipFouls">{{player.unsportsmanshipFouls}}</div>
-                            <div class="secondary">Unsportsmanship Fouls</div>
-                        </div>
-                        <template is="dom-if" if="{{editable}}">
-                            <paper-button disabled="{{disabled}}" id="plus" class="button"
-                                          on-click="_addUnsportsmanshipFouls">+
-                            </paper-button>
-                        </template>
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="failedPasses">{{player.failedPasses}}</div>
+                        <div class="secondary">X Passes</div>
                     </div>
-                <!--</paper-item-body>-->
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="lostBalls">{{player.lostBalls}}</div>
+                        <div class="secondary">X Balls</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="recoveredBalls">{{player.recoveredBalls}}</div>
+                        <div class="secondary">O Balls</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtractFreeshotsScored">-
+                </paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton"
+                              on-click="_addFreeshotsScored">
+                    <div class="text">
+                        <div id="freeshotsScored">{{player.freeshotsScored}}</div>
+                        <div class="secondary">O Freeshots</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="freeshotsMissed">{{player.freeshotsMissed}}</div>
+                        <div class="secondary">X Freeshots</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="fouls">{{player.fouls}}</div>
+                        <div class="secondary">fouls</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="technicalFouls">{{player.technicalFouls}}</div>
+                        <div class="secondary">Technical Fouls</div>
+                    </div>
+                </paper-button>
+
+                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
+                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                    <div class="text">
+                        <div id="unsportsmanshipFouls">{{player.unsportsmanshipFouls}}</div>
+                        <div class="secondary">Unsportsmanship Fouls</div>
+                    </div>
+                </paper-button>
             </div>
-        </paper-item>
         </div>
     </template>
 
@@ -278,8 +200,6 @@
             Polymer({
                 is: 'ez-stat-counter',
 
-                //
-                <!-- build:remove -->
                 listeners: {},
 
                 properties: {
@@ -300,177 +220,48 @@
                     }
                 },
 
-                _addAssist: function (evt) {
-                    var newValue = parseInt(this.$.getAssists.innerHTML) + 1;
-                    this.$.getAssists.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "assists": newValue
-                    });
-
+                _add: function (evt) {
+                    var el = evt.target.childNodes[1].childNodes[1];
+                    var elId = el.id;
+                    var newValue = parseInt(el.innerHTML) + 1;
+                    el.innerHTML = newValue;
+                    var req = {};
+                    req[elId] = newValue;
+                    this.$.setField.body = JSON.stringify(req);
                     this.$.setField.generateRequest();
                     socket.emit("player-update-stat", {
-                        id : this.selected,
+                        id: this.selected,
                         data: {
-                            type: 'assist',
+                            type: elId,
                             value: newValue
                         }
                     })
                 },
 
-                _subtractAssist: function (evt) {
-                    var newValue = parseInt(this.$.getAssists.innerHTML) - 1;
+                _subtract: function (evt) {
+                    var el = evt.target.nextSibling.nextSibling.childNodes[1].childNodes[1];
+                    var elId = el.id;
+                    var newValue = parseInt(el.innerHTML) - 1;
                     if (newValue >= 0) {
-                        this.$.getAssists.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "assists": newValue
-                        });
+                        el.innerHTML = newValue;
+                        var req = {};
+                        req[elId] = newValue;
+                        this.$.setField.body = JSON.stringify(req);
                         this.$.setField.generateRequest();
+                        socket.emit("player-update-stat", {
+                            id: this.selected,
+                            data: {
+                                type: elId,
+                                value: newValue
+                            }
+                        })
                     }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'assist',
-                            value: newValue
-                        }
-                    })
-                },
-                _addSuccesfulPasses: function (evt) {
-                    var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) + 1;
-                    this.$.getSuccesfulPasses.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "succesfulPasses": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'successfulPasses',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractSuccesfulPasses: function (evt) {
-                    var newValue = parseInt(this.$.getSuccesfulPasses.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getSuccesfulPasses.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "succesfulPasses": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'successfulPasses',
-                            value: newValue
-                        }
-                    })
-                },
-                _addFailedPasses: function (evt) {
-                    var newValue = parseInt(this.$.getFailedPasses.innerHTML) + 1;
-                    this.$.getFailedPasses.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "failedPasses": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'failedPasses',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractFailedPasses: function (evt) {
-                    var newValue = parseInt(this.$.getFailedPasses.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getFailedPasses.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "failedPasses": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'failedPasses',
-                            value: newValue
-                        }
-                    })
-                },
-                _addLostBalls: function (evt) {
-                    var newValue = parseInt(this.$.getLostBalls.innerHTML) + 1;
-                    this.$.getLostBalls.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "lostBalls": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'lostBalls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractLostBalls: function (evt) {
-                    var newValue = parseInt(this.$.getLostBalls.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getLostBalls.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "lostBalls": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'lostBalls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _addRecoveredBalls: function (evt) {
-                    var newValue = parseInt(this.$.getRecoveredBalls.innerHTML) + 1;
-                    this.$.getRecoveredBalls.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "recoveredBalls": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'recoveredBalls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractRecoveredBalls: function (evt) {
-                    var newValue = parseInt(this.$.getRecoveredBalls.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getRecoveredBalls.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "recoveredBalls": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'recoveredBalls',
-                            value: newValue
-                        }
-                    })
                 },
 
                 _addFreeshotsScored: function (evt) {
-                    var newValue = parseInt(this.$.getFreeshotsScored.innerHTML) + 1;
-                    this.$.getFreeshotsScored.innerHTML = newValue;
+                    var el = evt.target.childNodes[1].childNodes[1];
+                    var newValue = parseInt(el.innerHTML) + 1;
+                    el.innerHTML = newValue;
                     this.$.setField.body = JSON.stringify({
                         "freeshotsScored": newValue
                     });
@@ -503,168 +294,32 @@
                     }
                     this.$.setGame.generateRequest();
                     socket.emit("player-update-stat", {
-                        id : this.selected,
+                        id: this.selected,
                         data: {
-                            type: 'freeShotsScored',
+                            type: 'freeshotsScored',
                             value: newValue
                         }
                     })
                 },
 
                 _subtractFreeshotsScored: function (evt) {
-                    var newValue = parseInt(this.$.getFreeshotsScored.innerHTML) - 1;
+                    var el = evt.target.nextSibling.nextSibling.childNodes[1].childNodes[1];
+                    var newValue = parseInt(el.innerHTML) - 1;
                     if (newValue >= 0) {
-                        this.$.getFreeshotsScored.innerHTML = newValue;
+                        el.innerHTML = newValue;
                         this.$.setField.body = JSON.stringify({
                             "freeshotsScored": newValue
                         });
                         this.$.setField.generateRequest();
                     }
                     socket.emit("player-update-stat", {
-                        id : this.selected,
+                        id: this.selected,
                         data: {
-                            type: 'freeShotsScored',
+                            type: 'freeshotsScored',
                             value: newValue
                         }
                     })
-                },
-
-                _addFreeshotsMissed: function (evt) {
-                    var newValue = parseInt(this.$.getFreeshotsMissed.innerHTML) + 1;
-                    this.$.getFreeshotsMissed.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "freeshotsMissed": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'freeShotsMissed',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractFreeshotsMissed: function (evt) {
-                    var newValue = parseInt(this.$.getFreeshotsMissed.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getFreeshotsMissed.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "freeshotsMissed": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'freeShotsMissed',
-                            value: newValue
-                        }
-                    })
-                },
-                _addFouls: function (evt) {
-                    var newValue = parseInt(this.$.getFouls.innerHTML) + 1;
-                    this.$.getFouls.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "fouls": newValue
-                    });
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'fouls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractFouls: function (evt) {
-                    var newValue = parseInt(this.$.getFouls.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getFouls.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "fouls": newValue
-                        });
-
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'fouls',
-                            value: newValue
-                        }
-                    })
-
-                },
-                _addTechnicalFouls: function (evt) {
-                    var newValue = parseInt(this.$.getTechnicalFouls.innerHTML) + 1;
-                    this.$.getTechnicalFouls.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "technicalFouls": newValue
-                    });
-
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'technicalFouls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractTechnicalFouls: function (evt) {
-                    var newValue = parseInt(this.$.getTechnicalFouls.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getTechnicalFouls.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "technicalFouls": newValue
-                        });
-                        this.$.setField.generateRequest();
-                    }
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'technicalFouls',
-                            value: newValue
-                        }
-                    })
-                },
-                _addUnsportsmanshipFouls: function (evt) {
-                    var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) + 1;
-                    this.$.getUnsportsmanshipFouls.innerHTML = newValue;
-                    this.$.setField.body = JSON.stringify({
-                        "unsportsmanshipFouls": newValue
-                    });
-
-                    this.$.setField.generateRequest();
-                    socket.emit("player-update-stat", {
-                        id : this.selected,
-                        data: {
-                            type: 'unsportsmanshipFouls',
-                            value: newValue
-                        }
-                    })
-                },
-
-                _subtractUnsportsmanshipFouls: function (evt) {
-                    var newValue = parseInt(this.$.getUnsportsmanshipFouls.innerHTML) - 1;
-                    if (newValue >= 0) {
-                        this.$.getUnsportsmanshipFouls.innerHTML = newValue;
-                        this.$.setField.body = JSON.stringify({
-                            "unsportsmanshipFouls": newValue
-                        });
-                        this.$.setField.generateRequest();
-                        socket.emit("player-update-stat", {
-                            id : this.selected,
-                            data: {
-                                type: 'unsportsmanshipFouls',
-                                value: newValue
-                            }
-                        })
-                    }
-                },
+                }
             });
         })();
 
@@ -680,7 +335,6 @@
         function updatePasses(data) {
             console.log(data)
         }
-        ;
     </script>
 
 </dom-module>
