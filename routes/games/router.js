@@ -59,6 +59,7 @@ router.put('/:gameid', function (req, res, next) {
                     if (data.team == "team1") {
                         for (var gamer in game.players1) {
                             if (game.players1[gamer]._id == data.id) {
+                                delete data._id
                                 delete data.team
                                 game.players1[gamer].shots.push(data)
                                 game.save(onModelSave(res));

@@ -35,6 +35,9 @@ router.post('/', function (req, res, next) {
 
 //get a player
 router.get('/:playerid', function (req, res, next) {
+    if (req.params.playerid == "team1" || req.params.playerid == "team2") {
+        return
+    }
     Player.findById(req.params.playerid, fieldsFilter).lean().exec(function (err, player) {
         if (err) return next(err);
         if (!player) {
