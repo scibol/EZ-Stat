@@ -19,6 +19,7 @@
                 -webkit-transition: background 0.3s, box-shadow 0.3s;
                 -moz-transition: background 0.3s, box-shadow 0.3s;
                 transition: background 0.3s, box-shadow 0.3s;
+                /*margin: 1em;*/
             --paper-input-container-input:{
                  color:inherit;
                  font-size: inherit;
@@ -26,7 +27,7 @@
             }
 
             :host(:hover){
-                background: rgba(0,0,0,0.2);
+                /*background: rgba(0,0,0,0.2);*/
                 box-shadow: inset 0 -1px rgba(0,0,0,0);
             }
 
@@ -66,13 +67,23 @@
                 display: block;
             }
 
+            #link {
+                padding:1em;
+                transition: all 0.2s;
+            }
+
+            #link:hover {
+                background: rgba(0,0,0,0.2);
+
+            }
+
             /*#editInput{*/
             /*display:none;*/
             /*line-height:1;*/
             /*padding-left: 12px;*/
             /*}*/
         </style>
-        <a id="leLink" href="{{href}}" on-click="_onClick">
+        <a id="link" href="{{href}}" on-click="_onClick">
             {{value}}
         </a>
         <!--<template is="dom-if" if="{{editable}}">-->
@@ -112,7 +123,7 @@
                 _editTapped: function(event, detail){
                     if(!this.editable) return;
                     if(event.target.active){
-                        this.$.leLink.style.display = "none";
+                        this.$.link.style.display = "none";
                         this.$$('#editInput').style.display = "block";
                         event.target.icon = "icons:check";
                     }else{
@@ -123,7 +134,8 @@
 
                 _onBlur: function(){
 //          if(!this.editable) return;
-//          this.$.leLink.style.display = "block";
+//          this.$.link
+//.style.display = "block";
 //          this.$$('#editInput').style.display = "none";
                 },
 

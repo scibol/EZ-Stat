@@ -24,26 +24,36 @@ module.exports = function(httpServer) {
 			socket.join(data);
 
 		});
+		socket.on("update-score", function(event) {
+			socket.broadcast.emit("update-score", event)
+		});
+
 		socket.on("player-update-stat", function(event) {
 			socket.broadcast.to(event.id).emit("player-update-stat", event.data);
 		});
 
+		socket.on("player-update-shot", function(event) {
+			console.log("OK")
+			socket.broadcast.to(event.id).emit("player-update-shot", event.data);
+		});
+
+
 	});
 
-	eventBus.on('game.created', function(event){
-		io.to(room).emit('change-game', event);
-	});
+	//eventBus.on('game.created', function(event){
+	//	io.to(room).emit('change-game', event);
+	//});
+    //
+	//eventBus.on('change.room', function(event){
+	//	io.emit('change-room', event);
+	//});
 
-	eventBus.on('change.room', function(event){
-		io.emit('change-room', event);
-	});
-
-	eventBus.on('player.changed', function(event){
-		var room = event.url;
-		var data = event.data;
-		io.emit('update-score', room)
-		io.to(room).emit('change-player', data);
-	});
+	//eventBus.on('player.changed', function(event){
+	//	var room = event.url;
+	//	var data = event.data;
+	//	io.emit('update-score', room)
+	//	io.to(room).emit('change-player', data);
+	//});
 
 	eventBus.on('state.changed', function(event){
 		io.emit('change-state', {});
