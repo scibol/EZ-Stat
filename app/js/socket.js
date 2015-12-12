@@ -66,34 +66,34 @@ socket.on("player-update-stat", function (data) {
     var stats = ezApp.$.buttonCounter;
     switch (data.type) {
         case "assists":
-            stats.$.getAssists.innerHTML = data.value
+            stats.$.assists.innerHTML = data.value
             break;
         case "successfulPasses":
-            stats.$.getSuccesfulPasses.innerHTML = data.value
+            stats.$.succesfulPasses.innerHTML = data.value
             break;
         case "failedPasses":
-            stats.$.getFailedPasses.innerHTML = data.value
+            stats.$.failedPasses.innerHTML = data.value
             break;
         case "lostBalls":
-            stats.$.getLostBalls.innerHTML = data.value
+            stats.$.lostBalls.innerHTML = data.value
             break;
         case "recoveredBalls":
-            stats.$.getRecoveredBalls.innerHTML = data.value
+            stats.$.recoveredBalls.innerHTML = data.value
             break;
         case "freeshotsScored":
-            stats.$.getFreeshotsScored.innerHTML = data.value
+            stats.$.freeshotsScored.innerHTML = data.value
             break;
         case "freeshotsMissed":
-            stats.$.getFreeshotsMissed.innerHTML = data.value
+            stats.$.freeshotsMissed.innerHTML = data.value
             break;
         case "fouls":
-            stats.$.getFouls.innerHTML = data.value
+            stats.$.fouls.innerHTML = data.value
             break;
         case "technicalFouls":
-            stats.$.getTechnicalFouls.innerHTML = data.value
+            stats.$.technicalFouls.innerHTML = data.value
             break;
         case "unsportsmanshipFouls":
-            stats.$.getUnsportsmanshipFouls.innerHTML = data.value
+            stats.$.unsportsmanshipFouls.innerHTML = data.value
             break;
         default:
             break;

@@ -57,10 +57,15 @@
             }
 
             #editInput {
-                display: none;
+                /*display: none;*/
                 line-height: 1;
                 padding-left: 12px;
             }
+
+            #inputContainer {
+                display: none;
+            }
+
         </style>
 
         <iron-ajax
@@ -93,7 +98,12 @@
         </paper-listbox>
 
         <div id="textVal">Player...</div>
-        <paper-input id="editInput" placeholder="Player..."></paper-input>
+        <paper-input-container id="inputContainer" always-float-label>
+            <label>Player name</label>
+            <input is="iron-input" id="editInput" value="">
+            <paper-input-error>Surname is required</paper-input-error>
+        </paper-input-container>
+
         <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped"></paper-icon-button>
     </template>
 
@@ -123,20 +133,31 @@
                 _editTapped: function (event, detail) {
                     if (event.target.icon == "icons:add") {
                         this.$.textVal.style.display = "none";
-                        this.$$('#editInput').style.display = "inline-block";
+                        this.$$('#inputContainer').style.display = "inline-block";
                         event.target.icon = "icons:save";
                     } else {
-                        this._onBlur();
-                        event.target.icon = "icons:add";
+                        var input = this.$.editInput.value.split(" ");
+                        var filteredInput = input.filter(function(str){return str!==''});
+                        if(filteredInput.length < 2) {
+                            this.$.inputContainer.invalid = true;
+                        }
+                        else {
+                            this.$.inputContainer.invalid = true;
+                            this._onBlur();
+                            event.target.icon = "icons:add";
+                        }
                     }
                 },
 
                 _onBlur: function () {
                     this.$.textVal.style.display = "inline-block";
-                    this.$$('#editInput').style.display = "none";
+                    this.$$('#inputContainer').style.display = "none";
+                    this.$.inputContainer.invalid = false;
                     var first = this.$.editInput.value.split(" ")[0];
                     var last = this.$.editInput.value.split(" ")[1];
+                    this.$.editInput.value = "";
                     if (first && last) {
+                        console.log("in")
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
