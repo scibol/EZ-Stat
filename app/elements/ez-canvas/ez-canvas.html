@@ -1,10 +1,9 @@
 <link rel="import" href="../../components/polymer/polymer.html">
-<!-- build:remove -->
 <link rel="import" href="../../components/iron-menu-behavior/iron-menu-behavior.html">
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
-<!-- /build -->
+
 
 <dom-module id="ez-canvas">
     <template>
@@ -12,7 +11,6 @@
         <style>
             :host {
                 display: block;
-
             }
 
             #myCanvas {
@@ -62,7 +60,8 @@
                 last-response="{{shots}}"
         ></iron-ajax>
 
-        <span id="team1score">{{game.team1score}}</span>-</span><span id="team2score">{{game.team2score}}</span>
+        <span id="team1score">{{game.team1score}}</span>
+        <span id="team2score">{{game.team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>

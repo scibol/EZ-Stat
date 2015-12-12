@@ -1,28 +1,19 @@
 <link rel="import" href="../../components/polymer/polymer.html">
 
-<!-- build:remove -->
 <link rel="import" href="../../components/paper-input/paper-input.html">
 <link rel="import" href="../../components/iron-icon/iron-icon.html">
 <link rel="import" href="../../components/iron-icons/av-icons.html">
 <link rel="import" href="../../components/iron-icons/image-icons.html">
-<!-- /build -->
 
-<dom-module id="ez-team1">
+<dom-module id="ez-team">
     <template>
-
-        <!-- build:remove -->
 
         <style>
             :host {
                 display: block;
-                /*position:relative;*/
                 -webkit-transition: background 0.3s, box-shadow 0.3s;
                 -moz-transition: background 0.3s, box-shadow 0.3s;
                 transition: background 0.3s, box-shadow 0.3s;
-
-            --paper-input-container-input {
-                color: inherit;
-                }
             }
 
             :host(:hover) {
@@ -30,50 +21,29 @@
                 box-shadow: inset 0 -1px rgba(0, 0, 0, 0);
             }
 
-
             #textVal {
                 padding-left: 1em;
                 padding-top: 1.15em;
                 display: inline-block;
                 outline: none;
                 text-decoration: none;
-                /*box-shadow: inset 0 -1px rgba(0,0,0,0.2);*/
-                /*text-shadow: 0 0 1px rgba(255,255,255,0.1);*/
                 font-size: 17px;
                 color: inherit;
                 overflow: hidden;
                 white-space: nowrap;
             }
 
-            /*paper-item {*/
-                /*--paper-item-selected-weight: normal;*/
-            /*}*/
-
             iron-icon {
                 padding: 0 20px;
             }
 
-            .teamDiv {
-                /*display: inline-block;*/
-                overflow: hidden;
-                white-space: nowrap;
-            }
-
-            #test, #saveTeam {
+            #test {
                 display: inline-block;
-            }
-
-            #saveTeam[disabled] {
-                color: rgba(255, 255, 255, 0.1);
             }
 
             .editBtn {
                 visibility: visible;
-                /*position:absolute;*/
-                /*top: 14px;*/
-                /*right: 10px;*/
                 z-index: 10;
-                /*white-space: initial;*/
                 line-height: 1;
                 color: rgba(255, 255, 255, 0.4);
             }
@@ -92,6 +62,7 @@
                 padding-left: 12px;
             }
         </style>
+
         <iron-ajax
                 id="setGame"
                 url="/games/[[game._id]]"
@@ -111,28 +82,19 @@
                 debounce-duration="3000">
         </iron-ajax>
 
-
-        <paper-input id="test" label="Team name" on-focus="_onFocus" on-blur="_loseFocus"
-                     value="{{game.team1}}"></paper-input>
+        <paper-input id="test" label="Team name" on-blur="_loseFocus" value="{{name}}"></paper-input>
         <paper-listbox selectedItem>
-        <!--</paper-listbox>-->
 
-        <div class="teamDiv">
-                <!--<paper-icon-button id="saveTeam" icon="icons:create" disabled></paper-icon-button>-->
-            </div>
-
-            <template is="dom-repeat" items="{{game.players1}}" as="player">
+            <template is="dom-repeat" items="{{players}}" as="player">
                 <paper-item id="{{player._id}}">{{player.firstName}}
                     {{player.lastName}}
                 </paper-item>
             </template>
         </paper-listbox>
-        <div id="textVal">Player...</div>
-            <paper-input id="editInput" placeholder="Player..."></paper-input>
-            <template is="dom-if" if="{{editable}}">
-                <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped" toggles></paper-icon-button>
-            </template>
 
+        <div id="textVal">Player...</div>
+        <paper-input id="editInput" placeholder="Player..."></paper-input>
+        <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped"></paper-icon-button>
     </template>
 
     <script>
@@ -140,40 +102,23 @@
             'use strict';
 
             Polymer({
-                is: 'ez-team1',
-
-                //
-                <!-- build:remove -->
-                listeners: {
-//                    "blur": "_onBlur"
-                },
+                is: 'ez-team',
 
                 properties: {
                     href: String,
                     team: String,
+                    name: String,
+                    players: String,
                     icon: String,
-                    game: {
-                        type: Object,
-                        notify: true
-                    },
-                    editable: {
-                        type: Boolean,
-                        default: false,
-                        reflectToAttribute: true
-                    }
-                },
-
-                _onFocus: function () {
-
+                    game: Object
                 },
 
                 _loseFocus: function () {
-                    this.$.setGame.body = JSON.stringify({
-                        "team1": this.$.test.value
-                    });
+                    var req = {};
+                    req[this.team] = this.$.test.value;
+                    this.$.setGame.body = JSON.stringify(req);
                     this.$.setGame.generateRequest();
                 },
-
 
                 _editTapped: function (event, detail) {
                     if (event.target.icon == "icons:add") {
@@ -187,19 +132,16 @@
                 },
 
                 _onBlur: function () {
-                    if (!this.editable) return;
                     this.$.textVal.style.display = "inline-block";
                     this.$$('#editInput').style.display = "none";
                     var first = this.$.editInput.value.split(" ")[0];
                     var last = this.$.editInput.value.split(" ")[1];
-                    console.log(isNumber(first));
                     if (first && last) {
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
                             "team": this.$.test.value
                         });
-                        console.log(this.$.test)
                         this.$.setGame.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
@@ -228,8 +170,6 @@
             function isNumber(n) {
                 return !isNaN(parseFloat(n)) && isFinite(n);
             }
-
-
         })();
     </script>
 
