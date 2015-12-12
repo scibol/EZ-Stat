@@ -64,27 +64,29 @@ socket.on("player-update-shot", function (data) {
 socket.on("player-update-stat", function (data) {
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
+    var canvas = ezApp.$.canv;
+
     switch (data.type) {
         case "assists":
-            stats.$.assists.innerHTML = data.value
+            stats.$.assists.innerHTML = data.value;
             break;
         case "successfulPasses":
-            stats.$.succesfulPasses.innerHTML = data.value
+            stats.$.succesfulPasses.innerHTML = data.value;
             break;
         case "failedPasses":
-            stats.$.failedPasses.innerHTML = data.value
+            stats.$.failedPasses.innerHTML = data.value;
             break;
         case "lostBalls":
-            stats.$.lostBalls.innerHTML = data.value
+            stats.$.lostBalls.innerHTML = data.value;
             break;
         case "recoveredBalls":
-            stats.$.recoveredBalls.innerHTML = data.value
+            stats.$.recoveredBalls.innerHTML = data.value;
             break;
         case "freeshotsScored":
-            stats.$.freeshotsScored.innerHTML = data.value
+            stats.$.freeshotsScored.innerHTML = data.value;
             break;
         case "freeshotsMissed":
-            stats.$.freeshotsMissed.innerHTML = data.value
+            stats.$.freeshotsMissed.innerHTML = data.value;
             break;
         case "fouls":
             stats.$.fouls.innerHTML = data.value

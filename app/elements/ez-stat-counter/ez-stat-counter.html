@@ -278,12 +278,12 @@
                         "freeshotsScored": newValue
                     });
                     this.$.setField.generateRequest();
-                    this.$.getGame.generateRequest();
                     var players1 = this.$.getGame.lastResponse.players1;
                     var players2 = this.$.getGame.lastResponse.players2;
-                    var team1score = this.$.getGame.lastResponse.team1score;
-                    var team2score = this.$.getGame.lastResponse.team2score;
                     var team;
+                    var newVal;
+                    var ezApp = document.querySelector("ez-app");
+                    var canvas = ezApp.$.canv;
                     for (var pl in players1) {
                         if (this.selected == players1[pl]._id) {
                             team = "team1";
@@ -295,13 +295,31 @@
                         }
                     }
                     if (team == "team1") {
+                        newVal = parseInt(canvas.$.team1score.innerHTML) + 1;
+                        canvas.$.team1score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
-                            team1score: team1score += 1
+                            team1score: newVal
+                        })
+                        socket.emit("update-score", {
+                            id: this.selected,
+                            data: {
+                                type: 'team1score',
+                                value: newVal
+                            }
                         })
                     }
                     else if (team == "team2") {
+                        newVal = parseInt(canvas.$.team2score.innerHTML) + 1;
+                        canvas.$.team2score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
-                            team2score: team2score += 1
+                            team2score: newVal
+                        })
+                        socket.emit("update-score", {
+                            id: this.selected,
+                            data: {
+                                type: 'team2score',
+                                value: newVal
+                            }
                         })
                     }
                     this.$.setGame.generateRequest();
@@ -309,7 +327,7 @@
                         id: this.selected,
                         data: {
                             type: 'freeshotsScored',
-                            value: newValue
+                            value: newValue,
                         }
                     })
                 },
@@ -324,11 +342,56 @@
                         });
                         this.$.setField.generateRequest();
                     }
+                    var players1 = this.$.getGame.lastResponse.players1;
+                    var players2 = this.$.getGame.lastResponse.players2;
+                    var team;
+                    var newVal;
+                    var ezApp = document.querySelector("ez-app");
+                    var canvas = ezApp.$.canv;
+                    for (var pl in players1) {
+                        if (this.selected == players1[pl]._id) {
+                            team = "team1";
+                        }
+                    }
+                    for (var pl in players2) {
+                        if (this.selected == players2[pl]._id) {
+                            team = "team2";
+                        }
+                    }
+                    if (team == "team1") {
+                        newVal = parseInt(canvas.$.team1score.innerHTML) - 1;
+                        canvas.$.team1score.innerHTML = newVal
+                        this.$.setGame.body = JSON.stringify({
+                            team1score: newVal
+                        })
+                        socket.emit("update-score", {
+                            id: this.selected,
+                            data: {
+                                type: 'team1score',
+                                value: newVal
+                            }
+                        })
+                    }
+                    else if (team == "team2") {
+                        newVal = parseInt(canvas.$.team2score.innerHTML) - 1;
+                        canvas.$.team2score.innerHTML = newVal
+                        this.$.setGame.body = JSON.stringify({
+                            team2score: newVal
+                        })
+                        socket.emit("update-score", {
+                            id: this.selected,
+                            data: {
+                                type: 'team2score',
+                                value: newVal
+                            }
+                        })
+                    }
+                    this.$.setGame.generateRequest();
                     socket.emit("player-update-stat", {
                         id: this.selected,
                         data: {
                             type: 'freeshotsScored',
-                            value: newValue
+                            value: newValue,
                         }
                     })
                 }
