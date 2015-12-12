@@ -20,8 +20,9 @@
             .text {
                 position: relative;
                 top: 0.5em;
-                width: 15em;
-                padding-left: 1em;
+                /*width: 15em;*/
+                /*font-size:0.9em;*/
+                /*padding-left: 10em;*/
             }
 
             .secondary {
@@ -44,7 +45,7 @@
             }
 
             .statsButton > * {
-                pointer-events:none;
+                pointer-events: none;
             }
 
             paper-item {
@@ -60,13 +61,21 @@
             }
 
             .inline-container {
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
-                max-width: 55vw !important;
+                /*display: -webkit-box;*/
+                /*display: -moz-box;*/
+                /*display: -ms-flexbox;*/
+                /*display: flex;*/
+                /*flex-wrap: wrap;*/
+                /*justify-content: space-between;*/
+                /*max-width: 55vw !important;*/
+            }
+
+            .statsRow {
+                display: block;
+            }
+
+            .minus {
+                margin-left: 2vw;
             }
 
         </style>
@@ -105,90 +114,99 @@
         </iron-ajax>
 
         <p id="selectPlayer" style="display: none">[[selected]]</p>
+
         <div class="stats-container">
             <div class="inline-container">
+                <div class="statsRow">
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text noEvent">
-                        <div id="assists" class="noEvent">{{player.assists}}</div>
-                        <div class="secondary noEvent">Assists</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="succesfulPasses">{{player.succesfulPasses}}</div>
+                            <div class="secondary">O Passes</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="succesfulPasses">{{player.succesfulPasses}}</div>
-                        <div class="secondary">O Passes</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="recoveredBalls">{{player.recoveredBalls}}</div>
+                            <div class="secondary">O Balls</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="failedPasses">{{player.failedPasses}}</div>
-                        <div class="secondary">X Passes</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtractFreeshotsScored">-
+                    </paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton"
+                                  on-click="_addFreeshotsScored">
+                        <div class="text">
+                            <div id="freeshotsScored">{{player.freeshotsScored}}</div>
+                            <div class="secondary">O Freeshots</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="lostBalls">{{player.lostBalls}}</div>
-                        <div class="secondary">X Balls</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text noEvent">
+                            <div id="assists" class="noEvent">{{player.assists}}</div>
+                            <div class="secondary noEvent">Assists</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="recoveredBalls">{{player.recoveredBalls}}</div>
-                        <div class="secondary">O Balls</div>
-                    </div>
-                </paper-button>
+                </div>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtractFreeshotsScored">-
-                </paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton"
-                              on-click="_addFreeshotsScored">
-                    <div class="text">
-                        <div id="freeshotsScored">{{player.freeshotsScored}}</div>
-                        <div class="secondary">O Freeshots</div>
-                    </div>
-                </paper-button>
+                <div class="statsRow">
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="failedPasses">{{player.failedPasses}}</div>
+                            <div class="secondary">X Passes</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="freeshotsMissed">{{player.freeshotsMissed}}</div>
-                        <div class="secondary">X Freeshots</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="lostBalls">{{player.lostBalls}}</div>
+                            <div class="secondary">X Balls</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="fouls">{{player.fouls}}</div>
-                        <div class="secondary">fouls</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="freeshotsMissed">{{player.freeshotsMissed}}</div>
+                            <div class="secondary">X Freeshots</div>
+                        </div>
+                    </paper-button>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="technicalFouls">{{player.technicalFouls}}</div>
-                        <div class="secondary">Technical Fouls</div>
-                    </div>
-                </paper-button>
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="fouls">{{player.fouls}}</div>
+                            <div class="secondary">fouls</div>
+                        </div>
+                    </paper-button>
+                </div>
 
-                <paper-button disabled="{{disabled}}" class="button" on-click="_subtract">-</paper-button>
-                <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
-                    <div class="text">
-                        <div id="unsportsmanshipFouls">{{player.unsportsmanshipFouls}}</div>
-                        <div class="secondary">Unsportsmanship Fouls</div>
-                    </div>
-                </paper-button>
+                <div class="statsRow">
+
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="technicalFouls">{{player.technicalFouls}}</div>
+                            <div class="secondary">Technical Fouls</div>
+                        </div>
+                    </paper-button>
+
+                    <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
+                    <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
+                        <div class="text">
+                            <div id="unsportsmanshipFouls">{{player.unsportsmanshipFouls}}</div>
+                            <div class="secondary">Unsportsmanship Fouls</div>
+                        </div>
+                    </paper-button>
+                </div>
             </div>
         </div>
     </template>
@@ -260,6 +278,7 @@
 
                 _addFreeshotsScored: function (evt) {
                     var el = evt.target.childNodes[1].childNodes[1];
+                    console.log("dio")
                     var newValue = parseInt(el.innerHTML) + 1;
                     el.innerHTML = newValue;
                     this.$.setField.body = JSON.stringify({
@@ -283,6 +302,8 @@
                         }
                     }
                     if (team == "team1") {
+                        console.log("superdio")
+                        console.log()
                         this.$.setGame.body = JSON.stringify({
                             team1score: team1score += 1
                         })
