@@ -245,24 +245,24 @@
                             this.stage = new createjs.Stage(canvas);
                             var rect = new createjs.Shape();
 
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").drawRect(0, 0, field.width, field.height);
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").drawRect(0, 0, field.width, field.height);
                             rect.graphics.setStrokeStyle(2).mt(field.width / 2, 0).lt(field.width / 2, field.height);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").arc(field.width / 2, field.height / 2, field.radius, 0, Math.PI * 2);
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").
                             drawRect(0, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").
                             drawRect(field.width - field.smallAreaWidth, field.height / 2 - (field.smallAreaHeight / 2), field.smallAreaWidth, field.smallAreaHeight);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").arc(field.smallAreaWidth, field.height / 2, field.radius, Math.PI * 3 / 2, Math.PI / 2);
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").arc(field.width - field.smallAreaWidth, field.height / 2, field.radius, -Math.PI * 3 / 2, -Math.PI / 2);
                             // left side trey
                             rect.graphics.setStrokeStyle(2).mt(0, field.treyFromBorder).lt(field.treyLength, field.treyFromBorder);
                             rect.graphics.setStrokeStyle(2).mt(0, field.height - field.treyFromBorder).lt(field.treyLength, field.height - field.treyFromBorder);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").
                             arc(field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI * 3 / 1.843, Math.PI / 2.688);
                             // right side trey
                             rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.treyFromBorder).lt(field.width, field.treyFromBorder);
                             rect.graphics.setStrokeStyle(2).mt(field.width - field.treyLength, field.height - field.treyFromBorder).lt(field.width, field.height - field.treyFromBorder);
-                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1)").
+                            rect.graphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4)").
                             arc(field.width - field.basketFromBorder, field.height / 2, field.treyRadius, Math.PI - Math.PI / 2.688, Math.PI - Math.PI * 3 / 1.843);
 
                             var rectangleGraphics = new createjs.Graphics();
@@ -377,7 +377,7 @@
                         },
                         drawHit: function (x, y) {
                             var hitGraphics = new createjs.Graphics();
-                            hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
+                            hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4").drawCircle(x, y, 10);
                             var hitShape = new createjs.Shape(hitGraphics);
                             if (this.selected != "" && this.shotsObj[this.selected] == undefined) {
                                 this.shotsObj[this.selected] = []
@@ -397,7 +397,7 @@
 
                         drawMiss: function (x,y) {
                             var missGraphics = new createjs.Graphics();
-                            missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
+                            missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                             var missShape = new createjs.Shape(missGraphics)
                             if (this.selected != "" && this.shotsObj[this.selected] == undefined) {
                                 this.shotsObj[this.selected] = []
@@ -421,13 +421,13 @@
         ();
 
         function drawHitAndMiss(success, x, y, stage, player, shotsObj) {
-            var field = measures()
+            var field = measures();
             if (success != undefined && x != undefined && y != undefined) {
                 x = Number(x) * field.width;
                 y = Number(y) * field.height;
                 if (success) {
                     var missGraphics = new createjs.Graphics();
-                    missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").drawCircle(x, y, 10);
+                    missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4").drawCircle(x, y, 10);
                     var missShape = new createjs.Shape(missGraphics)
                     stage.addChild(missShape);
                     stage.update();
@@ -438,7 +438,7 @@
                 }
                 else {
                     var hitGraphics = new createjs.Graphics();
-                    hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,1").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
+                    hitGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                     var hitShape = new createjs.Shape(hitGraphics)
                     stage.addChild(hitShape)
                     stage.update();
