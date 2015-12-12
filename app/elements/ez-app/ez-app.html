@@ -36,8 +36,6 @@
 <script type="text/javascript" src="../../js/utils.js"></script>
 
 <!-- stuff for easel, drawing canvas -->
-<script src="easeljs-0.8.1.min.js"></script>
-<script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
 <script type="text/javascript" src="../../js/Chart.js"></script>
 
@@ -255,6 +253,31 @@
                 box-sizing: border-box;
 
              }
+
+            .info {
+                width: 50%;
+                height: 11vh;
+            }
+
+            .canv {
+                float: right;
+                max-width: 50%;
+                height: 11vh;
+            }
+
+            .description {
+                /*display: table;*/
+                height: 11vh;
+                text-align: center;
+                float: left;
+                width: 50%;
+            }
+
+            .mySpan {
+                padding-top: 5vh;
+                display: absolute;
+                font-size: 12px;
+            }
         </style>
         <iron-ajax
                 id="getPlayers"
@@ -590,6 +613,8 @@
                 },
 
                 _activateButtons: function (event, detail) {
+                    this.$.btnStats.disabled = false;
+                    this.$.btnEdit.disabled = false;
                     if (this.game.finished == 0) {
                         this.$.btnHit.disabled = false;
                         this.$.btnMiss.disabled = false;
@@ -603,7 +628,6 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
-                    console.log("in1")
                     socket.emit("state.changed", this.$.canv.selected);
                 },
 
@@ -626,9 +650,10 @@
                 },
 
                 _notFinished: function (val) {
-                    console.log(val === "0")
                     return val === "0";
                 },
+
+                
 
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
@@ -644,6 +669,8 @@
                 },
 
                 _switchToStats: function(){
+
+                    //-------------------------------- PLAYERS STATS ------------------------------------------------------------
 
                     var _countShoots = function(shots) {
                         var tot2Points = 0;
@@ -667,7 +694,7 @@
                         }
                     }
 
-                    var _listPlayers = function(here){
+                    var _listPlayers = function(here, gamePlayers){
                         var pages = here.my_iron_pages;
                         pages.selectNext();
 
@@ -688,7 +715,6 @@
                             firstNameTag.setAttribute("class","cell");
 
                             var pointsTag = document.createElement("span");
-                            console.log(rawData);
                             pointsTag.innerHTML = rawData.hit2Points * 2 + rawData.hit3Points * 3;
                             pointsTag.setAttribute("class","cell");
 
@@ -713,8 +739,6 @@
                         var counter = 0;
                         for(var i = 0; i < children.length; i++){
                             if(children[i].nodeName == "CANVAS"){
-                                console.log(children[i]);
-                                console.log(data[counter]);
                                 var ctx = children[i].getContext("2d");
                                 var myPieChart = new Chart(ctx).Pie(data[counter]);
                                 counter++;
@@ -722,42 +746,157 @@
                         }
                     }
 
+                    //-------------------------------- END OF PLAYER STATS ------------------------------------------------------------
+
+                    //-------------------------------- TEAM STATS ------------------------------------------------------------
+
+                    //Get the 2 points field percentage (represented as a number from 0.00 to 1.00) 
+                    //from a list of players
+                    var field2Percentage = function(players){
+                        var attempts = 0, success = 0;
+                        for(var i = 0; i < players.length; i++){
+                            for(var j = 0; j < players[i].shots; j++){
+                                var coordinate = players[i][j];
+                                if(coordinate.two_points){
+                                    if(coordinate.success) success++;
+                                    attempts++;
+                                }
+                            }
+                        }
+
+                        if(attempts === 0) return 0
+                        else return (success / attempts);
+                    }
+
+                    //Get the 3 points field percentage (represented as a number from 0.00 to 1.00) 
+                    //from a list of players
+                    var field3Percentage = function(players){
+                        var attempts = 0, success = 0;
+                        for(var i = 0; i < players.length; i++){
+                            for(var j = 0; j < players[i].shots; j++){
+                                var coordinate = players[i][j];
+                                if(!coordinate.two_points){
+                                    if(coordinate.success) success++;
+                                    attempts++;
+                                }
+                            }
+                        }
+
+                        if(attempts === 0) return 0
+                        else return (success / attempts);
+                    }
+
+                    //Get the free throws field percentage (represented as a number from 0.00 to 1.00) 
+                    //from a list of players
+                    var freethrowPercentage = function(players){
+                        var missed = 0, scored = 0;
+                        for(var i = 0; i < players.length; i++){
+                            scored += players[i].freeshotsScored;
+                            missed += players[i].freeshotsMissed;
+                        }
+
+                        if(scored + missed === 0) return 0;
+                        else return scored / (missed + scored);
+                    }
+
+                    var _teamsHistograms = function(here){
+                        var statSection = here.statSection;
+
+                        //Get the data
+                        var players1 = here.getGame.lastResponse.players1;                  //ERROR the shoots data are not there at the moment!!!
+                        console.log("players1 : ", players1);                               //ERROR the shoots data are not there at the moment!!!
+                        console.log("players2 : ", players2);                               //ERROR the shoots data are not there at the moment!!!
+                        var players2 = here.getGame.lastResponse.players2;                  //ERROR the shoots data are not there at the moment!!!
+                        var data = {
+                            labels : ["FG %", "3FG %", "FT %"],
+                            datasets: [
+                                {
+                                    // data: [field2Percentage(players1), field3Percentage(players1), freethrowPercentage(players1)]
+                                    data: [12, 20, 10],
+                                    fillColor: "rgba(220,220,220,0.5)",
+                                    strokeColor: "rgba(220,220,220,0.8)",
+                                    highlightFill: "rgba(220,220,220,0.75)",
+                                    highlightStroke: "rgba(220,220,220,1)",
+                                },
+                                {
+                                    // data: [field2Percentage(players2), field3Percentage(players2), freethrowPercentage(players2)]
+                                    data: [7,18, 8],
+                                    fillColor: "rgba(151,187,205,0.5)",
+                                    strokeColor: "rgba(151,187,205,0.8)",
+                                    highlightFill: "rgba(151,187,205,0.75)",
+                                    highlightStroke: "rgba(151,187,205,1)",
+                                }
+                            ]
+                        }
+
+                        //Create the elements
+                        var statSection = here.statSection;
+
+                        var canvasTag = document.createElement("canvas");
+                        canvasTag.style.width = 600px;
+                        canvsTag.style.height = 300px;
+
+                        statSection.appendChild(canvasTag);
+
+                        //Plot the graph
+                        var ctx = canvasTag.getContext("2d");
+                        var myBarChart = new Chart(ctx).Bar(data);
+                    }
+
+                    //------------------------------------------ END OF TEAM STATS ------------------------------------------------------------
+
+                    var _listTeams = function(here){
+                        var statSection = here.statSection;
+
+                        var row = document.createElement("div");
+                        row.setAttribute("class", "info");
+
+                        var description = document.createElement("div");
+                        description.setAttribute("class", "description");
+
+                        var span = document.createElement("span");
+                        span.innerHTML = "Attemped 2 points shots for team";
+                        span.setAttribute("class", "mySpan");
+                        description.appendChild(span);
+
+                        var canvasTag = document.createElement("canvas");
+                        canvasTag.setAttribute("id", "canvasAttemptedShots");
+                        canvasTag.setAttribute("class", "canv");
+
+                        var team1Shots = [];
+                        var team1 = here.getGame.lastResponse.players1;
+                        for(var i = 0; i < team1.length; i++){
+                            team1Shots.push(team1[i].shots);
+                        }
+                        var attempted1Shots = _countShoots(team1Shots);
+
+                        var team2Shots = [];
+                        var team2 = here.getGame.lastResponse.players2;
+                        for(var i = 0; i < team2.length; i++){
+                            team2Shots.push(team2[i].shots);
+                        }
+                        var attempted2Shots = _countShoots(team2Shots);
+
+                        statSection.appendChild(row);
+                        row.appendChild(description);
+                        row.appendChild(canvasTag);
+                        var tempData = [{
+                            value: attempted1Shots.tot2Points + 15,
+                            color: "#FF0000",
+                            label: "Team 1"
+                        },{
+                            value: attempted2Shots.tot2Points + 5,
+                            color: "#00FF00",
+                            label: "Team 2"
+                        }]
+                        var ctx = canvasTag.getContext("2d");
+                        var myPieChart = new Chart(ctx).Pie(tempData);
+                    }
+
                     _listPlayers(this.$);
-                    var statSection = this.$.statSection;
-                    var canvasTag = document.createElement("canvas");
-                    canvasTag.setAttribute("id", "canvasAttemptedShots");
-
-                    var description = document.createElement("div");
-                    description.innerHTML = "Attemped shots for team";
-
-                    var team1Shots = [];
-                    var team1 = this.$.getGame.lastResponse.team1;
-                    for(var i = 0; i < team1.length; i++){
-                        team1Shots.push(team1[i].shots);
-                    }
-                    var attempted1Shots = _countShoots(team1Shots);
-
-                    var team2Shots = [];
-                    var team2 = this.$.getGame.lastResponse.team1;
-                    for(var i = 0; i < team2.length; i++){
-                        team2Shots.push(team2[i].shots);
-                    }
-                    var attempted2Shots = _countShoots(team2Shots);
-
-                    statSection.appendChild(description);
-                    statSection.appendChild(canvasTag);
-                    var tempData = [{
-                        value: attempted1Shots.tot2Points + 15,
-                        color: "#FF0000",
-                        label: "Team 1"
-                    },{
-                        value: attempted2Shots.tot2Points + 5,
-                        color: "#00FF00",
-                        label: "Team 2"
-                    }]
-                    // console.log("data[0]", tempData);
-                    var ctx = canvasTag.getContext("2d");
-                    var myPieChart = new Chart(ctx).Pie(tempData);
+                    //_listTeams(this.$);
+                    _teamsHistograms(this.$);
+                    
                 }
 
 
