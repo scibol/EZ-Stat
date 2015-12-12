@@ -20,9 +20,6 @@
             .text {
                 position: relative;
                 top: 0.5em;
-                /*width: 15em;*/
-                /*font-size:0.9em;*/
-                /*padding-left: 10em;*/
             }
 
             .secondary {
@@ -60,15 +57,15 @@
                 background: rgba(0, 0, 0, 0.2);
             }
 
-            .inline-container {
-                /*display: -webkit-box;*/
-                /*display: -moz-box;*/
-                /*display: -ms-flexbox;*/
-                /*display: flex;*/
-                /*flex-wrap: wrap;*/
-                /*justify-content: space-between;*/
-                /*max-width: 55vw !important;*/
-            }
+            /*.inline-container {*/
+                /*/!*display: -webkit-box;*!/*/
+                /*/!*display: -moz-box;*!/*/
+                /*/!*display: -ms-flexbox;*!/*/
+                /*/!*display: flex;*!/*/
+                /*/!*flex-wrap: wrap;*!/*/
+                /*/!*justify-content: space-between;*!/*/
+                /*/!*max-width: 55vw !important;*!/*/
+            /*}*/
 
             .statsRow {
                 display: block;
@@ -112,8 +109,6 @@
                 method="PUT"
                 timeout="1000">
         </iron-ajax>
-
-        <p id="selectPlayer" style="display: none">[[selected]]</p>
 
         <div class="stats-container">
             <div class="inline-container">
@@ -190,7 +185,6 @@
                 </div>
 
                 <div class="statsRow">
-
                     <paper-button disabled="{{disabled}}" class="button minus" on-click="_subtract">-</paper-button>
                     <paper-button noink disabled="{{disabled}}" class="statsButton" on-click="_add">
                         <div class="text">
@@ -278,7 +272,6 @@
 
                 _addFreeshotsScored: function (evt) {
                     var el = evt.target.childNodes[1].childNodes[1];
-                    console.log("dio")
                     var newValue = parseInt(el.innerHTML) + 1;
                     el.innerHTML = newValue;
                     this.$.setField.body = JSON.stringify({
@@ -302,8 +295,6 @@
                         }
                     }
                     if (team == "team1") {
-                        console.log("superdio")
-                        console.log()
                         this.$.setGame.body = JSON.stringify({
                             team1score: team1score += 1
                         })

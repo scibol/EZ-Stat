@@ -1,6 +1,5 @@
 <link rel="import" href="../../components/polymer/polymer.html">
 
-<!-- build:remove -->
 <link rel="import" href="../../components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../components/iron-flex-layout/classes/iron-flex-layout.html">
 <link rel="import" href="../../components/iron-flex-layout/iron-flex-layout.html">
@@ -25,18 +24,12 @@
 
 <link rel="import" href="../routing.html">
 
-<link rel="import" href="../ez-team1/ez-team1.html">
-<link rel="import" href="../ez-team2/ez-team2.html">
+<link rel="import" href="../ez-team/ez-team.html">
 
 <link rel="import" href="../ez-stat-counter/ez-stat-counter.html">
 <link rel="import" href="../ez-menu-item/ez-menu-item.html">
 <link rel="import" href="../ez-canvas/ez-canvas.html">
 
-
-<!-- /build -->
-
-<!-- the following script can help you formatting the dates -->
-<script type="text/javascript" src="../../js/utils.js"></script>
 
 <!-- stuff for easel, drawing canvas -->
 <script src="easeljs-0.8.1.min.js"></script>
@@ -46,8 +39,6 @@
 
 <dom-module id="ez-app">
     <template>
-
-        <!-- build:remove -->
 
         <style include="shared-styles">
             :host {
@@ -63,50 +54,6 @@
                 background-color: rgba(0, 0, 0, 0.1);
             }
 
-
-
-
-            /*@media all and (device-width: 768px) and (device-height: 1024px) and (orientation: portrait) {*/
-                /*.foo {*/
-                    /*height: 1024px;*/
-                /*}*/
-            /*}*/
-
-            /*/!***/
-             /** iPad with landscape orientation.*/
-             /**!/*/
-            /*@media all and (device-width: 768px) and (device-height: 1024px) and (orientation: landscape) {*/
-                /*.foo {*/
-                    /*height: 768px;*/
-                /*}*/
-            /*}*/
-
-            /*Style of the paper-input*/
-            paper-input.inputPapers {
-                /* Label and underline color when the input is not focused */
-                --paper-input-container-color: green;
-                /* Label and underline color when the input is focused */
-                --paper-input-container-focus-color: green;
-                /* Label and underline color when the input is invalid */
-                --paper-input-container-invalid-color: green;
-                /* Input foreground color */
-                --paper-input-container-input-color: green;
-
-                width: 200px;
-            }
-
-            paper-input.searchPapers {
-                --paper-input-container-color: red;
-                --secondary-text-color: red;
-                --default-primary-color: red;
-                --text-primary-color: red;
-                --text-secondary-color: red;
-                --primary-text-color: red;
-                --paper-menu-background-color: red;
-                --primary-background-color: red;
-                background-color: red;
-            }
-
             paper-item {
                 --paper-item-selected-weight: normal;
             }
@@ -115,13 +62,9 @@
                 --paper-button-selected-weight: normal;
             }
 
-
             paper-menu {
                 padding: 0;
             }
-
-            /*paper-listbox {*/
-                /*-}*/
 
             a:hover {
                 text-underline: none;
@@ -136,8 +79,6 @@
                 top: 64px;
                 bottom: 0;
                 left: 0;
-                /*padding-top: 64px;*/
-                /*height:100vh;*/
             }
 
             .makeFlex {
@@ -175,7 +116,6 @@
 
             .main-nav {
                 width: 20vw;
-                /*height: 92vh;*/
                 background: #2A2C2B;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
@@ -199,15 +139,6 @@
                 transition: all 0.2s;
             }
 
-            .max-height {
-                max-height: 70vh;
-                overflow-y: scroll;
-            }
-
-            #search {
-                background-color: #2A2C2B;
-            }
-
             .header {
                 box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
             }
@@ -220,44 +151,33 @@
                 margin-left: 37.5%;
                 background-color: white;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-                z-index:1000;
+                z-index: 1000;
                 display: none;
             }
 
             .dialog {
                 padding-left: 2.5em;
             }
-
-            @media (min-width: 841px) {
-                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item .nav-menu {
-                    display: none;
-                }
-
-                #main-menu-toggle-label, #main-menu-toggle, .mm-user-item {
-                    display: none;
-                }
-            }
-
-            #boxInputs {
-                border: solid;
-                width: 300px;
-            }
-
         </style>
+
         <iron-ajax
                 id="getPlayers"
                 auto
                 url="/players"
                 handle-as="json"
                 last-response="{{players}}"
-                debounce-duration="300"></iron-ajax>
+                debounce-duration="300">
+
+        </iron-ajax>
 
         <iron-ajax id="getGames"
                    auto
                    url="/games"
                    handle-as="json"
                    last-response="{{games}}"
-                   debounce-duration="300"></iron-ajax>
+                   debounce-duration="300">
+
+        </iron-ajax>
 
         <iron-ajax
                 id="newGame"
@@ -294,7 +214,6 @@
                     <paper-menu class="dropdown-content">
                         <template is="dom-repeat" items="{{games}}" as="game">
                             <ez-menu-item editable href$="/games/{{game._id}}" value="{{game.name}}">
-                            <!--<ez-menu-item editable href$="/" value="{{game.name}}">-->
                             </ez-menu-item>
                         </template>
 
@@ -322,7 +241,8 @@
             </paper-toolbar>
             <div id="dialogContainer" class="makeFlex">
                 <p>Are you sure?</p>
-                <paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation" entry-animation="fade-out-animation">
+                <paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"
+                              entry-animation="fade-out-animation">
                     <paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>
                     <paper-button dialog-confirm on-click="_endGame">Accept</paper-button>
                 </paper-dialog>
@@ -360,16 +280,18 @@
                         <div started="0">
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav">
-                                    <ez-team1 game="{{game}}" editable></ez-team1>
+                                    <ez-team game="{{game}}" players="{{game.players1}}" team="team1"
+                                             name="{{game.team1}}"></ez-team>
                                 </nav>
                                 <div class="content flex main-content fill-width">
-                                    <paper-input id="gameName" label="Game Name" on-focus="_onFocus"
+                                    <paper-input id="gameName" label="Game Name"
                                                  on-blur="_loseFocus"
                                                  value="{{game.name}}"></paper-input>
                                     <paper-button on-click="_startGame">start game</paper-button>
                                 </div>
                                 <nav class="main-nav-float main-nav">
-                                    <ez-team2 game="{{game}}" editable></ez-team2>
+                                    <ez-team game="{{game}}" players="{{game.players2}}" team="team2"
+                                             name="{{game.team2}}"></ez-team>
                                 </nav>
                             </div>
                         </div>
@@ -430,24 +352,14 @@
                                 </nav>
                             </div>
                         </div>
-
-                        <!--&lt;!&ndash;game finished&ndash;&gt;-->
-                        <!--<div state="2">-->
-                        <!--done-->
-                        <!--</div>-->
-
                     </iron-pages>
-
                 </div>
-
             </iron-pages>
-
         </paper-header-panel>
 
         <paper-toast id="toast">
             <span class="toast-hide-button" role="button" tabindex="0" onclick="ezApp.$.toast.hide()">Ok</span>
         </paper-toast>
-        <!-- /build -->
     </template>
 
     <script>
@@ -456,9 +368,6 @@
 
             Polymer({
                 is: 'ez-app',
-
-                //
-                <!-- build:remove -->
                 properties: {
                     selected: {
                         type: String,
@@ -475,12 +384,7 @@
                     game: {
                         type: Object,
                         notify: true
-                    },
-
-                },
-
-                _onFocus: function () {
-
+                    }
                 },
 
                 _loseFocus: function () {
@@ -500,36 +404,12 @@
                     this.$.getGames.generateRequest();
                 },
 
-                _createPlayer: function (event, detail) {
-                    this.$.createPlayer.body = JSON.stringify({
-                        "firstName": this.$.firstname.value,
-                        "lastName": this.$.lastname.value,
-                        "team": this.$.team.value
-                    });
-
-                    this.$.setGame.body = JSON.stringify({
-                        "firstName": this.$.firstname.value,
-                        "lastName": this.$.lastname.value,
-                        "team": this.$.team.value
-                    });
-                    this.$.createPlayer.generateRequest();
-                    this.$.setGame.generateRequest();
-                },
-
-                _setTeam: function () {
-                    this.$.setTeam.body = JSON.stringify({
-                        "team1": this.$.teamname1.value
-                    })
-                    this.$.setTeam.generateRequest()
-                },
-
                 _gameItem: function (event, detail) {
                     event.preventDefault();
                 },
 
                 _setSuccess: function (event, detail) {
                     if (this.$.canv.hit != "hit") {
-                        console.log("era diverso")
                         this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
                         this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
                         this.$.canv.hit = "hit";
@@ -540,7 +420,7 @@
                     this.$.canv.selected = "team1"
                 },
 
-                _setSelectedTeam2: function() {
+                _setSelectedTeam2: function () {
                     this.$.canv.selected = "team2"
                 },
 
@@ -600,32 +480,16 @@
 
                 _setFail: function (event, detail) {
                     if (this.$.canv.hit != "fail") {
-                        console.log("era diverso");
                         this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
                         this.$.btnMiss.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
                         this.$.canv.hit = "fail"
                     }
                 },
 
-                _finished: function (val) {
-                    return val === "1";
-                },
-
-                _notFinished: function (val) {
-                    console.log(val === "0")
-                    return val === "0";
-                },
-
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
                     this.game = {};
                     page.show("/");
-                    console.log(this.game.started)
-                },
-
-                _inProgress: function (started, finished) {
-                    console.log(started == "1" && finished == "0");
-                    return started == "1" && finished == "0";
                 },
 
                 ready: function () {
