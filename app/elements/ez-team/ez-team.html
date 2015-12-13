@@ -1,0 +1,217 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+
+<link rel="import" href="../../components/paper-input/paper-input.html">
+<link rel="import" href="../../components/iron-icon/iron-icon.html">
+<link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/image-icons.html">
+
+<dom-module id="ez-team">
+    <template>
+
+        <style>
+            :host {
+                display: block;
+                -webkit-transition: background 0.3s, box-shadow 0.3s;
+                -moz-transition: background 0.3s, box-shadow 0.3s;
+                transition: background 0.3s, box-shadow 0.3s;
+                --text-primary-color: rgba(42, 42, 42, 0.8);
+                --text-secondary-color: rgba(32, 32, 32, 0.8);
+                --primary-text-color: #3e3e3e;
+                --paper-input-container-color: #3e3e3e;
+                --primary-background-color: rgba(0,0,0,0);
+            }
+
+            paper-item {
+                --paper-item-selected-weight: normal;
+                box-shadow: 0 6px 4px -8px black;
+                color: #3e3e3e;
+            }
+
+            .iron-selected {
+                background: rgba(0,0,0,0);
+            }
+
+            paper-button {
+                --paper-button-selected-weight: normal;
+            }
+
+            #textVal {
+                padding-left: 1em;
+                padding-top: 1.15em;
+                display: inline-block;
+                outline: none;
+                text-decoration: none;
+                font-size: 17px;
+                color: #3e3e3e;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            iron-icon {
+                padding: 0 20px;
+            }
+
+            #teamInput {
+                display: inline-block;
+                padding-left:1em;
+            }
+
+            .editBtn {
+                border-radius: 25px;
+                visibility: visible;
+                z-index: 10;
+                line-height: 1;
+                transition: all 0.2s;
+            }
+
+            .editBtn:hover {
+                background-color: #28435a;
+                color: #fff;
+            }
+
+            :host(:hover) .editBtn {
+                visibility: visible;
+            }
+
+            #editInput {
+                line-height: 1;
+                padding-left: 12px;
+            }
+
+            ez-team {
+
+            }
+
+            #inputContainer {
+                display: none;
+            }
+
+        </style>
+
+        <iron-ajax
+                id="setGame"
+                url="/games/[[game._id]]"
+                handle-as="json"
+                content-type="application/json"
+                method="PUT"
+                on-response="_makeGet"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <iron-ajax
+                id="createPlayer"
+                url="/players"
+                handle-as="json"
+                content-type="application/json"
+                method="POST"
+                debounce-duration="3000">
+        </iron-ajax>
+
+        <paper-input id="teamInput" label="Team name" on-blur="_loseFocus" value="{{name}}"></paper-input>
+        <paper-listbox selectedItem>
+
+            <template is="dom-repeat" items="{{players}}" as="player">
+                <paper-item id="{{player._id}}">{{player.firstName}}
+                    {{player.lastName}}
+                </paper-item>
+            </template>
+        </paper-listbox>
+
+        <div id="textVal">Player...</div>
+        <paper-input-container id="inputContainer" always-float-label>
+            <label>Player name</label>
+            <input is="iron-input" id="editInput" value="">
+            <paper-input-error>Surname is required</paper-input-error>
+        </paper-input-container>
+
+        <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped"></paper-icon-button>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-team',
+
+                properties: {
+                    href: String,
+                    team: String,
+                    name: String,
+                    players: String,
+                    icon: String,
+                    game: Object
+                },
+
+                _loseFocus: function () {
+                    var req = {};
+                    req[this.team] = this.$.teamInput.value;
+                    this.$.setGame.body = JSON.stringify(req);
+                    this.$.setGame.generateRequest();
+                },
+
+                _editTapped: function (event, detail) {
+                    if (event.target.icon == "icons:add") {
+                        this.$.textVal.style.display = "none";
+                        this.$$('#inputContainer').style.display = "inline-block";
+                        event.target.icon = "icons:save";
+                    } else {
+                        var input = this.$.editInput.value.split(" ");
+                        var filteredInput = input.filter(function(str){return str!==''});
+                        if(filteredInput.length < 2) {
+                            this.$.inputContainer.invalid = true;
+                        }
+                        else {
+                            this.$.inputContainer.invalid = true;
+                            this._onBlur();
+                            event.target.icon = "icons:add";
+                        }
+                    }
+                },
+
+                _onBlur: function () {
+                    this.$.textVal.style.display = "inline-block";
+                    this.$$('#inputContainer').style.display = "none";
+                    this.$.inputContainer.invalid = false;
+                    var first = this.$.editInput.value.split(" ")[0];
+                    var last = this.$.editInput.value.split(" ")[1];
+                    this.$.editInput.value = "";
+                    if (first && last) {
+                        console.log("in")
+                        this.$.createPlayer.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": this.$.teamInput.value
+                        });
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": last,
+                            "team": this.$.teamInput.value
+                        });
+                        this.$.createPlayer.generateRequest();
+                        this.$.setGame.generateRequest();
+                    }
+
+                    else if (isNumber(first) && !last) {
+                        this.$.setGame.body = JSON.stringify({
+                            "firstName": first,
+                            "lastName": "",
+                            "team": this.$.teamInput.value
+                        });
+                        this.$.setGame.generateRequest();
+                    }
+                },
+
+                _makeGet: function () {
+                    var ezApp = document.querySelector("ez-app");
+                    ezApp.$.getGame.generateRequest();
+                }
+
+            });
+            function isNumber(n) {
+                return !isNaN(parseFloat(n)) && isFinite(n);
+            }
+        })();
+    </script>
+
+</dom-module>
