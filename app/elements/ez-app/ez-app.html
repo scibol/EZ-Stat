@@ -522,7 +522,7 @@
 
                                     <!-- Stats -->
                                     <div id="upper_Bar">
-                                    <paper-button id="upStats" class="fx" on-click="buildStats">Update Stats
+                                    <paper-button id="upStats" class="fx" on-click="callTwiceBuildStats">Update Stats
                                     </paper-button>
                                     </div>
                                     <div property="1" id="statSection">
@@ -536,7 +536,7 @@
                                         <span class="cell">STL</span>   
                                         <span class="cell">REB</span>   
                                         <span class="cell">AST</span>   
-                                        <span class="cell">PF</span> 
+                                        <span class="cell">PF</span>
                                     </div>
                                     </div>
                                     <div class="caption">Team statistics</div>
@@ -654,6 +654,13 @@
                     });
                     this.$.setGame.generateRequest();
                     this.$.getGame.generateRequest();
+
+                    localStorage.players1 = JSON.stringify(this.$.getGame.lastResponse.players1);
+                    localStorage.players2 = JSON.stringify(this.$.getGame.lastResponse.players2);
+
+                    console.log("[START-GAME]localStorage.players1 : ", JSON.parse(localStorage.players1));
+                    console.log("[START-GAME]localStorage.players2 : ", JSON.parse(localStorage.players2));
+
                     socket.emit("state.changed", this.$.canv.selected);
                 },
 
@@ -707,11 +714,16 @@
 
                 },
 
-                buildStats: function(){
+                callTwiceBuildStats: function(){
+                    this.buildStats();
+                },
 
-                    console.log("inside function buildStats");
+                buildStats: function(){
+                    console.log("ENTRO")
+                    // console.log("inside function buildStats");
                     this.$.getGame.generateRequest();
-                    console.log(this.$.getGame.lastResponse.players1)
+
+                    this.$.getGame.generateRequest();
 
                     //-------------------------------- PLAYERS STATS ------------------------------------------------------------
 
@@ -728,7 +740,7 @@
                     }
 
                     var _countShoots = function(shots) {
-                        console.log(shots);
+                        // console.log(shots);
                         var tot2Points = 0;
                         var hit2Points = 0;
                         var tot3Points = 0;
@@ -752,21 +764,20 @@
 
                     var _listPlayers = function(here, gamePlayers){
 
+                        // console.log("gamePlayers : ", gamePlayers);
                         var statSection = here.table;
                         var data = [];
 
                         for(var i = 0; i < gamePlayers.length; i++){
 
-                            console.log("BEFORE ",gamePlayers[i].firstName, gamePlayers[i].shots);
-                            gamePlayers[i].shots = deleteDuplicates(gamePlayers[i].shots);
-                            console.log("AFTER",gamePlayers[i].firstName,gamePlayers[i].shots);
+                            console.log("[BEFORE in _listPlayers]",gamePlayers[i].firstName, gamePlayers[i].shots);
+                            // gamePlayers[i].shots = deleteDuplicates(gamePlayers[i].shots);
+                            // gamePlayers[i].shots = gamePlayers[i].shots;
+                            console.log("[AFTER in _listPlayers]",gamePlayers[i].firstName,gamePlayers[i].shots);
 
                             var rawData = _countShoots(gamePlayers[i].shots);
                             data.push([{value: rawData.hit2Points, color: "#F7464A"},
                                 {value: rawData.tot2Points-rawData.hit2Points, color: "#46BFBD"}]);
-
-                            console.log("AFTER", gamePlayers[i].firstName, rawData);
-
 
                             var playerContainer = document.createElement("div");
                             playerContainer.setAttribute("class", "row");
@@ -781,12 +792,12 @@
 
                             var fieldPercentage = document.createElement("span");
                             if(rawData.tot2Points === 0) fieldPercentage.innerHTML = 0;
-                            else fieldPercentage.innerHTML = (rawData.hit2Points / rawData.tot2Points) * 100;
+                            else fieldPercentage.innerHTML = Math.floor((rawData.hit2Points / rawData.tot2Points) * 100 * 100) / 100;
                             fieldPercentage.setAttribute("class","cell");
 
                             var field3Percentage = document.createElement("span");
                             if(rawData.tot3Points === 0) field3Percentage.innerHTML = 0;
-                            else field3Percentage.innerHTML = (rawData.hit3Points / rawData.tot3Points) * 100;
+                            else field3Percentage.innerHTML = Math.floor((rawData.hit3Points / rawData.tot3Points) * 100 * 100) / 100;
                             field3Percentage.setAttribute("class","cell");
 
                             var steals = document.createElement("span");
@@ -975,10 +986,15 @@
                     //delete precedent table
                     var table = this.$.table;
                     while (table.childNodes.length > 2)
-                        table.removeChild(table.lastChild);                    
+                        table.removeChild(table.lastChild);
 
-                    _listPlayers(this.$, this.$.getGame.lastResponse.players1);
-                    _listPlayers(this.$, this.$.getGame.lastResponse.players2);
+                    console.log("[BEFORE in buildStats]localStorage.players1 : ", JSON.parse(localStorage.players1));
+                    console.log("[BEFORE in buildStats]localStorage.players2 : ", JSON.parse(localStorage.players2));                    
+
+                    // _listPlayers(this.$, this.$.getGame.lastResponse.players1);
+                    // _listPlayers(this.$, this.$.getGame.lastResponse.players2);
+                    _listPlayers(this.$, JSON.parse(localStorage.players1));
+                    _listPlayers(this.$, JSON.parse(localStorage.players2));
                     //_listTeams(this.$);
                     _teamsHistograms(this.$);
                     

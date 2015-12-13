@@ -231,12 +231,49 @@
                                 teamAjax.generateRequest();
                             }
 
-                        }
+                        },
 
-                        ,
+                        
 
 
                         attached: function () {
+
+                            var saveShot = function(shot){
+                                console.log("[BEFORE in saveShot]localStorage.players1 : ", JSON.parse(localStorage.players1));
+                                console.log("[BEFORE in saveShot]localStorage.players2 : ", JSON.parse(localStorage.players2));
+
+                                var players1 = JSON.parse(localStorage.players1);
+                                var players2 = JSON.parse(localStorage.players2);
+
+                                    var team = shot.team;
+                                    console.log("shot.team : ", shot.team);
+                                    console.log("shot._id :  ", shot.id);
+                                    if (team == "team1") {
+                                        for(var i = 0; i < players1.length; i++){
+                                            console.log("       ", players1[i]._id);
+                                            if(players1[i]._id === shot.id){
+                                                players1[i].shots.push(shot);
+                                                console.log("ADDED TO PLAYER : ", players1[i].firstName);
+                                            } 
+                                        }
+                                    }
+                                    else if (team == "team2") {
+                                        for(var i = 0; i < players2.length; i++){
+                                            console.log("       ", players2[i]._id);
+                                            if(players2[i]._id === shot.id){
+                                                players2[i].shots.push(shot);
+                                                console.log("ADDED TO PLAYER : ", players2[i].firstName);
+                                            } 
+                                        }
+                                    }
+
+                                localStorage.players1 = JSON.stringify(players1);
+                                localStorage.players2 = JSON.stringify(players2);
+
+                                console.log("[AFTER in saveShot]localStorage.players1 : ", JSON.parse(localStorage.players1));
+                                console.log("[AFTER in saveShot]localStorage.players2 : ", JSON.parse(localStorage.players2));
+                            }
+
                             var thisObj = this;
                             var updatePlayers = this.$.putScore
                             var ironAjax = this.$.shot;
@@ -313,6 +350,14 @@
                                         "success": success,
                                         "two_points": false
                                     });
+                                    saveShot({
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": false
+                                    });
                                     updatePlayers.generateRequest();
                                 }
                             });
@@ -342,6 +387,14 @@
                                         "success": success,
                                         "two_points": true,
                                     });
+                                    saveShot({
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true,
+                                    });
                                     updatePlayers.generateRequest();
 
                                 }
@@ -364,6 +417,14 @@
                                     });
                                     ironAjax.generateRequest();
                                     updatePlayers.body = JSON.stringify({
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
+                                    });
+                                    saveShot({
                                         "id": thisObj.selected,
                                         "team": thisObj.team,
                                         "pos_x": String(e.stageX / field.width),
