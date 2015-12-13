@@ -316,14 +316,14 @@
                     <paper-button on-click="">signout</paper-button>
                 </div>
             </paper-toolbar>
-            <div id="dialogContainer" class="makeFlex">
-                <p>Are you sure?</p>
-                <paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"
-                              entry-animation="fade-out-animation">
-                    <paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>
-                    <paper-button dialog-confirm on-click="_endGame">End the game</paper-button>
-                </paper-dialog>
-            </div>
+            <!--<div id="dialogContainer" class="makeFlex">-->
+                <!--<p>Are you sure?</p>-->
+                <!--<paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"-->
+                              <!--entry-animation="fade-out-animation">-->
+                    <!--<paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>-->
+                    <!--<paper-button dialog-confirm on-click="_endGame">End the game</paper-button>-->
+                <!--</paper-dialog>-->
+            <!--</div>-->
 
 
             <!--iron pages for different views-->
@@ -437,6 +437,14 @@
         <paper-toast id="toast">
             <span class="toast-hide-button" role="button" tabindex="0" onclick="ezApp.$.toast.hide()">Ok</span>
         </paper-toast>
+
+        <paper-toast id="endGameToast" duration="0">
+            <!--<div id="dialogContainer" class="makeFlex">-->
+                <p>Are you sure?</p>
+                    <paper-button on-click="_closeDialog">Cancel</paper-button>
+                    <paper-button on-click="_endGame">End the game</paper-button>
+            <!--</div>-->
+        </paper-toast>
     </template>
 
     <script>
@@ -465,12 +473,9 @@
                 },
 
                 _loseFocus: function () {
-                    console.log(this.game)
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
-//                    this.$.setGame.url = this.game.path;
-                    console.log(this.$.setGame.url)
                     this.$.setGame.generateRequest();
                     this.$.getGames.generateRequest();
                 },
@@ -532,7 +537,7 @@
                 },
 
                 _endGame: function (event, detail) {
-                    this.$.dialogContainer.style.display = "none";
+                    this.$.endGameToast.close();
                     this.$.setGame.body = JSON.stringify({
                         "finished": "1"
                     });
@@ -544,11 +549,11 @@
                 },
 
                 _displayDialog: function (event, detail) {
-                    this.$.dialogContainer.style.display = "inline-block";
+                    this.$.endGameToast.open();
                 },
 
                 _closeDialog: function (event, detail) {
-                    this.$.dialogContainer.style.display = "none";
+                    this.$.endGameToast.close();
                 },
 
                 _setSuccess: function (event, detail) {
