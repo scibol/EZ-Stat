@@ -231,7 +231,6 @@
                 display: none;
             }
 
-<<<<<<< HEAD
             #btnEdit, #btnStats {
                 width: 10em;
                 background-color: rgba(0, 0, 0, 0.1);
@@ -324,10 +323,8 @@
                 padding-top: 5vh;
                 display: absolute;
                 font-size: 12px;
-=======
             .dialog {
                 padding-left: 2.5em;
->>>>>>> master
             }
         </style>
 
@@ -559,15 +556,10 @@
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                     </iron-pages>
 
-<<<<<<< HEAD
-                                </iron-pages>
-                                <nav class="main-nav-float main-nav">
-                                    <paper-item>{{game.team2}}
-=======
+
                                 </div>
                                 <nav class="main-nav-float main-nav right-nav">
                                     <paper-item class="menuItem" on-click="_setSelectedTeam2">{{game.team2}}
->>>>>>> master
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
@@ -709,17 +701,12 @@
                     }
                 },
 
-<<<<<<< HEAD
-                _notFinished: function (val) {
-                    return val === "0";
-=======
                 _setFail: function (event, detail) {
                     if (this.$.canv.hit != "fail") {
                         this.$.btnHit.style.borderBottom = "";
                         this.$.btnMiss.style.borderBottom = "3px solid #009cde";
                         this.$.canv.hit = "fail"
                     }
->>>>>>> master
                 },
 
                 
