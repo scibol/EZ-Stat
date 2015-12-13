@@ -14,11 +14,32 @@
                 -webkit-transition: background 0.3s, box-shadow 0.3s;
                 -moz-transition: background 0.3s, box-shadow 0.3s;
                 transition: background 0.3s, box-shadow 0.3s;
+                --text-primary-color: rgba(42, 42, 42, 0.8);
+                --text-secondary-color: rgba(32, 32, 32, 0.8);
+                --primary-text-color: rgba(37, 37, 37, 0.8);
+                --paper-input-container-color: #13171F;
+                --primary-background-color: rgba(0,0,0,0);
             }
 
             :host(:hover) {
-                background: rgba(0, 0, 0, 0.2);
-                box-shadow: inset 0 -1px rgba(0, 0, 0, 0);
+                /*background: rgba(0, 0, 0, 0.2);*/
+                /*box-shadow: inset 0 -1px rgba(0, 0, 0, 0);*/
+            }
+
+
+            paper-item {
+                --paper-item-selected-weight: normal;
+                /*-webkit-box-shadow: 0 6px 4px -4px black;*/
+                /*-moz-box-shadow: 0 6px 4px -4px black;*/
+                box-shadow:inset 0 -5px 7px -7px rgba(0,0,0,1);
+            }
+
+            .iron-selected {
+                background: rgba(0,0,0,0);
+            }
+
+            paper-button {
+                --paper-button-selected-weight: normal;
             }
 
             #textVal {
@@ -37,19 +58,22 @@
                 padding: 0 20px;
             }
 
-            #test {
+            #teamInput {
                 display: inline-block;
+                padding-left:1em;
             }
 
             .editBtn {
+                border-radius: 25px;
                 visibility: visible;
                 z-index: 10;
                 line-height: 1;
-                color: rgba(255, 255, 255, 0.4);
+                transition: all 0.2s;
             }
 
             .editBtn:hover {
-                color: inherit;
+                background-color: #24262D;
+                color: #eeeeee;
             }
 
             :host(:hover) .editBtn {
@@ -57,10 +81,19 @@
             }
 
             #editInput {
-                display: none;
+                /*display: none;*/
                 line-height: 1;
                 padding-left: 12px;
             }
+
+            ez-team {
+
+            }
+
+            #inputContainer {
+                display: none;
+            }
+
         </style>
 
         <iron-ajax
@@ -82,7 +115,7 @@
                 debounce-duration="3000">
         </iron-ajax>
 
-        <paper-input id="test" label="Team name" on-blur="_loseFocus" value="{{name}}"></paper-input>
+        <paper-input id="teamInput" label="Team name" on-blur="_loseFocus" value="{{name}}"></paper-input>
         <paper-listbox selectedItem>
 
             <template is="dom-repeat" items="{{players}}" as="player">
@@ -93,7 +126,12 @@
         </paper-listbox>
 
         <div id="textVal">Player...</div>
-        <paper-input id="editInput" placeholder="Player..."></paper-input>
+        <paper-input-container id="inputContainer" always-float-label>
+            <label>Player name</label>
+            <input is="iron-input" id="editInput" value="">
+            <paper-input-error>Surname is required</paper-input-error>
+        </paper-input-container>
+
         <paper-icon-button class="editBtn" icon="icons:add" on-tap="_editTapped"></paper-icon-button>
     </template>
 
@@ -115,7 +153,7 @@
 
                 _loseFocus: function () {
                     var req = {};
-                    req[this.team] = this.$.test.value;
+                    req[this.team] = this.$.teamInput.value;
                     this.$.setGame.body = JSON.stringify(req);
                     this.$.setGame.generateRequest();
                 },
@@ -123,29 +161,40 @@
                 _editTapped: function (event, detail) {
                     if (event.target.icon == "icons:add") {
                         this.$.textVal.style.display = "none";
-                        this.$$('#editInput').style.display = "inline-block";
+                        this.$$('#inputContainer').style.display = "inline-block";
                         event.target.icon = "icons:save";
                     } else {
-                        this._onBlur();
-                        event.target.icon = "icons:add";
+                        var input = this.$.editInput.value.split(" ");
+                        var filteredInput = input.filter(function(str){return str!==''});
+                        if(filteredInput.length < 2) {
+                            this.$.inputContainer.invalid = true;
+                        }
+                        else {
+                            this.$.inputContainer.invalid = true;
+                            this._onBlur();
+                            event.target.icon = "icons:add";
+                        }
                     }
                 },
 
                 _onBlur: function () {
                     this.$.textVal.style.display = "inline-block";
-                    this.$$('#editInput').style.display = "none";
+                    this.$$('#inputContainer').style.display = "none";
+                    this.$.inputContainer.invalid = false;
                     var first = this.$.editInput.value.split(" ")[0];
                     var last = this.$.editInput.value.split(" ")[1];
+                    this.$.editInput.value = "";
                     if (first && last) {
+                        console.log("in")
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
-                            "team": this.$.test.value
+                            "team": this.$.teamInput.value
                         });
                         this.$.setGame.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,
-                            "team": this.$.test.value
+                            "team": this.$.teamInput.value
                         });
                         this.$.createPlayer.generateRequest();
                         this.$.setGame.generateRequest();
@@ -155,7 +204,7 @@
                         this.$.setGame.body = JSON.stringify({
                             "firstName": first,
                             "lastName": "",
-                            "team": this.$.test.value
+                            "team": this.$.teamInput.value
                         });
                         this.$.setGame.generateRequest();
                     }
