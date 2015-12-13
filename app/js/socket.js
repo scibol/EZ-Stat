@@ -35,15 +35,14 @@ socket.on("change-state", function (data) {
 
 socket.on("update-score", function (event) {
     var ezApp = document.querySelector("ez-app");
-    var canvas = ezApp.$.canv;
     var players = ezApp.game.players;
     for (var player in players) {
         if (players[player]._id == event.id) {
             if (event.data.type == "team1score") {
-                canvas.$.team1score.innerHTML = event.data.value
+                ezApp.$.team1score.innerHTML = event.data.value
             }
             else if (event.data.type == "team2score") {
-                canvas.$.team2score.innerHTML = event.data.value
+                ezApp.$.team2score.innerHTML = event.data.value
             }
         }
     }
