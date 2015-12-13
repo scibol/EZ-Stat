@@ -443,6 +443,10 @@
                                             <span class="cell">Points</span>
                                             <span class="cell">FG%</span>
                                             <span class="cell">3FG%</span>
+                                            <span class="cell">STL</span>   <!-- Steals -->
+                                            <span class="cell">REB</span>   <!-- Rebounds -->
+                                            <span class="cell">AST</span>   <!-- Assists -->
+                                            <span class="cell">PF</span>   <!-- Personal fouls -->
                                         </div>
                                         </div>
                                         <div class="caption">Team statistics</div>
@@ -728,11 +732,35 @@
                             else field3Percentage.innerHTML = (rawData.hit3Points / rawData.tot3Points) * 100;
                             field3Percentage.setAttribute("class","cell");
 
+                            //---------------------------------------------
+
+                            var steals = document.createElement("span");
+                            steals.innerHTML = gamePlayers[i].failedPasses;
+                            steals.setAttribute("class","cell");
+
+                            var rebounds = document.createElement("span");
+                            rebounds.innerHTML = gamePlayers[i].rebounds;
+                            rebounds.setAttribute("class","cell");
+
+                            var assists = document.createElement("span");
+                            assists.innerHTML = gamePlayers[i].assists;
+                            assists.setAttribute("class","cell");
+
+                            var fouls = document.createElement("span");
+                            fouls.innerHTML = gamePlayers[i].fouls;
+                            fouls.setAttribute("class","cell");
+
+                            //---------------------------------------------
+
                             statSection.appendChild(playerContainer);
                             playerContainer.appendChild(firstNameTag);
                             playerContainer.appendChild(pointsTag);
                             playerContainer.appendChild(fieldPercentage);
                             playerContainer.appendChild(field3Percentage);
+                            playerContainer.appendChild(steals);
+                            playerContainer.appendChild(rebounds);
+                            playerContainer.appendChild(assists);
+                            playerContainer.appendChild(fouls);
                         }
 
                         var children = statSection.children;
@@ -833,8 +861,8 @@
                         var statSection = here.statSection;
 
                         var canvasTag = document.createElement("canvas");
-                        canvasTag.style.width = 600px;
-                        canvsTag.style.height = 300px;
+                        // canvasTag.style.width = 600px;
+                        // canvsTag.style.height = 300px;
 
                         statSection.appendChild(canvasTag);
 

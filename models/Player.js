@@ -37,6 +37,7 @@ var PlayerSchema = new mongoose.Schema(
         freeshotsMissed: {type: Number, default: 0},
         fouls: {type: Number, default: 0},
         technicalFouls: {type: Number, default: 0},
+        rebounds: {type: Number, default: 0},
         unsportsmanshipFouls: {type: Number, default: 0}
     }
 );
