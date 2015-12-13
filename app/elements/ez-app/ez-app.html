@@ -168,8 +168,8 @@
                 width: 18vw;
                 margin-top: 2vh;
                 margin-bottom: 2vh;
-                margin-left:0.7em;
-                margin-right:0.7em;
+                margin-left:1vw;
+                margin-right:1vw;
                 background: #ffffff;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
@@ -465,10 +465,12 @@
                 },
 
                 _loseFocus: function () {
+                    console.log(this.game)
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
-                    this.$.setGame.url = this.game.path;
+//                    this.$.setGame.url = this.game.path;
+                    console.log(this.$.setGame.url)
                     this.$.setGame.generateRequest();
                     this.$.getGames.generateRequest();
                 },
