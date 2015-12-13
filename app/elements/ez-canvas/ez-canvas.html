@@ -313,9 +313,11 @@
                                     });
                                     updatePlayers.generateRequest();
                                 }
+                                console.log("3 PUNTI")
                             });
 
                             twoPointsLeftShape.on("click", function (e) {
+                                console.log("2 PUNTI")
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
@@ -338,7 +340,7 @@
                                         "pos_x": String(e.stageX / field.width),
                                         "pos_y": String(e.stageY / field.height),
                                         "success": success,
-                                        "two_points": false
+                                        "two_points": true
                                     });
                                     updatePlayers.generateRequest();
 
@@ -367,7 +369,7 @@
                                         "pos_x": String(e.stageX / field.width),
                                         "pos_y": String(e.stageY / field.height),
                                         "success": success,
-                                        "two_points": false
+                                        "two_points": true
                                     });
                                     updatePlayers.generateRequest();
                                 }
