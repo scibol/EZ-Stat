@@ -244,6 +244,27 @@
                 justify-content: space-between;
             }
 
+            .homeView {
+                padding-top: 10vh;
+                width: 100vw;
+                margin: 0 auto;
+                text-align: center;
+                overflow: hidden;
+            }
+
+            .pic {
+                position: absolute;
+                left:0;
+                bottom: 0;
+                width: 100vw;
+                height: auto;
+            }
+
+            h1 {
+                font-size: 10em;
+                text-align: center;
+            }
+
         </style>
 
         <iron-ajax
@@ -322,26 +343,19 @@
 
                     <paper-icon-button on-click="_redirect" icon="icons:home"></paper-icon-button>
                     <paper-icon-button on-click="" icon="social:person"></paper-icon-button>
-                    <!--<paper-button on-click="_redirect">home</paper-button>-->
-                    <!--<paper-button on-click="">{{user}}user</paper-button>-->
-                    <!--<paper-button on-click="">signout</paper-button>-->
                 </div>
             </paper-toolbar>
-            <!--<div id="dialogContainer" class="makeFlex">-->
-            <!--<p>Are you sure?</p>-->
-            <!--<paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"-->
-            <!--entry-animation="fade-out-animation">-->
-            <!--<paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>-->
-            <!--<paper-button dialog-confirm on-click="_endGame">End the game</paper-button>-->
-            <!--</paper-dialog>-->
-            <!--</div>-->
-
 
             <!--iron pages for different views-->
             <iron-pages attr-for-selected="data-route" selected="{{route}}">
                 <!--main view-->
-                <!--<div data-route="main" class="horizontal layout flex wrapper">-->
-                <img class="mainImage" src="../../images/main.jpg">
+                <div data-route="main" class="horizontal layout flex wrapper">
+                    <div class="homeView">
+                        <p>Welcome to</p>
+                        <h1>EZ-STATS</h1>
+                        <p>A web application made to save and visualize basketball statistics</p>
+                        <!--<img class="pic" src="../../images/main2.jpeg">-->
+                    </div>
                 </div>
 
                 <!--game view-->
