@@ -42,34 +42,39 @@
 
         <style include="shared-styles">
             :host {
-            @apply(- -layout-vertical);
+            @apply(--layout-vertical);
                 --paper-input-container-color: #EEEEEE;
-                /*--secondary-text-color: rgba(255, 255, 255, 0.8);*/
-                --default-primary-color: #13171F;
-                /*--text-primary-color: rgba(255, 255, 255, 0.8);*/
-                /*--text-secondary-color: rgba(255, 255, 255, 0.8);*/
-                /*--primary-text-color: rgba(255, 255, 255, 0.8);*/
-                /*--paper-menu-background-color: rgba(255, 255, 255, 0.95);*/
+                --default-primary-color: #000000;
             }
 
             paper-item {
                 --paper-item-selected-weight: normal;
+                color: #3e3e3e;
             }
 
             paper-button {
                 --paper-button-selected-weight: normal;
             }
 
+            .header paper-button {
+                transition: all 0.2s;
+                border-radius: 0;
+            }
+
+            .header paper-button:hover {
+                background-color: #009cde;
+                color: #000000;
+            }
+
             .startGame {
-                /*--primary-text-color: #BF5A17;*/
-                color: #24262D;
-                background-color: #eeeeee;
+                color: #fff;
+                background-color: #28435a;
                 transition: all 0.2s;
             }
 
             .startGame:hover {
-                color: #eeeeee;
-                background-color: #24262D;
+                background-color: #009cde;
+                color: #000000;
             }
 
             paper-menu {
@@ -87,6 +92,7 @@
             .wrapper {
                 position: absolute;
                 top: 64px;
+                background-color: #e9eff5;
                 bottom: 0;
                 left: 0;
             }
@@ -98,8 +104,8 @@
             }
 
             #gameName {
-                --paper-input-container-color: #2A2C2B;
-                --primary-text-color: #2A2C2B;
+                --paper-input-container-color: #3e3e3e;
+                --primary-text-color: #3e3e3e;
             }
 
 
@@ -113,31 +119,38 @@
             #btnMiss {
                 float: right;
                 width: 10em;
-                color: #24262D;
-                background-color: #eeeeee;
+                color: #fff;
+                background-color: #28435a;
                 transition: all 0.2s
             }
 
             #btnMiss:hover {
                 color: #eeeeee;
-                background-color: #24262D;
+                background-color: #009cde;
             }
 
             #btnHit {
                 width: 10em;
-                color: #24262D;
-                background-color: #eeeeee;
+                color: #fff;
+                background-color: #28435a;
                 transition: all 0.2s
             }
 
             #btnHit:hover {
                 color: #eeeeee;
-                background-color: #24262D;
+                background-color: #009cde;
             }
 
             paper-listbox paper-item, .menuItem {
                 --paper-item-selected-weight: normal;
-                box-shadow:inset 0 -5px 7px -7px rgba(0,0,0,1);
+                /*-webkit-box-shadow: 0 6px 4px -4px black;*/
+                /*-moz-box-shadow: 0 6px 4px -4px black;*/
+                box-shadow: 0 6px 4px -8px black;
+            }
+
+            .menuItem {
+                color: #fff;
+                background-color: #28435a;
             }
 
             paper-listbox {
@@ -151,22 +164,31 @@
             }
 
             .main-nav {
-                width: 19vw;
-                /*margin-left: 1vw;*/
-                background: #eeeeee;
+                position: relative;
+                width: 18vw;
+                margin-top: 2vh;
+                margin-bottom: 2vh;
+                margin-left:0.7em;
+                margin-right:0.7em;
+                background: #ffffff;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
                 overflow-y: auto;
-                color: #2A2C2B;
+                color: #3e3e3e;
+                box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);
             }
 
-            .left-nav {
-                margin-right:1em;
-            }
+            /*.left-nav {*/
+                /*margin-top: 2vh;*/
+                /*margin-bottom: 2vh;*/
+                /*height: 88vh;*/
+                /*margin-left:0.7em;*/
+                /*margin-right:0.7em;*/
+            /*}*/
 
-            .right-nav {
-                margin-left:1em;
-            }
+            /*.right-nav {*/
+                /*margin-left:1em;*/
+            /*}*/
 
             .float-right {
                 float: right;
@@ -186,7 +208,7 @@
             .header {
                 --text-primary-color: #EEEEEE;
                 box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
-                border-bottom: 3px solid #BF5A17;
+                border-bottom: 2px solid #009cde;
             }
 
             .mainImage {
@@ -446,6 +468,7 @@
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
+                    this.$.setGame.url = this.game.path;
                     this.$.setGame.generateRequest();
                     this.$.getGames.generateRequest();
                 },
@@ -463,14 +486,6 @@
                     event.preventDefault();
                 },
 
-                _setSuccess: function (event, detail) {
-                    if (this.$.canv.hit != "hit") {
-//                        this.$.btnHit.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
-                        this.$.btnHit.style.borderBottom = "2px solid #BF5A17";
-                        this.$.btnMiss.style.borderBottom = "";
-                        this.$.canv.hit = "hit";
-                    }
-                },
 
                 _setSelectedTeam: function () {
                     this.$.canv.selected = "team1"
@@ -534,10 +549,18 @@
                     this.$.dialogContainer.style.display = "none";
                 },
 
+                _setSuccess: function (event, detail) {
+                    if (this.$.canv.hit != "hit") {
+                        this.$.btnHit.style.borderBottom = "3px solid #009cde";
+                        this.$.btnMiss.style.borderBottom = "";
+                        this.$.canv.hit = "hit";
+                    }
+                },
+
                 _setFail: function (event, detail) {
                     if (this.$.canv.hit != "fail") {
                         this.$.btnHit.style.borderBottom = "";
-                        this.$.btnMiss.style.borderBottom = "2px solid #BF5A17";
+                        this.$.btnMiss.style.borderBottom = "3px solid #009cde";
                         this.$.canv.hit = "fail"
                     }
                 },
