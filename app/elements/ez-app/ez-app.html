@@ -32,8 +32,9 @@
 
 
 <!-- stuff for easel, drawing canvas -->
+<script src="easeljs-0.8.1.min.js"></script>
+<script src="easeljs-NEXT.combined.js"></script>
 <script type="text/javascript" src="../../js/utils.js"></script>
-<script type="text/javascript" src="../../js/Chart.js"></script>
 
 
 <dom-module id="ez-app">
@@ -231,18 +232,11 @@
                 display: none;
             }
 
-            #btnEdit, #btnStats {
-                width: 10em;
-                background-color: rgba(0, 0, 0, 0.1);
+            .dialog {
+                padding-left: 2.5em;
             }
 
-            #btnStats {
-                float: right;
-            }
-
-            #statSection {
-                width: 60vw;
-            }
+            /* Stats CSS*/
 
             .statsHeader {
                 width: 100%;
@@ -326,6 +320,26 @@
             .dialog {
                 padding-left: 2.5em;
             }
+
+            #upStats {
+                width: 10em;
+                color: #fff;
+                background-color: #28435a;
+                transition: all 0.2s
+            }
+
+            #upStats:hover {
+                color: #eeeeee;
+                background-color: #009cde;
+            }
+            
+            #upper_Bar {
+                width: 100%;
+                height: 5em;
+                margin-top: 1em;
+
+            }
+            /* END Stats CSS*/
         </style>
 
         <iron-ajax
@@ -481,56 +495,6 @@
                                     </paper-listbox>
                                 </nav>
 
-                                <iron-pages id='my_iron_pages' attr-for-selected="property" selected="0">
-                                    
-                                    <div property="0">
-                                    
-                                        <div class="content flex main-content">
-                                        <div id="upperBar"> 
-                                                <paper-button toggles="true" id="btnEdit" disabled="false" on-click="">
-                                                    Edit
-                                                </paper-button>
-                                                <paper-button toggles="true" id="btnStats" disabled="false" on-click="_switchToStats">
-                                                    Stats
-                                                </paper-button>
-                                                 
-                                            </div>
-                                            <div id="upperBar"> 
-                                                <paper-button toggles="true" id="btnHit" disabled="true" on-click="_setSuccess">
-                                                    Hit
-                                                </paper-button>
-                                                <paper-button toggles="true" id="btnMiss" disabled="true" on-click="_setFail">
-                                                    Miss
-                                                </paper-button>
-                                                 
-                                            </div>
-                                             
-                                            <ez-canvas id="canv" selected="not" hit="boh">
-                                            </ez-canvas>
-                                            <paper-button on-click="_endGame">end game</paper-button>
-                                        </div>
-                                        
-                                        Normal text
-                                    </div>
-                                    <div property="1" id="statSection">
-                                        <div class="caption">Players statistics</div>
-                                        <div id='table'>
-                                        <div class="header-row row">
-                                            <span class="cell cell-primary">Name</span>
-                                            <span class="cell">Points</span>
-                                            <span class="cell">FG%</span>
-                                            <span class="cell">3FG%</span>
-                                            <span class="cell">STL</span>   <!-- Steals -->
-                                            <span class="cell">REB</span>   <!-- Rebounds -->
-                                            <span class="cell">AST</span>   <!-- Assists -->
-                                            <span class="cell">PF</span>   <!-- Personal fouls -->
-                                        </div>
-                                        </div>
-                                        <div class="caption">Team statistics</div>
-                                    </div>
-                                    <div property="2">
-                                        Edit
-                                    </div>
                                 <div class="content flex main-content">
                                     <div class="makeFlex">
                                         <ez-stat-counter id="buttonCounter" editable disabled selected=""
@@ -556,8 +520,30 @@
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                     </iron-pages>
 
-
+                                    <!-- Stats -->
+                                    <div id="upper_Bar">
+                                    <paper-button id="upStats" class="fx" on-click="buildStats">Update Stats
+                                    </paper-button>
+                                    </div>
+                                    <div property="1" id="statSection">
+                                    <div class="caption">Players statistics</div>
+                                    <div id='table'>
+                                    <div class="header-row row">
+                                        <span class="cell cell-primary">Name</span>
+                                        <span class="cell">Points</span>
+                                        <span class="cell">FG%</span>
+                                        <span class="cell">3FG%</span>
+                                        <span class="cell">STL</span>   
+                                        <span class="cell">REB</span>   
+                                        <span class="cell">AST</span>   
+                                        <span class="cell">PF</span> 
+                                    </div>
+                                    </div>
+                                    <div class="caption">Team statistics</div>
+                                    <!-- END Stats -->
                                 </div>
+                                </div>
+
                                 <nav class="main-nav-float main-nav right-nav">
                                     <paper-item class="menuItem" on-click="_setSelectedTeam2">{{game.team2}}
                                     </paper-item>
@@ -610,7 +596,6 @@
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
-                    this.$.setGame.url = this.game.path;
                     this.$.setGame.generateRequest();
                     this.$.getGames.generateRequest();
                 },
@@ -654,11 +639,10 @@
                 },
 
                 _activateButtons: function (event, detail) {
-                    this.$.btnStats.disabled = false;
-                    this.$.btnEdit.disabled = false;
                     if (this.game.finished == 0) {
                         this.$.btnHit.disabled = false;
                         this.$.btnMiss.disabled = false;
+                        this.$.upStats.disabled = false;
                         this.$.buttonCounter.disabled = false;
                         this.$.canv.editable = false;
                     }
@@ -709,8 +693,6 @@
                     }
                 },
 
-                
-
                 _redirect: function (event, detail) {
                     this.$.drop.placeholder = "";
                     this.game = {};
@@ -725,11 +707,28 @@
 
                 },
 
-                _switchToStats: function(){
+                buildStats: function(){
+
+                    console.log("inside function buildStats");
+                    this.$.getGame.generateRequest();
+                    console.log(this.$.getGame.lastResponse.players1)
 
                     //-------------------------------- PLAYERS STATS ------------------------------------------------------------
 
+                    var deleteDuplicates = function(shots){
+                        var temp = [];
+                        for(var i = 0; i < shots.length; i++){
+                            var flag = false;
+                            for(var j=i+1; j < shots.length; j++){
+                                if(shots[i]._id === shots[j]._id) flag = true;
+                            }
+                            if(!flag) temp.push(shots[i]);
+                        }
+                        return temp;
+                    }
+
                     var _countShoots = function(shots) {
+                        console.log(shots);
                         var tot2Points = 0;
                         var hit2Points = 0;
                         var tot3Points = 0;
@@ -752,17 +751,22 @@
                     }
 
                     var _listPlayers = function(here, gamePlayers){
-                        var pages = here.my_iron_pages;
-                        pages.selectNext();
 
-                        var gamePlayers = here.getGame.lastResponse.players;
                         var statSection = here.table;
                         var data = [];
 
                         for(var i = 0; i < gamePlayers.length; i++){
+
+                            console.log("BEFORE ",gamePlayers[i].firstName, gamePlayers[i].shots);
+                            gamePlayers[i].shots = deleteDuplicates(gamePlayers[i].shots);
+                            console.log("AFTER",gamePlayers[i].firstName,gamePlayers[i].shots);
+
                             var rawData = _countShoots(gamePlayers[i].shots);
                             data.push([{value: rawData.hit2Points, color: "#F7464A"},
-                                {value: rawData.tot2Points-rawData.hit2Points, color: "#46BFBD"}]); 
+                                {value: rawData.tot2Points-rawData.hit2Points, color: "#46BFBD"}]);
+
+                            console.log("AFTER", gamePlayers[i].firstName, rawData);
+
 
                             var playerContainer = document.createElement("div");
                             playerContainer.setAttribute("class", "row");
@@ -785,8 +789,6 @@
                             else field3Percentage.innerHTML = (rawData.hit3Points / rawData.tot3Points) * 100;
                             field3Percentage.setAttribute("class","cell");
 
-                            //---------------------------------------------
-
                             var steals = document.createElement("span");
                             steals.innerHTML = gamePlayers[i].failedPasses;
                             steals.setAttribute("class","cell");
@@ -802,8 +804,6 @@
                             var fouls = document.createElement("span");
                             fouls.innerHTML = gamePlayers[i].fouls;
                             fouls.setAttribute("class","cell");
-
-                            //---------------------------------------------
 
                             statSection.appendChild(playerContainer);
                             playerContainer.appendChild(firstNameTag);
@@ -885,8 +885,6 @@
 
                         //Get the data
                         var players1 = here.getGame.lastResponse.players1;                  //ERROR the shoots data are not there at the moment!!!
-                        console.log("players1 : ", players1);                               //ERROR the shoots data are not there at the moment!!!
-                        console.log("players2 : ", players2);                               //ERROR the shoots data are not there at the moment!!!
                         var players2 = here.getGame.lastResponse.players2;                  //ERROR the shoots data are not there at the moment!!!
                         var data = {
                             labels : ["FG %", "3FG %", "FT %"],
@@ -974,13 +972,17 @@
                         var myPieChart = new Chart(ctx).Pie(tempData);
                     }
 
-                    _listPlayers(this.$);
+                    //delete precedent table
+                    var table = this.$.table;
+                    while (table.childNodes.length > 2)
+                        table.removeChild(table.lastChild);                    
+
+                    _listPlayers(this.$, this.$.getGame.lastResponse.players1);
+                    _listPlayers(this.$, this.$.getGame.lastResponse.players2);
                     //_listTeams(this.$);
                     _teamsHistograms(this.$);
                     
                 }
-
-
             });
         })
         ();
