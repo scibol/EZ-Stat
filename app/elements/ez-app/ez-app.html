@@ -52,6 +52,19 @@
                 color: #3e3e3e;
             }
 
+            paper-item:focus:before {
+                opacity: 0;
+            }
+
+
+            paper-item {
+                --paper-item-selected-weight: normal;
+                box-shadow: 0 6px 4px -8px black;
+                --paper-item-selected: {
+                    background-color: rgba(0,0,0,0.1);
+                };
+            }
+
             paper-button {
                 --paper-button-selected-weight: normal;
             }
@@ -503,6 +516,7 @@
                 },
 
                 _setSelected1: function (event, detail) {
+                    this.$.team2.select(-1);
                     this.$.canv.selected = this.$.team1.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
                     this.$.canv.team = "team1"
@@ -511,9 +525,10 @@
                 },
 
                 _setSelected2: function (event, detail) {
+                    this.$.team1.select(-1);
                     this.$.canv.selected = this.$.team2.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
-                    this.$.canv.team = "team2"
+                    this.$.canv.team = "team2";
                     socket.emit("change", this.$.canv.selected);
 
                 },
