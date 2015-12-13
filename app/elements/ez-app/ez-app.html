@@ -42,7 +42,7 @@
 
         <style include="shared-styles">
             :host {
-            @apply(--layout-vertical);
+                @apply(--layout-vertical);
                 --paper-input-container-color: #EEEEEE;
                 --default-primary-color: #000000;
             }
@@ -56,12 +56,11 @@
                 opacity: 0;
             }
 
-
             paper-item {
                 --paper-item-selected-weight: normal;
                 box-shadow: 0 6px 4px -8px black;
                 --paper-item-selected: {
-                    background-color: rgba(0,0,0,0.1);
+                    background-color: rgba(0, 0, 0, 0.1);
                 };
             }
 
@@ -121,7 +120,6 @@
                 --primary-text-color: #3e3e3e;
             }
 
-
             #upperBar {
                 width: 100%;
                 height: 5em;
@@ -164,11 +162,14 @@
             .menuItem {
                 color: #fff;
                 background-color: #28435a;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
             }
 
             paper-listbox {
                 --primary-background-color: #24262D;
-                background-color: rgba(0,0,0,0);
+                background-color: rgba(0, 0, 0, 0);
                 padding: 0;
             }
 
@@ -181,27 +182,15 @@
                 width: 18vw;
                 margin-top: 2vh;
                 margin-bottom: 2vh;
-                margin-left:1vw;
-                margin-right:1vw;
+                margin-left: 1vw;
+                margin-right: 1vw;
                 background: #ffffff;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
                 overflow-y: auto;
                 color: #3e3e3e;
-                box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);
+                box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
             }
-
-            /*.left-nav {*/
-                /*margin-top: 2vh;*/
-                /*margin-bottom: 2vh;*/
-                /*height: 88vh;*/
-                /*margin-left:0.7em;*/
-                /*margin-right:0.7em;*/
-            /*}*/
-
-            /*.right-nav {*/
-                /*margin-left:1em;*/
-            /*}*/
 
             .float-right {
                 float: right;
@@ -233,21 +222,17 @@
                 /*height: auto;*/
             }
 
-            #dialogContainer {
-                height: 15%;
-                width: 25%;
-                position: absolute;
-                margin-top: 10%;
-                margin-left: 37.5%;
-                background-color: white;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-                z-index: 1000;
-                display: none;
+            .score {
+                font-weight: bold;
+                font-size: 1.5em;
             }
 
-            .dialog {
-                padding-left: 2.5em;
+            .alignRight {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
             }
+
         </style>
 
         <iron-ajax
@@ -330,12 +315,12 @@
                 </div>
             </paper-toolbar>
             <!--<div id="dialogContainer" class="makeFlex">-->
-                <!--<p>Are you sure?</p>-->
-                <!--<paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"-->
-                              <!--entry-animation="fade-out-animation">-->
-                    <!--<paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>-->
-                    <!--<paper-button dialog-confirm on-click="_endGame">End the game</paper-button>-->
-                <!--</paper-dialog>-->
+            <!--<p>Are you sure?</p>-->
+            <!--<paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"-->
+            <!--entry-animation="fade-out-animation">-->
+            <!--<paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>-->
+            <!--<paper-button dialog-confirm on-click="_endGame">End the game</paper-button>-->
+            <!--</paper-dialog>-->
             <!--</div>-->
 
 
@@ -391,7 +376,9 @@
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav left-nav">
 
-                                    <paper-item class="menuItem" on-click="_setSelectedTeam">{{game.team1}}
+                                    <paper-item class="menuItem" on-click="_setSelectedTeam">
+                                        <div>{{game.team1}}</div>
+                                        <div class="score" id="team1score">{{game.team1score}}</div>
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
@@ -404,6 +391,8 @@
                                 </nav>
 
                                 <div class="content flex main-content">
+                                    <div class="score">
+                                    </div>
                                     <div class="makeFlex">
                                         <ez-stat-counter id="buttonCounter" editable disabled selected=""
                                                          game={{game}}></ez-stat-counter>
@@ -430,12 +419,16 @@
 
                                 </div>
                                 <nav class="main-nav-float main-nav right-nav">
-                                    <paper-item class="menuItem" on-click="_setSelectedTeam2">{{game.team2}}
+                                    <paper-item class="menuItem" on-click="_setSelectedTeam2">
+                                        <div class="score" id="team2score">{{game.team2score}}</div>
+                                        <div>{{game.team2}}</div>
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
+                                            <paper-item class="alignRight" id="{{player._id}}">
+                                                <div></div>
+                                                <div>{{player.firstName}} {{player.lastName}}</div>
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -453,9 +446,9 @@
 
         <paper-toast id="endGameToast" duration="0">
             <!--<div id="dialogContainer" class="makeFlex">-->
-                <p>Are you sure?</p>
-                    <paper-button on-click="_closeDialog">Cancel</paper-button>
-                    <paper-button on-click="_endGame">End the game</paper-button>
+            <p>Are you sure?</p>
+            <paper-button on-click="_closeDialog">Cancel</paper-button>
+            <paper-button on-click="_endGame">End the game</paper-button>
             <!--</div>-->
         </paper-toast>
     </template>
