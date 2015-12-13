@@ -465,12 +465,9 @@
                 },
 
                 _loseFocus: function () {
-                    console.log(this.game)
                     this.$.setGame.body = JSON.stringify({
                         "name": this.$.gameName.value
                     });
-//                    this.$.setGame.url = this.game.path;
-                    console.log(this.$.setGame.url)
                     this.$.setGame.generateRequest();
                     this.$.getGames.generateRequest();
                 },
