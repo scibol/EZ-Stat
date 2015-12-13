@@ -151,13 +151,21 @@
             }
 
             .main-nav {
-                width: 20vw;
+                width: 19vw;
+                /*margin-left: 1vw;*/
                 background: #eeeeee;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
                 overflow-y: auto;
                 color: #2A2C2B;
-                /*box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);*/
+            }
+
+            .left-nav {
+                margin-right:1em;
+            }
+
+            .right-nav {
+                margin-left:1em;
             }
 
             .float-right {
@@ -326,7 +334,7 @@
                         <!--game not started yet-->
                         <div started="0">
                             <div class="horizontal layout flex wrapper">
-                                <nav class="main-nav-float main-nav">
+                                <nav class="main-nav-float main-nav left-nav">
                                     <ez-team game="{{game}}" players="{{game.players1}}" team="team1"
                                              name="{{game.team1}}"></ez-team>
                                 </nav>
@@ -336,7 +344,7 @@
                                                  value="{{game.name}}"></paper-input>
                                     <paper-button class="startGame" on-click="_startGame">start game</paper-button>
                                 </div>
-                                <nav class="main-nav-float main-nav">
+                                <nav class="main-nav-float main-nav right-nav">
                                     <ez-team game="{{game}}" players="{{game.players2}}" team="team2"
                                              name="{{game.team2}}"></ez-team>
                                 </nav>
@@ -346,7 +354,7 @@
                         <!--game started (includes finished game too)-->
                         <div started="1">
                             <div class="horizontal layout flex wrapper">
-                                <nav class="main-nav-float main-nav">
+                                <nav class="main-nav-float main-nav left-nav">
 
                                     <paper-item class="menuItem" on-click="_setSelectedTeam">{{game.team1}}
                                     </paper-item>
@@ -386,7 +394,7 @@
                                     </iron-pages>
 
                                 </div>
-                                <nav class="main-nav-float main-nav">
+                                <nav class="main-nav-float main-nav right-nav">
                                     <paper-item class="menuItem" on-click="_setSelectedTeam2">{{game.team2}}
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
