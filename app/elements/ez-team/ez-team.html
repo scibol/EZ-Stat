@@ -16,22 +16,15 @@
                 transition: background 0.3s, box-shadow 0.3s;
                 --text-primary-color: rgba(42, 42, 42, 0.8);
                 --text-secondary-color: rgba(32, 32, 32, 0.8);
-                --primary-text-color: rgba(37, 37, 37, 0.8);
-                --paper-input-container-color: #13171F;
+                --primary-text-color: #3e3e3e;
+                --paper-input-container-color: #3e3e3e;
                 --primary-background-color: rgba(0,0,0,0);
             }
 
-            :host(:hover) {
-                /*background: rgba(0, 0, 0, 0.2);*/
-                /*box-shadow: inset 0 -1px rgba(0, 0, 0, 0);*/
-            }
-
-
             paper-item {
                 --paper-item-selected-weight: normal;
-                /*-webkit-box-shadow: 0 6px 4px -4px black;*/
-                /*-moz-box-shadow: 0 6px 4px -4px black;*/
-                box-shadow:inset 0 -5px 7px -7px rgba(0,0,0,1);
+                box-shadow: 0 6px 4px -8px black;
+                color: #3e3e3e;
             }
 
             .iron-selected {
@@ -49,7 +42,7 @@
                 outline: none;
                 text-decoration: none;
                 font-size: 17px;
-                color: inherit;
+                color: #3e3e3e;
                 overflow: hidden;
                 white-space: nowrap;
             }
@@ -72,8 +65,8 @@
             }
 
             .editBtn:hover {
-                background-color: #24262D;
-                color: #eeeeee;
+                background-color: #28435a;
+                color: #fff;
             }
 
             :host(:hover) .editBtn {
@@ -81,7 +74,6 @@
             }
 
             #editInput {
-                /*display: none;*/
                 line-height: 1;
                 padding-left: 12px;
             }
