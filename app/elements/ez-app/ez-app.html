@@ -224,7 +224,7 @@
                 right: 1em;
             }
 
-            .end {
+            .end, .end * {
                 display: inline-block;
             }
 
@@ -261,6 +261,11 @@
             h1 {
                 font-size: 10em;
                 text-align: center;
+            }
+
+            #ezstats {
+                display: none;
+                width: 60vw;
             }
 
         </style>
@@ -330,11 +335,14 @@
                     <div class="end">
                         <iron-pages attr-for-selected="data-route" selected="{{route}}">
                             <iron-pages data-route="games" attr-for-selected="started" selected="{{game.started}}">
-                                <iron-pages started="1" attr-for-selected="finished" selected="{{game.finished}}">
-                                    <div class="end" finished="0">
-                                        <paper-button on-click="_displayDialog">end game</paper-button>
-                                    </div>
-                                </iron-pages>
+                                <div class="end" started="1">
+                                    <paper-button class="edit" on-click="_toggleStats">stats</paper-button>
+                                    <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
+                                        <div finished="0">
+                                            <paper-button on-click="_displayDialog">end game</paper-button>
+                                        </div>
+                                    </iron-pages>
+                                </div>
                             </iron-pages>
                         </iron-pages>
                     </div>
@@ -442,7 +450,7 @@
                                     <!--BEGIN STATISTICS -->
 
 
-                                    <ez-statistics game="{{game}}"></ez-statistics>
+                                    <ez-statistics id="ezstats" game="{{game}}"></ez-statistics>
 
 
                                     <!--END STATISTICS-->
@@ -594,6 +602,26 @@
 
                 _closeDialog: function (event, detail) {
                     this.$.endGameToast.close();
+                },
+
+                _toggleStats: function (event, detail) {
+                    var btn = event.target;
+                    console.log(btn.innerHTML);
+                    if (btn.innerHTML == "stats") {
+                        btn.innerHTML = "edit";
+                        this.$.buttonCounter.style.display = "none";
+                        this.$.upperBar.style.display = "none";
+                        this.$.ezstats.style.display = "none";
+                        this.$.canv.style.display = "none";
+                        this.$.ezstats.style.display = "block";
+                    }
+                    else {
+                        btn.innerHTML = "stats";
+                        this.$.buttonCounter.style.display = "block";
+                        this.$.canv.style.display = "block";
+                        this.$.upperBar.style.display = "block";
+                        this.$.ezstats.style.display = "none";
+                    }
                 },
 
                 _setSuccess: function (event, detail) {
