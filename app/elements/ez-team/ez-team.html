@@ -21,14 +21,18 @@
                 --primary-background-color: rgba(0,0,0,0);
             }
 
+            paper-item:focus:before {
+                opacity: 0;
+            }
+
+
             paper-item {
                 --paper-item-selected-weight: normal;
                 box-shadow: 0 6px 4px -8px black;
-                color: #3e3e3e;
             }
 
             .iron-selected {
-                background: rgba(0,0,0,0);
+                /*background-color: rgba(0,255,255,1);*/
             }
 
             paper-button {
@@ -64,6 +68,10 @@
                 transition: all 0.2s;
             }
 
+            #teamInput {
+                margin-right:1em;
+            }
+
             .editBtn:hover {
                 background-color: #28435a;
                 color: #fff;
@@ -78,11 +86,8 @@
                 padding-left: 12px;
             }
 
-            ez-team {
-
-            }
-
             #inputContainer {
+                padding-left:1em;
                 display: none;
             }
 
@@ -111,7 +116,7 @@
         <paper-listbox selectedItem>
 
             <template is="dom-repeat" items="{{players}}" as="player">
-                <paper-item id="{{player._id}}">{{player.firstName}}
+                <paper-item class="playerItem" id="{{player._id}}">{{player.firstName}}
                     {{player.lastName}}
                 </paper-item>
             </template>

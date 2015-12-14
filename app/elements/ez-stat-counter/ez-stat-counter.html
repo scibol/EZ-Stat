@@ -287,7 +287,6 @@
                     var team;
                     var newVal;
                     var ezApp = document.querySelector("ez-app");
-                    var canvas = ezApp.$.canv;
                     for (var pl in players1) {
                         if (this.selected == players1[pl]._id) {
                             team = "team1";
@@ -299,8 +298,8 @@
                         }
                     }
                     if (team == "team1") {
-                        newVal = parseInt(canvas.$.team1score.innerHTML) + 1;
-                        canvas.$.team1score.innerHTML = newVal
+                        newVal = parseInt(ezApp.$.team1score.innerHTML) + 1;
+                        ezApp.$.team1score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team1score: newVal
                         })
@@ -313,8 +312,8 @@
                         })
                     }
                     else if (team == "team2") {
-                        newVal = parseInt(canvas.$.team2score.innerHTML) + 1;
-                        canvas.$.team2score.innerHTML = newVal
+                        newVal = parseInt(ezApp.$.team2score.innerHTML) + 1;
+                        ezApp.$.team2score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team2score: newVal
                         })
@@ -351,7 +350,6 @@
                     var team;
                     var newVal;
                     var ezApp = document.querySelector("ez-app");
-                    var canvas = ezApp.$.canv;
                     for (var pl in players1) {
                         if (this.selected == players1[pl]._id) {
                             team = "team1";
@@ -363,8 +361,8 @@
                         }
                     }
                     if (team == "team1") {
-                        newVal = parseInt(canvas.$.team1score.innerHTML) - 1;
-                        canvas.$.team1score.innerHTML = newVal
+                        newVal = parseInt(ezApp.$.team1score.innerHTML) - 1;
+                        ezApp.$.team1score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team1score: newVal
                         })
@@ -377,8 +375,8 @@
                         })
                     }
                     else if (team == "team2") {
-                        newVal = parseInt(canvas.$.team2score.innerHTML) - 1;
-                        canvas.$.team2score.innerHTML = newVal
+                        newVal = parseInt(ezApp.$.team2score.innerHTML) - 1;
+                        ezApp.$.team2score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team2score: newVal
                         })

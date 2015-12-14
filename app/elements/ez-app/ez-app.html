@@ -4,8 +4,11 @@
 <link rel="import" href="../../components/iron-flex-layout/classes/iron-flex-layout.html">
 <link rel="import" href="../../components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../components/iron-icons/av-icons.html">
+<link rel="import" href="../../components/iron-icons/social-icons.html">
+
 <link rel="import" href="../../components/iron-icons/image-icons.html">
 <link rel="import" href="../../components/iron-icons/iron-icons.html">
+
 <link rel="import" href="../../components/iron-pages/iron-pages.html">
 <link rel="import" href="../../components/paper-toast/paper-toast.html">
 
@@ -42,7 +45,7 @@
 
         <style include="shared-styles">
             :host {
-            @apply(--layout-vertical);
+                @apply(--layout-vertical);
                 --paper-input-container-color: #EEEEEE;
                 --default-primary-color: #000000;
             }
@@ -50,6 +53,18 @@
             paper-item {
                 --paper-item-selected-weight: normal;
                 color: #3e3e3e;
+            }
+
+            paper-item:focus:before {
+                opacity: 0;
+            }
+
+            paper-item {
+                --paper-item-selected-weight: normal;
+                box-shadow: 0 6px 4px -8px black;
+                --paper-item-selected: {
+                    background-color: rgba(0, 0, 0, 0.1);
+                };
             }
 
             paper-button {
@@ -70,6 +85,7 @@
                 color: #fff;
                 background-color: #28435a;
                 transition: all 0.2s;
+                margin: 0 1vw 0 1vw;
             }
 
             .startGame:hover {
@@ -89,6 +105,14 @@
                 overflow-y: auto;
             }
 
+            .main-content {
+                position: relative;
+                margin-top: 2vh;
+                margin-bottom: 2vh;
+                background-color: white;
+                box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);
+            }
+
             .wrapper {
                 position: absolute;
                 top: 64px;
@@ -106,8 +130,8 @@
             #gameName {
                 --paper-input-container-color: #3e3e3e;
                 --primary-text-color: #3e3e3e;
+                margin: 0 1vw 0 1vw;
             }
-
 
             #upperBar {
                 width: 100%;
@@ -126,19 +150,30 @@
 
             #btnMiss:hover {
                 color: #eeeeee;
-                background-color: #009cde;
+                background-color: rgb(0, 156, 222);
+
+            }
+
+            #btnMiss[disabled] {
+                color: #cdcdcd;
+                background-color: rgba(73, 81, 93, 0.5);
             }
 
             #btnHit {
                 width: 10em;
                 color: #fff;
-                background-color: #28435a;
+                background-color: #808993;
                 transition: all 0.2s
             }
 
             #btnHit:hover {
                 color: #eeeeee;
                 background-color: #009cde;
+            }
+
+            #btnHit[disabled] {
+                color: #cdcdcd;
+                background-color: rgba(73, 81, 93, 0.5);
             }
 
             paper-listbox paper-item, .menuItem {
@@ -151,16 +186,19 @@
             .menuItem {
                 color: #fff;
                 background-color: #28435a;
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
             }
 
             paper-listbox {
                 --primary-background-color: #24262D;
-                background-color: rgba(0,0,0,0);
+                background-color: rgba(0, 0, 0, 0);
                 padding: 0;
             }
 
             .fill-width {
-                width: 57.6vw;
+                width: 60vw;
             }
 
             .main-nav {
@@ -168,27 +206,15 @@
                 width: 18vw;
                 margin-top: 2vh;
                 margin-bottom: 2vh;
-                margin-left:0.7em;
-                margin-right:0.7em;
+                margin-left: 1vw;
+                margin-right: 1vw;
                 background: #ffffff;
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
                 overflow-y: auto;
                 color: #3e3e3e;
-                box-shadow: 0 0 1px 0 rgba(0,0,0,0.2);
+                box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
             }
-
-            /*.left-nav {*/
-                /*margin-top: 2vh;*/
-                /*margin-bottom: 2vh;*/
-                /*height: 88vh;*/
-                /*margin-left:0.7em;*/
-                /*margin-right:0.7em;*/
-            /*}*/
-
-            /*.right-nav {*/
-                /*margin-left:1em;*/
-            /*}*/
 
             .float-right {
                 float: right;
@@ -211,29 +237,23 @@
                 border-bottom: 2px solid #009cde;
             }
 
-            .mainImage {
-                display: block;
-                max-width: 100vw;
-                /*max-height:100vh;*/
-                width: auto;
+            .score {
+                font-weight: bold;
+                font-size: 1.5em;
+            }
+
+            .alignRight {
+                display: flex;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+
+            .homeView {
+                padding-top: 10vh;
+                width: 100vw;
+                margin: 0 auto;
+                text-align: center;
                 overflow: hidden;
-                /*height: auto;*/
-            }
-
-            #dialogContainer {
-                height: 15%;
-                width: 25%;
-                position: absolute;
-                margin-top: 10%;
-                margin-left: 37.5%;
-                background-color: white;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-                z-index: 1000;
-                display: none;
-            }
-
-            .dialog {
-                padding-left: 2.5em;
             }
 
             /* Stats CSS*/
@@ -340,6 +360,12 @@
 
             }
             /* END Stats CSS*/
+
+            h1 {
+                font-size: 10em;
+                text-align: center;
+            }
+
         </style>
 
         <iron-ajax
@@ -416,26 +442,21 @@
                         </iron-pages>
                     </div>
 
-                    <paper-button on-click="_redirect">home</paper-button>
-                    <paper-button on-click="">{{user}}user</paper-button>
-                    <paper-button on-click="">signout</paper-button>
+                    <paper-icon-button on-click="_redirect" icon="icons:home"></paper-icon-button>
+                    <paper-icon-button on-click="" icon="social:person"></paper-icon-button>
                 </div>
             </paper-toolbar>
-            <div id="dialogContainer" class="makeFlex">
-                <p>Are you sure?</p>
-                <paper-dialog id="dialog" class="dialog" exit-animation="fade-out-animation"
-                              entry-animation="fade-out-animation">
-                    <paper-button dialog-dismiss on-click="_closeDialog">Cancel</paper-button>
-                    <paper-button dialog-confirm on-click="_endGame">End the game</paper-button>
-                </paper-dialog>
-            </div>
-
 
             <!--iron pages for different views-->
             <iron-pages attr-for-selected="data-route" selected="{{route}}">
                 <!--main view-->
-                <!--<div data-route="main" class="horizontal layout flex wrapper">-->
-                <img class="mainImage" src="../../images/main.jpg">
+                <div data-route="main" class="horizontal layout flex wrapper">
+                    <div class="homeView">
+                        <p>Welcome to</p>
+                        <h1>EZ-STATS</h1>
+                        <p>A web application made to save and visualize basketball statistics</p>
+                        <!--<img class="pic" src="../../images/main2.jpeg">-->
+                    </div>
                 </div>
 
                 <!--game view-->
@@ -483,7 +504,9 @@
                             <div class="horizontal layout flex wrapper">
                                 <nav class="main-nav-float main-nav left-nav">
 
-                                    <paper-item class="menuItem" on-click="_setSelectedTeam">{{game.team1}}
+                                    <paper-item class="menuItem" on-click="_setSelectedTeam">
+                                        <div>{{game.team1}}</div>
+                                        <div class="score" id="team1score">{{game.team1score}}</div>
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected1" id="team1"
                                                    selectedItem>
@@ -496,6 +519,8 @@
                                 </nav>
 
                                 <div class="content flex main-content">
+                                    <div class="score">
+                                    </div>
                                     <div class="makeFlex">
                                         <ez-stat-counter id="buttonCounter" editable disabled selected=""
                                                          game={{game}}></ez-stat-counter>
@@ -545,12 +570,16 @@
                                 </div>
 
                                 <nav class="main-nav-float main-nav right-nav">
-                                    <paper-item class="menuItem" on-click="_setSelectedTeam2">{{game.team2}}
+                                    <paper-item class="menuItem" on-click="_setSelectedTeam2">
+                                        <div class="score" id="team2score">{{game.team2score}}</div>
+                                        <div>{{game.team2}}</div>
                                     </paper-item>
                                     <paper-listbox on-tap="_activateButtons" on-click="_setSelected2" id="team2"
                                                    selectedItem>
                                         <template is="dom-repeat" items="{{game.players2}}" as="player">
-                                            <paper-item id="{{player._id}}">{{player.firstName}} {{player.lastName}}
+                                            <paper-item class="alignRight" id="{{player._id}}">
+                                                <div></div>
+                                                <div>{{player.firstName}} {{player.lastName}}</div>
                                             </paper-item>
                                         </template>
                                     </paper-listbox>
@@ -564,6 +593,14 @@
 
         <paper-toast id="toast">
             <span class="toast-hide-button" role="button" tabindex="0" onclick="ezApp.$.toast.hide()">Ok</span>
+        </paper-toast>
+
+        <paper-toast id="endGameToast" duration="0">
+            <!--<div id="dialogContainer" class="makeFlex">-->
+            <p>Are you sure?</p>
+            <paper-button on-click="_closeDialog">Cancel</paper-button>
+            <paper-button on-click="_endGame">End the game</paper-button>
+            <!--</div>-->
         </paper-toast>
     </template>
 
@@ -623,6 +660,7 @@
                 },
 
                 _setSelected1: function (event, detail) {
+                    this.$.team2.select(-1);
                     this.$.canv.selected = this.$.team1.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team1.selectedItem.id;
                     this.$.canv.team = "team1"
@@ -631,9 +669,10 @@
                 },
 
                 _setSelected2: function (event, detail) {
+                    this.$.team1.select(-1);
                     this.$.canv.selected = this.$.team2.selectedItem.id;
                     this.$.buttonCounter.selected = this.$.team2.selectedItem.id;
-                    this.$.canv.team = "team2"
+                    this.$.canv.team = "team2";
                     socket.emit("change", this.$.canv.selected);
 
                 },
@@ -665,7 +704,7 @@
                 },
 
                 _endGame: function (event, detail) {
-                    this.$.dialogContainer.style.display = "none";
+                    this.$.endGameToast.close();
                     this.$.setGame.body = JSON.stringify({
                         "finished": "1"
                     });
@@ -677,11 +716,11 @@
                 },
 
                 _displayDialog: function (event, detail) {
-                    this.$.dialogContainer.style.display = "inline-block";
+                    this.$.endGameToast.open();
                 },
 
                 _closeDialog: function (event, detail) {
-                    this.$.dialogContainer.style.display = "none";
+                    this.$.endGameToast.close();
                 },
 
                 _setSuccess: function (event, detail) {

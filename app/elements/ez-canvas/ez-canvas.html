@@ -59,9 +59,6 @@
                 on-response="getAllShots"
                 last-response="{{shots}}"
         ></iron-ajax>
-
-        <span id="team1score">{{game.team1score}}</span>
-        <span id="team2score">{{game.team2score}}</span>
         <canvas id="myCanvas" width="1500px" height="800px"></canvas>
 
     </template>
@@ -200,9 +197,10 @@
                             if (!(this.editable)) {
                                 var teamAjax = this.$.putScore;
                                 var team = this.team;
+                                var ezApp = document.querySelector("ez-app");
                                 if (team == "team1") {
-                                    newVal = parseInt(this.$.team1score.innerHTML) + x
-                                    this.$.team1score.innerHTML = newVal
+                                    newVal = parseInt(ezApp.$.team1score.innerHTML) + x
+                                    ezApp.$.team1score.innerHTML = newVal
                                     teamAjax.body = JSON.stringify({
                                         "team1score": newVal
                                     });
@@ -215,8 +213,8 @@
                                     })
                                 }
                                 else if (team == "team2") {
-                                    newVal = parseInt(this.$.team2score.innerHTML) + x;
-                                    this.$.team2score.innerHTML = newVal;
+                                    newVal = parseInt(ezApp.$.team2score.innerHTML) + x;
+                                    ezApp.$.team2score.innerHTML = newVal;
                                     teamAjax.body = JSON.stringify({
                                         "team2score": newVal
                                     });
@@ -360,9 +358,11 @@
                                     });
                                     updatePlayers.generateRequest();
                                 }
+                                console.log("3 PUNTI")
                             });
 
                             twoPointsLeftShape.on("click", function (e) {
+                                console.log("2 PUNTI")
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
