@@ -28,6 +28,7 @@
 <link rel="import" href="../routing.html">
 
 <link rel="import" href="../ez-team/ez-team.html">
+<link rel="import" href="../ez-statistics/ez-statistics.html">
 
 <link rel="import" href="../ez-stat-counter/ez-stat-counter.html">
 <link rel="import" href="../ez-menu-item/ez-menu-item.html">
@@ -438,6 +439,13 @@
 
                                     <ez-canvas id="canv" selected="" hit="" team="" gameid="{{game._id}}" editable>
                                     </ez-canvas>
+                                    <!--BEGIN STATISTICS -->
+
+
+                                    <ez-statistics game="{{game}}"></ez-statistics>
+
+
+                                    <!--END STATISTICS-->
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                     </iron-pages>
 

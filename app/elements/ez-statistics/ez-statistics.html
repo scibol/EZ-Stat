@@ -1,0 +1,34 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<dom-module id="ez-statistics">
+    <template>
+            <table class="statistics">
+                <thead class="tl-header">
+                <th>NAME</th>
+                <th>2P</th>
+                <th>3P</th>
+                <th>%2P</th>
+                <th>%3P</th>
+                </thead>
+                <template is="dom-repeat" items="{{game.players}}" as="player">
+                    <tr class="tl-row">
+                        <td class="tl-cell">{{player.firstName}} {{player.lastName}}</td>
+                        <td></td>
+                        <!--<td class="tl-cell">{{track.artist.name}}</td>-->
+                        <!--<td class="tl-cell">{{track.album.name}}</td>-->
+                        <!--<td class="tl-cell">{{_formatTime(track.duration)}}</td>-->
+                    </tr>
+                </template>
+            </table>
+
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-statistics',
+            })
+        })()
+    </script>
+</dom-module>
