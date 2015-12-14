@@ -1,0 +1,140 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<dom-module id="ez-statistics">
+    <style>
+    .caption {
+    display: block;
+    width: 100%;
+    background: #28435a;
+    height: 55px;
+    padding-left: 10px;
+    color: #fff;
+    font-size: 20px;
+    line-height: 55px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,.3);
+    box-sizing: border-box;
+    }
+    </style>
+    <template>
+        <table class="statistics">
+            <div class="caption">Team statistics</div>
+            <thead class="tl-header">
+            <th>NAME</th>
+            <th>2P SUCCESS</th>
+            <th>2P TOTAL</th>
+            <th>3P SUCCESS</th>
+            <th>3P TOTAL</th>
+            <th>%2P</th>
+            <th>%3P</th>
+            </thead>
+            <template is="dom-repeat" items="{{game.players1}}" as="player">
+                <tr class="tl-row">
+                    <td class="tl-cell">{{player.firstName}} {{player.lastName}}</td>
+                    <td class="tl-cell">{{calc2Hits(player.shots)}}</td>
+                    <td class="tl-cell">{{calc2Shots(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3Hits(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3Shots(player.shots)}}
+                    <td class="tl-cell">{{calc2PointsPercent(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3PointsPercent(player.shots)}}</td>
+                </tr>
+            </template>
+            <template is="dom-repeat" items="{{game.players2}}" as="player">
+                <tr class="tl-row">
+                    <td class="tl-cell">{{player.firstName}} {{player.lastName}}</td>
+                    <td class="tl-cell">{{calc2Hits(player.shots)}}</td>
+                    <td class="tl-cell">{{calc2Shots(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3Hits(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3Shots(player.shots)}}</td>
+                    <td class="tl-cell">{{calc2PointsPercent(player.shots)}}</td>
+                    <td class="tl-cell">{{calc3PointsPercent(player.shots)}}</td>
+                </tr>
+            </template>
+        </table>
+
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-statistics',
+
+                calc2PointsPercent: function (shots) {
+                    var success = 0;
+                    var total = 0
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points) {
+                            total++
+                            if (shots[i].success) {
+                                success++
+                            }
+                        }
+                    }
+                    if (total == 0) {
+                        return 0
+                    }
+                    return ((success / total) * 100) + "%"
+                },
+
+                calc3PointsPercent: function (shots) {
+                    var success = 0;
+                    var total = 0
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points)) {
+                            total++
+                            if (shots[i].success) {
+                                success++
+                            }
+                        }
+                    }
+                    if (total == 0) {
+                        return 0
+                    }
+
+                    return ((success / total) * 100) + "%"
+                },
+
+                calc2Shots: function (shots) {
+                    var tot2Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points) {
+                            tot2Shots++;
+                        }
+                    }
+                    return tot2Shots;
+                },
+
+                calc3Shots: function (shots) {
+                    var tot3Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points)) {
+                            tot3Shots++;
+                        }
+                    }
+                    return tot3Shots;
+                },
+
+                calc2Hits: function (shots) {
+                    var tot2Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points && shots[i].success) {
+                            tot2Shots++;
+                        }
+                    }
+                    return tot2Shots;
+                },
+
+                calc3Hits: function (shots) {
+                    var tot3Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points) && shots[i].success) {
+                            tot3Shots++;
+                        }
+                    }
+                    return tot3Shots;
+                },
+
+            })
+        })()
+    </script>
+</dom-module>
