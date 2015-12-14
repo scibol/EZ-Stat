@@ -48,7 +48,7 @@
             :host {
                 @apply(--layout-vertical);
                 --paper-input-container-color: #EEEEEE;
-                --default-primary-color: #000000;
+                --default-primary-color: #28435a;
             }
 
             paper-item {
@@ -72,14 +72,14 @@
                 --paper-button-selected-weight: normal;
             }
 
-            .header paper-button {
+            .header paper-button, paper-icon-button {
                 transition: all 0.2s;
                 border-radius: 0;
             }
 
-            .header paper-button:hover {
-                background-color: #009cde;
-                color: #000000;
+            .header paper-button:hover,paper-icon-button:hover {
+                background-color: #eee;
+                color: #28435a;
             }
 
             .startGame {
@@ -234,8 +234,9 @@
 
             .header {
                 --text-primary-color: #EEEEEE;
-                box-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
-                border-bottom: 2px solid #009cde;
+                box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.25);
+                z-index: 1000;
+                /*border-bottom: 2px solid #009cde;*/
             }
 
             .score {
