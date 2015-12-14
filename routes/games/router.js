@@ -52,6 +52,7 @@ router.get('/:gameid', function (req, res, next) {
 //update a game
 router.put('/:gameid', function (req, res, next) {
     var data = req.body;
+
     Game.findById(req.params.gameid, fieldsFilter, function (err, game) {
         if (err) return next(err);
         if (game) {
@@ -63,8 +64,10 @@ router.put('/:gameid', function (req, res, next) {
                                 delete data.team
                                 game.players1[gamer].shots.push(data)
                                 game.save(onModelSave(res));
+                                return;
                             }
                         }
+
                     }
                     else if (data.team == "team2") {
                         for (var gamer in game.players2) {
@@ -73,9 +76,10 @@ router.put('/:gameid', function (req, res, next) {
                                 delete data.team
                                 game.players2[gamer].shots.push(data)
                                 game.save(onModelSave(res));
-
+                                return;
                             }
                         }
+
                     }
             }
             if (data.firstName) {
