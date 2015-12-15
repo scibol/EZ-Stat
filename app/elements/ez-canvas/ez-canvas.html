@@ -52,6 +52,13 @@
         ></iron-ajax>
 
         <iron-ajax
+                id="getAllPlayers"
+                url="/players"
+                handle-as="json"
+                last-response="{{bho}}"
+        ></iron-ajax>
+
+        <iron-ajax
                 id="getShots"
                 auto
                 url="/players/[[selected]]"
@@ -70,6 +77,10 @@
             Polymer({
                         is: 'ez-canvas',
                         properties: {
+                            game: {
+                                type: Object,
+                                notify: true,
+                            },
                             selected: {
                                 type: String,
                                 notify: true,
@@ -129,12 +140,15 @@
                             if (this.shotsObj == undefined) {
                                 this.shotsObj = {}
                             }
-                            if (this.$.getTeamScore.lastResponse != undefined) {
-                                var team1Players = this.$.getTeamScore.lastResponse.players1;
-                                var team2Players = this.$.getTeamScore.lastResponse.players2;
+                            if (this.game != undefined) {
+                                var team1Players = this.game.players1;
+                                var team2Players = this.game.players2;
                             }
-
                             if (this.selected == "team1") {
+                                if (this.selected == "team1") {
+                                    this.$.getAllPlayers.generateRequest();
+                                    console.log(this.$.getAllPlayers.lastResponse)
+                                }
                                 for (var gamer in this.shotsObj) {
                                     for (var shot in this.shotsObj[gamer]) {
                                         this.shotsObj[gamer][shot].visible = false;
@@ -170,7 +184,6 @@
                                 this.stage.update()
                                 return
                             }
-
                             for (var players in this.shotsObj) {
                                 if (players != this.selected) {
                                     for (var shot in this.shotsObj[players]) {
@@ -464,6 +477,7 @@
 
         function drawHitAndMiss(success, x, y, stage, player, shotsObj) {
             var field = measures();
+
             if (success != undefined && x != undefined && y != undefined) {
                 x = Number(x) * field.width;
                 y = Number(y) * field.height;
