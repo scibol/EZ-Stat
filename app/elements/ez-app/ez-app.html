@@ -123,6 +123,9 @@
             }
 
             .makeFlex {
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
                 display: flex;
                 flex-wrap: wrap;
                 justify-content: space-around;
@@ -188,6 +191,9 @@
                 color: #fff;
                 background-color: #28435a;
                 display: flex;
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
                 flex-wrap: nowrap;
                 justify-content: space-between;
             }
@@ -245,6 +251,9 @@
             }
 
             .alignRight {
+                display: -webkit-box;
+                display: -moz-box;
+                display: -ms-flexbox;
                 display: flex;
                 flex-wrap: nowrap;
                 justify-content: space-between;
@@ -337,7 +346,7 @@
                         <iron-pages attr-for-selected="data-route" selected="{{route}}">
                             <iron-pages data-route="games" attr-for-selected="started" selected="{{game.started}}">
                                 <div class="end" started="1">
-                                    <paper-button class="edit" on-click="_toggleStats">stats</paper-button>
+                                    <paper-button class="court" on-click="_toggleStats">stats</paper-button>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                         <div finished="0">
                                             <paper-button on-click="_displayDialog">end game</paper-button>
@@ -451,7 +460,7 @@
                                     <!--BEGIN STATISTICS -->
 
 
-                                    <ez-statistics id="ezstats" game="{{game}}"></ez-statistics>
+                                    <ez-statistics players1="{{game.players1}}" id="ezstats" game="{{game}}"></ez-statistics>
 
 
                                     <!--END STATISTICS-->
@@ -609,7 +618,7 @@
                     var btn = event.target;
                     console.log(btn.innerHTML);
                     if (btn.innerHTML == "stats") {
-                        btn.innerHTML = "edit";
+                        btn.innerHTML = "court";
                         this.$.buttonCounter.style.display = "none";
                         this.$.upperBar.style.display = "none";
                         this.$.ezstats.style.display = "none";
