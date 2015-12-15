@@ -125,11 +125,6 @@
                             this.resetShots()
                         },
 
-//                        _updateSocket:function (){
-//                            socket.emit("score-changed", {id : this.selected})
-//                        },
-
-
                         resetShots: function () {
                             if (this.shotsObj == undefined) {
                                 this.shotsObj = {}
@@ -240,6 +235,8 @@
                             var ironAjax = this.$.shot;
                             var canvas = this.$.myCanvas;
                             var field = measures();
+
+
                             this.stage = new createjs.Stage(canvas);
                             var rect = new createjs.Shape();
 
@@ -312,12 +309,19 @@
                                         "two_points": false
                                     });
                                     updatePlayers.generateRequest();
+                                    thisObj.fire("update-stats", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": false
+
+                                    })
                                 }
-                                console.log("3 PUNTI")
                             });
 
                             twoPointsLeftShape.on("click", function (e) {
-                                console.log("2 PUNTI")
                                 if (!(thisObj.editable)) {
                                     var success = (thisObj.hit == "hit")
                                     if (success) {
@@ -343,7 +347,14 @@
                                         "two_points": true
                                     });
                                     updatePlayers.generateRequest();
-
+                                    thisObj.fire("update-stats", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
+                                    })
                                 }
                             });
                             twoPointsRightShape.on("click", function (e) {
@@ -372,6 +383,14 @@
                                         "two_points": true
                                     });
                                     updatePlayers.generateRequest();
+                                    thisObj.fire("update-stats", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
+                                    })
                                 }
                             });
                         },
@@ -395,7 +414,7 @@
                             })
                         },
 
-                        drawMiss: function (x,y) {
+                        drawMiss: function (x, y) {
                             var missGraphics = new createjs.Graphics();
                             missGraphics.setStrokeStyle(2).beginStroke("rgba(0,0,0,0.4").mt(x - 10, y + 10).lt(x + 10, y - 10).mt(x - 10, y - 10).lt(x + 10, y + 10);
                             var missShape = new createjs.Shape(missGraphics)
