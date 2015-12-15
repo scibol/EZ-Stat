@@ -33,9 +33,12 @@ module.exports = function(httpServer) {
 		});
 
 		socket.on("player-update-shot", function(event) {
-			console.log("OK")
 			socket.broadcast.to(event.id).emit("player-update-shot", event.data);
 		});
+
+		socket.on("update-stats-table", function(event){
+			socket.broadcast.emit("update-stats-table", event);
+		})
 
 
 	});

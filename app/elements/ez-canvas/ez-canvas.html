@@ -45,7 +45,7 @@
 
         <iron-ajax
                 id="getTeamScore"
-                auto
+
                 url="/games/[[gameid]]"
                 handle-as="json"
                 last-response="{{game}}"
@@ -316,7 +316,14 @@
                                         "pos_y": String(e.stageY / field.height),
                                         "success": success,
                                         "two_points": false
-
+                                    })
+                                    socket.emit("update-stats-table", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
                                     })
                                 }
                             });
@@ -355,6 +362,14 @@
                                         "success": success,
                                         "two_points": true
                                     })
+                                    socket.emit("update-stats-table", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
+                                    })
                                 }
                             });
                             twoPointsRightShape.on("click", function (e) {
@@ -384,6 +399,14 @@
                                     });
                                     updatePlayers.generateRequest();
                                     thisObj.fire("update-stats", {
+                                        "id": thisObj.selected,
+                                        "team": thisObj.team,
+                                        "pos_x": String(e.stageX / field.width),
+                                        "pos_y": String(e.stageY / field.height),
+                                        "success": success,
+                                        "two_points": true
+                                    })
+                                    socket.emit("update-stats-table", {
                                         "id": thisObj.selected,
                                         "team": thisObj.team,
                                         "pos_x": String(e.stageX / field.width),
