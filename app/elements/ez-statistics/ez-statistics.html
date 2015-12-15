@@ -21,8 +21,8 @@
         }
 
         google-chart {
-            height: 400px;
-            width: 30em;
+            height: 30vh;
+            width: 50%;
         }
 
         table > tr > td {
@@ -33,10 +33,13 @@
             border-bottom: 1px solid #e5e5e5;
         }
 
-        .charts {
+        #charts {
             display: flex;
             flex-wrap: nowrap;
+            align-content: space-between;
+            width: 60vw;
         }
+
 
     </style>
     <template>
@@ -78,7 +81,7 @@
                 </tr>
             </template>
         </table>
-        <div class="charts">
+        <div id="charts">
             <google-chart
                     type='pie'
                     options='{{team1Name}}'
@@ -104,7 +107,7 @@
                 properties: {
                     game: {
                         type: Object,
-                        notify: true,
+                        notify: true
                     },
 
                     firstTeamChart: {
@@ -126,6 +129,10 @@
                         type: String,
                         computed: 'getTeam2Name(game)'
                     }
+                },
+
+                makeTableBorder: function() {
+                    console.log("de")
                 },
 
                 getId: function (playerId, team) {
@@ -163,7 +170,13 @@
                 getTeam2Name: function (game) {
                     if (game._id != undefined) {
 
-                        return {"title": game.team2 + " shots view"}
+                        return {
+                            "title": game.team2 + " shots view",
+                            "colors": ['#182b37', '#009cde'],
+                            "chartArea":{width:"700%",height:"70%"},
+                            "height": "15vh",
+                            "width": "20vw"
+                        }
                     }
                 }
                 ,
@@ -171,7 +184,13 @@
                 getTeam1Name: function (game) {
                     if (game._id != undefined) {
 
-                        return {"title": game.team1 + " shots view"}
+                        return {
+                            "title": game.team1 + " shots view",
+                            "colors": ['#182b37', '#009cde'],
+                            "chartArea":{width:"70%",height:"70%"},
+                            "height": "15vh",
+                            "width": "20vw"
+                        }
                     }
                 }
                 ,
@@ -306,6 +325,6 @@
                 ,
 
             })
-        })()
+        })();
     </script>
 </dom-module>
