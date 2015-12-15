@@ -278,8 +278,10 @@
                         "freeshotsScored": newValue
                     });
                     this.$.setField.generateRequest();
-                    var players1 = this.$.getGame.lastResponse.players1;
-                    var players2 = this.$.getGame.lastResponse.players2;
+                    if (this.game != undefined) {
+                        var players1 = this.game.players1;
+                        var players2 = this.game.players2;
+                    }
                     var team;
                     var newVal;
                     var ezApp = document.querySelector("ez-app");
@@ -295,6 +297,7 @@
                     }
                     if (team == "team1") {
                         newVal = parseInt(ezApp.$.team1score.innerHTML) + 1;
+                        console.log(newVal)
                         ezApp.$.team1score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team1score: newVal
@@ -341,8 +344,10 @@
                         });
                         this.$.setField.generateRequest();
                     }
-                    var players1 = this.$.getGame.lastResponse.players1;
-                    var players2 = this.$.getGame.lastResponse.players2;
+                    if (this.game != undefined) {
+                        var players1 = this.game.players1;
+                        var players2 = this.game.players2;
+                    }
                     var team;
                     var newVal;
                     var ezApp = document.querySelector("ez-app");
