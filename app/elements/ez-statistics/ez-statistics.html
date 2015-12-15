@@ -23,7 +23,6 @@
         google-chart {
             width: 40em;
         }
-
         table > tr > td {
             text-align: center;
         }
@@ -32,10 +31,7 @@
             border-bottom: 1px solid #e5e5e5;
         }
         .charts {
-            display: -webkit-box;
-            display: -moz-box;
-            display: -ms-flexbox;
-            display: flex;
+            display:flex;
             flex-wrap: nowrap;
         }
 
@@ -55,7 +51,7 @@
                 <th>%3P</th>
             </tr>
             </thead>
-            <template is="dom-repeat" items="{{players1}}" as="player">
+            <template is="dom-repeat" items="{{game.players1}}" as="player">
                 <tr>
                     <td>{{player.firstName}} {{player.lastName}}</td>
                     <td>{{calc2Hits(player.shots)}}</td>
@@ -107,11 +103,6 @@
                         notify: true
                     },
 
-                    players1: {
-                        type: Array,
-                        notify: true
-                    },
-
                     firstTeamChart: {
                         type: Array,
                         computed: 'calcTeam1Array(game)'
@@ -131,13 +122,6 @@
                         type: String,
                         computed: 'getTeam2Name(game)'
                     }
-                },
-
-                observers: [
-                    'updateTableItems(players1.shots.*)'
-                ],
-                updateTableItems : function() {
-                    console.log("test")
                 },
 
                 getTeam2Name: function(game) {
@@ -267,7 +251,7 @@
                         }
                     }
                     return tot3Shots;
-                }
+                },
 
             })
         })()
