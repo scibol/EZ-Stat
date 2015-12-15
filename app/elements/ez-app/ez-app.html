@@ -48,12 +48,12 @@
             :host {
                 @apply(--layout-vertical);
                 --paper-input-container-color: #EEEEEE;
-                --default-primary-color: #28435a;
+                --default-primary-color: #182b37;
             }
 
             paper-item {
                 --paper-item-selected-weight: normal;
-                color: #3e3e3e;
+                color: #000;
             }
 
             paper-item:focus:before {
@@ -64,7 +64,7 @@
                 --paper-item-selected-weight: normal;
                 box-shadow: 0 6px 4px -8px black;
                 --paper-item-selected: {
-                    background-color: rgba(0, 0, 0, 0.1);
+                    background-color: rgba(0, 0, 0, 0.25);
                 };
             }
 
@@ -79,12 +79,12 @@
 
             .header paper-button:hover, paper-icon-button:hover {
                 background-color: #eee;
-                color: #28435a;
+                color: #182b37;
             }
 
             .startGame {
                 color: #fff;
-                background-color: #28435a;
+                background-color: #182b37;
                 transition: all 0.2s;
                 margin: 0 1vw 0 1vw;
             }
@@ -117,7 +117,7 @@
             .wrapper {
                 position: absolute;
                 top: 64px;
-                background-color: #e9eff5;
+                background-color: #cbd1d7;
                 bottom: 0;
                 left: 0;
             }
@@ -129,8 +129,8 @@
             }
 
             #gameName {
-                --paper-input-container-color: #3e3e3e;
-                --primary-text-color: #3e3e3e;
+                --paper-input-container-color: #000;
+                --primary-text-color: #000;
                 margin: 0 1vw 0 1vw;
             }
 
@@ -145,48 +145,49 @@
                 float: right;
                 width: 10em;
                 color: #fff;
-                background-color: #28435a;
+                background-color: #182b37;
                 transition: all 0.2s
             }
 
             #btnMiss:hover {
-                color: #eeeeee;
+                color: #fff;
                 background-color: rgb(0, 156, 222);
 
             }
 
             #btnMiss[disabled] {
-                color: #cdcdcd;
+                color: #fff;
                 background-color: rgba(73, 81, 93, 0.5);
             }
 
             #btnHit {
                 width: 10em;
                 color: #fff;
-                background-color: #28435a;
+                background-color: #182b37;
                 transition: all 0.2s
             }
 
             #btnHit:hover {
-                color: #eeeeee;
+                color: #fff;
                 background-color: #009cde;
             }
 
             #btnHit[disabled] {
-                color: #cdcdcd;
+                color: #fff;
                 background-color: rgba(73, 81, 93, 0.5);
             }
 
-            paper-listbox paper-item, .menuItem {
+            paper-listbox paper-item {
                 --paper-item-selected-weight: normal;
                 /*-webkit-box-shadow: 0 6px 4px -4px black;*/
                 /*-moz-box-shadow: 0 6px 4px -4px black;*/
-                box-shadow: 0 6px 4px -8px black;
+                box-shadow: 0 6px 0 -5px black;
             }
 
             .menuItem {
+                --paper-item-selected-weight: normal;
                 color: #fff;
-                background-color: #28435a;
+                background-color: #182b37;
                 display: flex;
                 flex-wrap: nowrap;
                 justify-content: space-between;
@@ -213,8 +214,8 @@
                 font-size: 1.3vw;
                 transition: width 150ms ease-out;
                 overflow-y: auto;
-                color: #3e3e3e;
-                box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+                color: #000;
+                box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.25);
             }
 
             .float-right {
@@ -336,7 +337,7 @@
                         <iron-pages attr-for-selected="data-route" selected="{{route}}">
                             <iron-pages data-route="games" attr-for-selected="started" selected="{{game.started}}">
                                 <div class="end" started="1">
-                                    <paper-button class="edit" on-click="_toggleStats">stats</paper-button>
+                                    <paper-button class="court" on-click="_toggleStats">stats</paper-button>
                                     <iron-pages attr-for-selected="finished" selected="{{game.finished}}">
                                         <div finished="0">
                                             <paper-button on-click="_displayDialog">end game</paper-button>
@@ -629,7 +630,7 @@
                 _toggleStats: function (event, detail) {
                     var btn = event.target;
                     if (btn.innerHTML == "stats") {
-                        btn.innerHTML = "edit";
+                        btn.innerHTML = "court";
                         this.$.buttonCounter.style.display = "none";
                         this.$.upperBar.style.display = "none";
                         this.$.ezstats.style.display = "none";
