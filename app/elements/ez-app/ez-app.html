@@ -519,10 +519,10 @@
                 },
 
                 listeners: {
-                    'update-stats': 'consolelog'
+                    'update-stats': 'updateStats'
                 },
 
-                consolelog: function (data) {
+                updateStats: function (data) {
                     var shot = {
                         "pos_x": data.detail.pos_x,
                         "pos_y": data.detail.pos_y,
