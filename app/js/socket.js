@@ -63,7 +63,6 @@ socket.on("player-update-shot", function (data) {
 socket.on("player-update-stat", function (data) {
     var ezApp = document.querySelector("ez-app");
     var stats = ezApp.$.buttonCounter;
-    var canvas = ezApp.$.canv;
 
     switch (data.type) {
         case "assists":

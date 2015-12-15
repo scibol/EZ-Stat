@@ -1,0 +1,259 @@
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/google-chart/google-chart.html">
+
+<dom-module id="ez-statistics">
+    <style>
+        .caption {
+            display: block;
+            width: 100%;
+            background: #28435a;
+            height: 55px;
+            padding-left: 10px;
+            color: #fff;
+            font-size: 20px;
+            line-height: 55px;
+            text-shadow: 1px 1px 1px rgba(0, 0, 0, .3);
+            box-sizing: border-box;
+        }
+
+        #statistics {
+            width: 100%
+        }
+
+        google-chart {
+            width: 40em;
+        }
+        table > tr > td {
+            text-align: center;
+        }
+
+        table > thead > tr > th {
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .charts {
+            display:flex;
+            flex-wrap: nowrap;
+        }
+
+
+    </style>
+    <template>
+        <table id="statistics">
+            <div class="caption">Team statistics</div>
+            <thead>
+            <tr>
+                <th>NAME</th>
+                <th>2P SUCCESS</th>
+                <th>2P TOTAL</th>
+                <th>3P SUCCESS</th>
+                <th>3P TOTAL</th>
+                <th>%2P</th>
+                <th>%3P</th>
+            </tr>
+            </thead>
+            <template is="dom-repeat" items="{{game.players1}}" as="player">
+                <tr>
+                    <td>{{player.firstName}} {{player.lastName}}</td>
+                    <td>{{calc2Hits(player.shots)}}</td>
+                    <td>{{calc2Shots(player.shots)}}</td>
+                    <td>{{calc3Hits(player.shots)}}</td>
+                    <td>{{calc3Shots(player.shots)}}
+                    <td>{{calc2PointsPercent(player.shots)}}</td>
+                    <td>{{calc3PointsPercent(player.shots)}}</td>
+                </tr>
+            </template>
+            <template is="dom-repeat" items="{{game.players2}}" as="player">
+                <tr class="tl-row">
+                    <td>{{player.firstName}} {{player.lastName}}</td>
+                    <td>{{calc2Hits(player.shots)}}</td>
+                    <td>{{calc2Shots(player.shots)}}</td>
+                    <td>{{calc3Hits(player.shots)}}</td>
+                    <td>{{calc3Shots(player.shots)}}</td>
+                    <td>{{calc2PointsPercent(player.shots)}}</td>
+                    <td>{{calc3PointsPercent(player.shots)}}</td>
+                </tr>
+            </template>
+        </table>
+        <div class ="charts">
+        <google-chart
+                type='pie'
+                options='{{team1Name}}'
+                cols='[{"label":"Success", "type":"string"}, {"label":"Fails", "type":"number"}]'
+                rows = '{{firstTeamChart}}'>
+        </google-chart>
+        <google-chart
+                type='pie'
+                options='{{team2Name}}'
+                cols='[{"label":"Success", "type":"string"}, {"label":"Fails", "type":"number"}]'
+                rows = '{{secondTeamChart}}'>
+        </google-chart>
+        </div>
+    </template>
+
+    <script>
+        (function () {
+            'use strict';
+
+            Polymer({
+                is: 'ez-statistics',
+
+                properties: {
+                    game: {
+                        type: Object,
+                        notify: true
+                    },
+
+                    firstTeamChart: {
+                        type: Array,
+                        computed: 'calcTeam1Array(game)'
+                    },
+
+                    team1Name: {
+                        type: String,
+                        computed: 'getTeam1Name(game)'
+                    },
+
+                    secondTeamChart: {
+                        type: Array,
+                        computed: 'calcTeam2Array(game)'
+                    },
+
+                    team2Name: {
+                        type: String,
+                        computed: 'getTeam2Name(game)'
+                    }
+                },
+
+                getTeam2Name: function(game) {
+                    if (game._id != undefined) {
+
+                        return {"title" : game.team2 + " shots view"}
+                    }
+                },
+
+            getTeam1Name: function(game) {
+                    if (game._id != undefined) {
+
+                        return {"title" : game.team1 + " shots view"}
+                    }
+                },
+
+                calcTeam1Array: function(game) {
+                if (game._id != undefined) {
+                    var players = game.players1
+                    var total = this.calcTeamTotalShots(players)
+                    var success = this.calcTeamSuccessShots(players)
+                    return ([["Success", total], ["Fails", total - success]])
+                }
+                },
+
+                calcTeam2Array: function(game) {
+                    if (game._id != undefined) {
+                        var players = game.players2
+                        var total = this.calcTeamTotalShots(players)
+                        var success = this.calcTeamSuccessShots(players)
+                        return ([["Success", total], ["Fails", total - success]])
+                    }
+                },
+
+                calcTeamTotalShots: function (players) {
+                    var total = 0;
+                    for (var i = 0; i < players.length; i++) {
+                        for (var j = 0; j < players[i].shots.length; j++) {
+                            total += 1
+                        }
+                    }
+                    return total
+                },
+
+                calcTeamSuccessShots: function (players) {
+                    var successful = 0;
+                    for (var i = 0; i < players.length; i++) {
+                        for (var j = 0; j < players[i].shots.length; j++) {
+                            if (players[i].shots[j].success) {
+                                successful += 1;
+                            }
+                        }
+                    }
+                    return successful
+                },
+
+                calc2PointsPercent: function (shots) {
+                    var success = 0;
+                    var total = 0
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points) {
+                            total++
+                            if (shots[i].success) {
+                                success++
+                            }
+                        }
+                    }
+                    if (total == 0) {
+                        return 0
+                    }
+                    return ((success / total) * 100) + "%"
+                },
+
+                calc3PointsPercent: function (shots) {
+                    var success = 0;
+                    var total = 0
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points)) {
+                            total++
+                            if (shots[i].success) {
+                                success++
+                            }
+                        }
+                    }
+                    if (total == 0) {
+                        return 0
+                    }
+
+                    return ((success / total) * 100) + "%"
+                },
+
+                calc2Shots: function (shots) {
+                    var tot2Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points) {
+                            tot2Shots++;
+                        }
+                    }
+                    return tot2Shots;
+                },
+
+                calc3Shots: function (shots) {
+                    var tot3Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points)) {
+                            tot3Shots++;
+                        }
+                    }
+                    return tot3Shots;
+                },
+
+                calc2Hits: function (shots) {
+                    var tot2Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (shots[i].two_points && shots[i].success) {
+                            tot2Shots++;
+                        }
+                    }
+                    return tot2Shots;
+                },
+
+                calc3Hits: function (shots) {
+                    var tot3Shots = 0;
+                    for (var i = 0; i < shots.length; i++) {
+                        if (!(shots[i].two_points) && shots[i].success) {
+                            tot3Shots++;
+                        }
+                    }
+                    return tot3Shots;
+                },
+
+            })
+        })()
+    </script>
+</dom-module>

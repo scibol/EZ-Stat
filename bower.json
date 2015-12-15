@@ -18,7 +18,8 @@
     "iron-icon": "PolymerElements/iron-icon#~1.0.7",
     "paper-listbox": "polymerelements/paper-listbox#~1.0.0",
     "paper-spinner": "PolymerElements/paper-spinner#~1.1.0",
-    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3"
+    "paper-dialog": "PolymerElements/paper-dialog#~1.0.3",
+    "google-chart": "GoogleWebComponents/google-chart#~1.0.4"
   },
   "devDependencies": {
     "test-fixture": "PolymerElements/test-fixture#^1.0.0",
