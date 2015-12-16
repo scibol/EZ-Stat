@@ -40,26 +40,11 @@ module.exports = function(httpServer) {
 			socket.broadcast.emit("update-stats-table", event);
 		})
 
+		socket.on("change-state", function (event) {
+			socket.broadcast.emit("change-state", event)
+		})
 
-	});
 
-	//eventBus.on('game.created', function(event){
-	//	io.to(room).emit('change-game', event);
-	//});
-    //
-	//eventBus.on('change.room', function(event){
-	//	io.emit('change-room', event);
-	//});
-
-	//eventBus.on('player.changed', function(event){
-	//	var room = event.url;
-	//	var data = event.data;
-	//	io.emit('update-score', room)
-	//	io.to(room).emit('change-player', data);
-	//});
-
-	eventBus.on('state.changed', function(event){
-		io.emit('change-state', {});
 	});
 };
 

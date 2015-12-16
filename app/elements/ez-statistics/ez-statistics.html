@@ -112,28 +112,29 @@
 
                     firstTeamChart: {
                         type: Array,
-                        computed: 'calcTeam1Array(game)'
+                        computed: 'calcTeam1Array(game)',
+                        notify: true
                     },
 
                     team1Name: {
                         type: String,
-                        computed: 'getTeam1Name(game)'
+                        computed: 'getTeam1Name(game)',
+                        notify: true
                     },
 
                     secondTeamChart: {
                         type: Array,
-                        computed: 'calcTeam2Array(game)'
+                        computed: 'calcTeam2Array(game)',
+                        notify: true
                     },
 
                     team2Name: {
                         type: String,
-                        computed: 'getTeam2Name(game)'
+                        computed: 'getTeam2Name(game)',
+                        notify: true
                     }
                 },
 
-                makeTableBorder: function() {
-                    console.log("de")
-                },
 
                 getId: function (playerId, team) {
                     var id = 0;

@@ -1,8 +1,14 @@
 var socket = io.connect();
 
 socket.on("change-state", function (data) {
+    console.log(data.id)
     var ezApp = document.querySelector("ez-app");
-    ezApp.$.getGame.generateRequest();
+    if (data.id == ezApp.game._id) {
+        var canvas = ezApp.$.canv;
+        var btnCounter = ezApp.$.buttonCounter;
+        canvas.editable = data.editable;
+        btnCounter.disabled = data.disabled;
+    }
 
 });
 
@@ -37,7 +43,6 @@ socket.on("update-stats-table", function (data) {
     var players = ezApp.game.players;
     for (var player in players) {
         if (players[player]._id == data.id) {
-            console.log("ENTRO")
             ezApp.updateStats(data);
         }
     }

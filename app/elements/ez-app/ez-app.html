@@ -639,7 +639,7 @@
                     this.$.getGame.generateRequest();
                     this.$.buttonCounter.disabled = true;
                     this.$.canv.editable = true;
-                    socket.emit("state.changed", this.$.canv.selected);
+                    socket.emit("change-state", {'editable': this.$.canv.editable, 'disabled' : this.$.buttonCounter.disabled, 'id' : this.game._id});
                 },
 
                 _displayDialog: function (event, detail) {
