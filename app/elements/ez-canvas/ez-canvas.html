@@ -2,7 +2,6 @@
 <link rel="import" href="../../components/iron-menu-behavior/iron-menu-behavior.html">
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
-<script type="text/javascript" src="../../js/utils.js"></script>
 
 
 <dom-module id="ez-canvas">
@@ -147,7 +146,6 @@
                             if (this.selected == "team1") {
                                 if (this.selected == "team1") {
                                     this.$.getAllPlayers.generateRequest();
-                                    console.log(this.$.getAllPlayers.lastResponse)
                                 }
                                 for (var gamer in this.shotsObj) {
                                     for (var shot in this.shotsObj[gamer]) {

@@ -297,7 +297,6 @@
                     }
                     if (team == "team1") {
                         newVal = parseInt(ezApp.$.team1score.innerHTML) + 1;
-                        console.log(newVal)
                         ezApp.$.team1score.innerHTML = newVal
                         this.$.setGame.body = JSON.stringify({
                             team1score: newVal

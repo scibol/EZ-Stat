@@ -1,7 +1,4 @@
 var socketIo = require('socket.io');
-var eventBus = require('./pubsub');
-//var room;
-
 module.exports = function(httpServer) {
 	var io = socketIo(httpServer);
 

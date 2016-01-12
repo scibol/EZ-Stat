@@ -39,7 +39,6 @@
 <!-- stuff for easel, drawing canvas -->
 <script src="easeljs-0.8.1.min.js"></script>
 <script src="easeljs-NEXT.combined.js"></script>
-<script type="text/javascript" src="../../js/utils.js"></script>
 
 
 <dom-module id="ez-app">
@@ -184,8 +183,6 @@
 
             paper-listbox paper-item {
                 --paper-item-selected-weight: normal;
-                /*-webkit-box-shadow: 0 6px 4px -4px black;*/
-                /*-moz-box-shadow: 0 6px 4px -4px black;*/
                 box-shadow: 0 6px 0 -5px black;
             }
 
@@ -242,7 +239,6 @@
                 --text-primary-color: #EEEEEE;
                 box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.25);
                 z-index: 1000;
-                /*border-bottom: 2px solid #009cde;*/
             }
 
             .score {
@@ -366,7 +362,6 @@
                         <p>Welcome to</p>
                         <h1>EZ-STATS</h1>
                         <p>A web application made to save and visualize basketball statistics</p>
-                        <!--<img class="pic" src="../../images/main2.jpeg">-->
                     </div>
                 </div>
 
@@ -491,11 +486,9 @@
         </paper-toast>
 
         <paper-toast id="endGameToast" duration="0">
-            <!--<div id="dialogContainer" class="makeFlex">-->
             <p>Are you sure?</p>
             <paper-button on-click="_closeDialog">Cancel</paper-button>
             <paper-button on-click="_endGame">End the game</paper-button>
-            <!--</div>-->
         </paper-toast>
     </template>
 

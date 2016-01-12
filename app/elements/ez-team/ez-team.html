@@ -182,7 +182,6 @@
                     var last = this.$.editInput.value.split(" ")[1];
                     this.$.editInput.value = "";
                     if (first && last) {
-                        console.log("in")
                         this.$.createPlayer.body = JSON.stringify({
                             "firstName": first,
                             "lastName": last,

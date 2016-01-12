@@ -1,7 +1,6 @@
 var socket = io.connect();
 
 socket.on("change-state", function (data) {
-    console.log(data.id)
     var ezApp = document.querySelector("ez-app");
     if (data.id == ezApp.game._id) {
         var canvas = ezApp.$.canv;
