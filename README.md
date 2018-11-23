@@ -1,5 +1,5 @@
 # EZ-Stat
-EZ-Stat is a web application designed for basketball coaches to collect statistics about basketball players in the game.
+EZ-Stat is a web application designed for basketball coaches to collect and visualize statistics about basketball players in the game.
 
 # Usage
 ```bash
